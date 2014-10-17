@@ -116,6 +116,12 @@ class MySQLStorePipeline(object):
             """, ( guid, item['name'][0], '1000', item['date'][0], item['time'], item['location'], '10', now))
             spider.log("Item stored in db: %s %s %s %s %s %s %s %s" % (guid, item['name'][0], '10000', item['date'][0], item['time'], item['location'], '10', now))
             
+            conn.execute("""
+                INSERT INTO artisti ( guid, author, name, surname, born, death, update_date)
+                VALUES ( %s, %s, %s, %s, %s, %s, %s)
+            """, ( guid, item['author'], item['author'].split()[0], item['author'].split()[1], item['date'][0].split('-')[0], item['date'][0].split('-')[1], now))
+            spider.log("Item stored in db autori: %s %s %s %s %s %s %s" % (guid, item['author'], "", "", item['date'], "", now))
+            
             #conn.execute("""
             #    INSERT INTO opere (asta_id, author, period, title, lot, description, image_urls, image_paths, update_date)
             #    VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s)
