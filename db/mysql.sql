@@ -28,7 +28,9 @@ CREATE TABLE artisti (
   guid CHAR(32) PRIMARY KEY,
   author VARCHAR(100)
   name VARCHAR(25)
+  surname VARCHAR(25)
   born VARCHAR(10)
   death VARCHAR(10)
+  update_date VARCHAR(10)
 ) DEFAULT CHARSET=utf8;
 
