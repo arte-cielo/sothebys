@@ -131,4 +131,4 @@ class MySQLStorePipeline(object):
         """Generates an unique identifier for a given item."""
         # hash based solely in the url field
         #return md5(item['location']).hexdigest()
-        return hashlib.md5(item['author']).hexdigest()
+        return hashlib.md5(item['linkurl']).hexdigest()
