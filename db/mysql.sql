@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS asta;
 CREATE TABLE aste (
   guid CHAR(32) PRIMARY KEY,
   name VARCHAR(200),
-  asta INTEGER(11),
+  asta VARCHAR(25),
   dates VARCHAR(20),
   time TEXT
   location TEXT

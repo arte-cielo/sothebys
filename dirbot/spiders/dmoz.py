@@ -32,6 +32,7 @@ class DmozSpider(BaseSpider):
 	open('aste.html', 'wb').write(response.body)
     	
     	items = []
+	items2 = []
     	sel = Selector(response)
 	## search after a method for this
     	link_next = sel.xpath("//div[@class='topmenu-inner-wrap']/a[@class='preferred logged-out']/@href").extract()
@@ -43,10 +44,9 @@ class DmozSpider(BaseSpider):
 	print "CURRENT_PAGE: %s" % (current_page)
 	print "ELEMENT_ONPAGE: %s" % (element_onpage)
 	print "TOT_PAGE: %s" % (tot_page)
-
-	loop = []
+	print self.name
+    	
 	pp = len(sel.xpath("//span[@class='location']/text()").extract())
-	loop.append(pp -1)
 
 	for p in range(0,pp):
             item = AsteWebsite()
@@ -54,14 +54,12 @@ class DmozSpider(BaseSpider):
 	    item['linkurl'] = link_next
 	    ## i need to scan multiple article class
             ## here for documentation : http://doc.scrapy.org/en/latest/topics/selectors.html 
-            #item['date'] = sel.xpath("//time[@class='dtstart']/text()").extract()[0]
-            #item['location'] = sel.xpath("//span[@class='location']/text()").extract()[:1][0].strip()
             item['location'] = sel.xpath("//span[@class='location']/text()").extract()[p].encode('utf-8').strip()
             item['time'] = sel.xpath("//div[@class='description']/a/@href").extract()[p]
             item['date'] = sel.xpath("//div[@class='vevent']/time/text()").extract()[p]
-            #item['name'] = sel.xpath("//time/a/@href").extract()
             item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
-            #item['name'] = sel.xpath("//h4[@class='summary ellipsis']/text()").extract()
+	    item['asta'] = self.name
+            lotpage = item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
 	    #print "Name : %s" % (item['name'].encode('utf-8').strip())
 	    print "Date : %s" % (item['date'])
 	    ## recover the link=>next or href that go on the page of details of the asta	
@@ -69,10 +67,26 @@ class DmozSpider(BaseSpider):
             #item['time'] = sel.xpath("//div[@class='details vevent']/time/text()").extract)
 	    ## load the image thumbnails of this page
             #item['image'] = sel.xpath("//div[@class='image']//img/@serc").extract()
+	    next_page = [('http://www.sothebys.com' + str(lotpage))]
+    	    if not not next_page:
+		items2.append(Request(next_page[0], self.parse_aste))
 
 	    items.append(item)
 
         return items
+
+    def parselot(self):
+        """
+        The lines below is a spider contract. For more info see:
+        http://doc.scrapy.org/en/latest/topics/contracts.html
+
+        @url http://www.dmoz.org/Computers/Programming/Languages/Python/Resources/
+        @scrapes name
+        """
+	items = []
+    	if not not next_page:
+		items.append(Request(next_page[0], self.parse))
+	
 
     def parse_aste(self, response):
         """

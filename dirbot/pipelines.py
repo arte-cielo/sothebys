@@ -78,6 +78,7 @@ class MySQLStorePipeline(object):
         guid = self._get_guid(item)
         now = datetime.utcnow().replace(microsecond=0).isoformat(' ')
 	print "INITIALguid: %s" % (guid)
+	print spider
 
      ##   conn.execute("""SELECT EXISTS(
      ##       SELECT 1 FROM aste WHERE guid = %s
@@ -100,13 +101,13 @@ class MySQLStorePipeline(object):
                 UPDATE aste2
                 SET name=%s, asta=%s, date=%s, time=%s, location=%s, maxlot=%s, update_date=%s
                 WHERE guid=%s
-            """, (item['name'], '5000', item['date'], item['time'], item['location'], '20', now))
+            """, (item['name'], item['asta'], item['date'], item['time'], item['location'], '20', now))
             spider.log("Item updated in db: %s %s %s %s %s %s %s %s" % (guid, item['name'][0], '5000', item['date'][0], item['time'], item['location'], '20', now))
         else:
             conn.execute("""
                 INSERT INTO aste2 ( guid, name, asta, date, time, location, maxlot, update_date)
                 VALUES ( %s, %s, %s, %s, %s, %s, %s, %s)
-            """, ( guid, item['name'], '9000', item['date'], item['time'], item['location'], '90', now))
+            """, ( guid, item['name'], item['asta'], item['date'], item['time'], item['location'], '90', now))
             spider.log("Item stored in db: %s %s %s %s %s %s %s %s" % (guid, item['name'], '9000', item['date'], item['time'], item['location'], '90', now))
             
 	#guid = self._get_guid(item)

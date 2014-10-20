@@ -22,6 +22,7 @@ class Website(Item):
 class AsteWebsite(Item):
     name = Field()        # name asta. ad ex. The Italian Sale
     date = Field()        # date asta. ad ex. 17 Oct 2014
+    asta = Field()        # name auction house. ad ex. Sothebys
     time = Field()        # this is teh time location. ad ex. 6.00 PB BEST
     location = Field()    # rapresent the location of event. ad ex. London . Milan
     maxlot = Field()      # rapresent the number of lots of catalogues.
