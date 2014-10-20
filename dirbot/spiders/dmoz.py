@@ -1,7 +1,7 @@
 from scrapy.spider import Spider, BaseSpider
 from scrapy.selector import Selector
 
-from dirbot.items import Website
+from dirbot.items import Website, AsteWebsite
 
 from scrapy.http.request import Request
 from scrapy.contrib.spiders import CrawlSpider, Rule
@@ -13,9 +13,10 @@ class DmozSpider(BaseSpider):
     name = "sothebys"
     allowed_domains = ["sothebys.com"]
     start_urls = [
+	"http://www.sothebys.com/en/auctions.html#_charset_=utf-8&tzOffset=14400000&startDate=&endDate=&invertLocations=&eventTypes={e}AUC&showPast=false&resultSections=departments%3Blocations%3Btopics&filterExtended=true&search=&keywords=&lots=&ascing=asc&orderBy=date&lowPriceEstimateUSD=&highPriceEstimateUSD=&artists=&genres=&types=&mediums=&locations=&departments=&topics=&currency=USD&part=true&from=0&to=12&isAuthenticated=false",
 	#"http://www.sothebys.com/en/auctions/2014/old-master-british-drawings-l14040.html",
 	#"http://www.sothebys.com/en/auctions/ecatalogue/2014/old-master-british-drawings-l14040/lot.1.html",
-	"http://www.sothebys.com/en/auctions/ecatalogue/2014/20th-century-italian-art-l14624/lot.12.html",
+        ##"http://www.sothebys.com/en/auctions/ecatalogue/2014/20th-century-italian-art-l14624/lot.12.html",
 	#"http://www.sothebys.com/it/auctions/ecatalogue/2014/contemporary-art-day-auction-l14023/lot.101.html",
 	#"http://www.sothebys.com/en/auctions/ecatalogue/2014/joseph-conrad-so-l14415/lot.194.html",
 	#"http://www.sothebys.com/en/auctions/ecatalogue/2014/english-literature-history-childrens-books-illustrations-l14404/lot.401.html",
@@ -23,18 +24,57 @@ class DmozSpider(BaseSpider):
         #"http://www.sothebys.com/en/auctions/ecatalogue/2014/20th-century-italian-art-l14624/lot.1.html"
     ]
 
-    #def parse(self, response):
-    	
-    #    items = []
-    #	sel = Selector(response)
-    #	#cp_link_image = sel.xpath("//div[@class='image']/a[@class='image']/@href").extract()
-    #	cp_link_image = sel.xpath("//a/@href").extract()
-    #	next_page = "http://www.sothebys.com"+str(cp_link_image).strip()
-     	#return Request("http://www.sothebys.com/en/auctions/ecatalogue/2014/old-master-british-drawings-l14040/lot.1.html",
-        #                  callback=self.parse_opere)
-    #	return Request(str(next_page), callback=self.parse_opere)
-
     def parse(self, response):
+        """
+        This parse recover only data to populate the aste information
+
+        """
+	open('aste.html', 'wb').write(response.body)
+    	
+    	items = []
+    	sel = Selector(response)
+	## search after a method for this
+    	link_next = sel.xpath("//div[@class='topmenu-inner-wrap']/a[@class='preferred logged-out']/@href").extract()
+	print "LINK_NEXT: %s" % (link_next)
+	
+	current_page = sel.xpath("//span[@class='page-info']/text()").extract()[0].split()[0]
+	element_onpage = sel.xpath("//span[@class='page-info']/text()").extract()[0].split()[2]
+	tot_page = sel.xpath("//span[@class='page-info']/text()").extract()[0].split()[4]
+	print "CURRENT_PAGE: %s" % (current_page)
+	print "ELEMENT_ONPAGE: %s" % (element_onpage)
+	print "TOT_PAGE: %s" % (tot_page)
+
+	loop = []
+	pp = len(sel.xpath("//span[@class='location']/text()").extract())
+	loop.append(pp -1)
+
+	for p in range(0,pp):
+            item = AsteWebsite()
+
+	    item['linkurl'] = link_next
+	    ## i need to scan multiple article class
+            ## here for documentation : http://doc.scrapy.org/en/latest/topics/selectors.html 
+            #item['date'] = sel.xpath("//time[@class='dtstart']/text()").extract()[0]
+            #item['location'] = sel.xpath("//span[@class='location']/text()").extract()[:1][0].strip()
+            item['location'] = sel.xpath("//span[@class='location']/text()").extract()[p].encode('utf-8').strip()
+            item['time'] = sel.xpath("//div[@class='description']/a/@href").extract()[p]
+            item['date'] = sel.xpath("//div[@class='vevent']/time/text()").extract()[p]
+            #item['name'] = sel.xpath("//time/a/@href").extract()
+            item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
+            #item['name'] = sel.xpath("//h4[@class='summary ellipsis']/text()").extract()
+	    #print "Name : %s" % (item['name'].encode('utf-8').strip())
+	    print "Date : %s" % (item['date'])
+	    ## recover the link=>next or href that go on the page of details of the asta	
+            #item['href'] = sel.xpath("//div[@class='image']/a/@href").extract()
+            #item['time'] = sel.xpath("//div[@class='details vevent']/time/text()").extract)
+	    ## load the image thumbnails of this page
+            #item['image'] = sel.xpath("//div[@class='image']//img/@serc").extract()
+
+	    items.append(item)
+
+        return items
+
+    def parse_aste(self, response):
         """
         The lines below is a spider contract. For more info see:
         http://doc.scrapy.org/en/latest/topics/contracts.html
