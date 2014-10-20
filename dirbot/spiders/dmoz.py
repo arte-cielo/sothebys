@@ -55,12 +55,12 @@ class DmozSpider(BaseSpider):
 	    ## i need to scan multiple article class
             ## here for documentation : http://doc.scrapy.org/en/latest/topics/selectors.html 
             item['location'] = sel.xpath("//span[@class='location']/text()").extract()[p].encode('utf-8').strip()
-            item['time'] = sel.xpath("//div[@class='description']/a/@href").extract()[p]
+            item['linkurl'] = sel.xpath("//div[@class='description']/a/@href").extract()[p]
             item['date'] = sel.xpath("//div[@class='vevent']/time/text()").extract()[p]
             item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
 	    item['asta'] = self.name
-            lotpage = item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
-	    #print "Name : %s" % (item['name'].encode('utf-8').strip())
+            lotpage = item['time'] = sel.xpath("//div[@class='description']/a/@href").extract()[p]
+	    print 'LOTPAGE: %s' % (lotpage)
 	    print "Date : %s" % (item['date'])
 	    ## recover the link=>next or href that go on the page of details of the asta	
             #item['href'] = sel.xpath("//div[@class='image']/a/@href").extract()

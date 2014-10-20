@@ -99,16 +99,16 @@ class MySQLStorePipeline(object):
             #spider.log("Item updated in db: %s %r" % (guid, item))
             conn.execute("""
                 UPDATE aste2
-                SET name=%s, asta=%s, date=%s, time=%s, location=%s, maxlot=%s, update_date=%s
+                SET name=%s, asta=%s, date=%s, linkurl=%s, location=%s, maxlot=%s, update_date=%s
                 WHERE guid=%s
-            """, (item['name'], item['asta'], item['date'], item['time'], item['location'], '20', now))
-            spider.log("Item updated in db: %s %s %s %s %s %s %s %s" % (guid, item['name'][0], '5000', item['date'][0], item['time'], item['location'], '20', now))
+            """, (item['name'], item['asta'], item['date'], item['linkurl'], item['location'], '20', now))
+            spider.log("Item updated in db: %s %s %s %s %s %s %s %s" % (guid, item['name'][0], item['asta'], item['date'][0], item['linkurl'], item['location'], '20', now))
         else:
             conn.execute("""
-                INSERT INTO aste2 ( guid, name, asta, date, time, location, maxlot, update_date)
+                INSERT INTO aste2 ( guid, name, asta, date, linkurl, location, maxlot, update_date)
                 VALUES ( %s, %s, %s, %s, %s, %s, %s, %s)
-            """, ( guid, item['name'], item['asta'], item['date'], item['time'], item['location'], '90', now))
-            spider.log("Item stored in db: %s %s %s %s %s %s %s %s" % (guid, item['name'], '9000', item['date'], item['time'], item['location'], '90', now))
+            """, ( guid, item['name'], item['asta'], item['date'], item['linkurl'], item['location'], '90', now))
+            spider.log("Item stored in db: %s %s %s %s %s %s %s %s" % (guid, item['name'], item['asta'], item['date'], item['time'], item['location'], '90', now))
             
 	#guid = self._get_guid(item)
         
