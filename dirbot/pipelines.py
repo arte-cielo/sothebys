@@ -77,83 +77,41 @@ class MySQLStorePipeline(object):
         """Perform an insert or update."""
         guid = self._get_guid(item)
         now = datetime.utcnow().replace(microsecond=0).isoformat(' ')
-	print "INITIALguid: %s" % (guid)
-	print spider
+	#print "INITIALguid: %s" % (guid)
 
      ##   conn.execute("""SELECT EXISTS(
      ##       SELECT 1 FROM aste WHERE guid = %s
      ##   )""", (guid,))
      ##   ret_aste = conn.fetchone()[0]
-        
+
+	## check the t.aste.guid for insert or update         
 	conn.execute("""SELECT EXISTS(
             SELECT 1 FROM aste2 WHERE guid = %s
         )""", (guid,))
         aste2 = conn.fetchone()[0]
-
+	
 	if aste2:
-            #conn.execute("""
-            #    UPDATE aste
-            #    SET name=%s, asta=%s, date=%s, time=%s, location=%s, maxlot=%s, update_date=%s
-            #    WHERE guid=%s
-            #""", (item['name'], '2000', item['date'], item['time'], item['location'], '20', now))
-            #spider.log("Item updated in db: %s %r" % (guid, item))
-            conn.execute("""
-                UPDATE aste2
-                SET name=%s, asta=%s, date=%s, linkurl=%s, location=%s, maxlot=%s, update_date=%s
-                WHERE guid=%s
-            """, (item['name'], item['asta'], item['date'], item['linkurl'], item['location'], '20', now))
-            spider.log("Item updated in db: %s %s %s %s %s %s %s %s" % (guid, item['name'][0], item['asta'], item['date'][0], item['linkurl'], item['location'], '20', now))
+	    try:
+            	conn.execute("""
+                    UPDATE aste2
+                    SET maxlot=%s, sales_number=%s
+                    WHERE guid=%s
+            	""", (item['maxlot'], item['sales_number'], guid))
+            	spider.log("ITEM ASTE UPDATE in db: %s %s %s" % (guid, item['maxlot'], item['sales_number']))
+		
+	    	print "UPDATE guid: %s" % (guid)
+	    	print "UPDATE maxlot: %s" % (item['maxlot'])
+	    	print "UPDATE sales_number: %s" % (item['sales_number'])
+	    except :
+		print 'UPDATE ERROR'
+			
         else:
             conn.execute("""
                 INSERT INTO aste2 ( guid, name, asta, date, linkurl, location, maxlot, update_date)
                 VALUES ( %s, %s, %s, %s, %s, %s, %s, %s)
-            """, ( guid, item['name'], item['asta'], item['date'], item['linkurl'], item['location'], '90', now))
-            spider.log("Item stored in db: %s %s %s %s %s %s %s %s" % (guid, item['name'], item['asta'], item['date'], item['time'], item['location'], '90', now))
+            """, ( guid, item['name'], item['asta'], item['date'], item['linkurl'], item['location'], '', now))
+            spider.log("ITEM STORED in db: %s %s %s %s %s %s %s %s" % (guid, item['name'], item['asta'], item['date'], item['linkurl'], item['location'], '', now))
             
-	#guid = self._get_guid(item)
-        
-	#conn.execute("""SELECT EXISTS(
-        #    SELECT 1 FROM opere WHERE id = %s
-        #)""", (id,))
-        #ret = conn.fetchone()[0]
-
-    ## 	print "ret_aste: %s" % (ret_aste)
-	print "now: %s" % (now)
-	print "guid: %s" % (guid)
-	print "linkurl: %s" % (item['linkurl'])
-
-     ##   if ret_aste:
-     ##       #conn.execute("""
-     ##       #    UPDATE aste
-     ##       #    SET name=%s, asta=%s, date=%s, time=%s, location=%s, maxlot=%s, update_date=%s
-     ##       #    WHERE guid=%s
-     ##       #""", (item['name'], '2000', item['date'], item['time'], item['location'], '20', now))
-     ##       #spider.log("Item updated in db: %s %r" % (guid, item))
-     ##       conn.execute("""
-     ##           UPDATE aste
-     ##           SET name=%s, asta=%s, date=%s, time=%s, location=%s, maxlot=%s, update_date=%s
-     ##           WHERE guid=%s
-     ##       """, (item['name'][0], '5000', item['date'], item['time'], item['location'], '20', now))
-     ##       spider.log("Item updated in db: %s %s %s %s %s %s %s %s" % (guid, item['name'][0], '5000', item['date'][0], item['time'], item['location'], '20', now))
-     ##   else:
-     ##       conn.execute("""
-     ##           INSERT INTO aste ( guid, name, asta, date, time, location, maxlot, update_date)
-     ##           VALUES ( %s, %s, %s, %s, %s, %s, %s, %s)
-     ##       """, ( guid, item['name'][0], '1000', item['date'][0], item['time'], item['location'], '10', now))
-     ##       spider.log("Item stored in db: %s %s %s %s %s %s %s %s" % (guid, item['name'][0], '10000', item['date'][0], item['time'], item['location'], '10', now))
-            
-     ##       conn.execute("""
-     ##           INSERT INTO artisti ( guid, author, name, surname, born, death, update_date)
-     ##           VALUES ( %s, %s, %s, %s, %s, %s, %s)
-     ##       """, ( guid, item['author'], item['author'].split()[0], item['author'].split()[1], item['date'][0].split('-')[0], item['date'][0].split('-')[1], now))
-     ##       spider.log("Item stored in db autori: %s %s %s %s %s %s %s" % (guid, item['author'], "", "", item['date'], "", now))
-            
-     ##       #conn.execute("""
-     ##       #    INSERT INTO opere (asta_id, author, period, title, lot, description, image_urls, image_paths, update_date)
-     ##       #    VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s)
-     ##       #""", (1000, item['author'], item['period'], item['title'], item['maxlot'], item['description'], item['image_urls'], item['image_paths'], now))
-     ##       #spider.log("Item stored in db: %r" % (item))
-	    
     def _handle_error(self, failure, item, spider):
         """Handle occurred on db interaction."""
         # do nothing, just log
@@ -164,5 +122,6 @@ class MySQLStorePipeline(object):
         # hash based solely in the url field
         #return md5(item['location']).hexdigest()
         #returmd5(item['location']).hexdigest()
-        return hashlib.md5(item["name"]).hexdigest()
-        #return hashlib.md5(item['linkurl']).hexdigest()
+        epure = (item["name"]).encode('ascii','ignore')
+        #return hashlib.md5(item["name"]).encode('acii','ignore').hexdigest()
+        return hashlib.md5(epure).hexdigest()

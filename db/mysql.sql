@@ -7,6 +7,7 @@ CREATE TABLE aste (
   time TEXT
   location TEXT
   maxlot INTEGER(11),
+  sales_number INTEGER(11),
   update_date DATETIME
 ) DEFAULT CHARSET=utf8;
 

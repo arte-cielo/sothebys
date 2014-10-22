@@ -1,4 +1,4 @@
-﻿
+
 
 
 
@@ -12,11 +12,11 @@
 
 
 
-
-
-
-
- <html class="no-js"> 
+<!--[if lt IE 7]>      <html xml:lang="en" lang="en" class="no-js pre-ie9"> <![endif]-->
+<!--[if IE 7]>         <html xml:lang="en" lang="en" class="no-js ie7 pre-ie9"> <![endif]-->
+<!--[if IE 8]>         <html xml:lang="en" lang="en" class="no-js ie8 pre-ie9"> <![endif]-->
+<!--[if IE 9]>         <html xml:lang="en" lang="en" class="no-js ie9"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js"> <!--<![endif]-->
 
 
 
@@ -36,7 +36,7 @@
 
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
 
     <meta name="keywords" content="auction, art, exhibition, online, catalogue, bid, buy, collect, contemporary, impressionist, modern, old masters, jewellery, wine, watches, prints, rugs, books, sotheby&amp;s, house, ">
     
@@ -55,13 +55,14 @@
     
     
     <link href="/etc/designs/redesigns/sothebys/img/icons/favicon.ico" rel="shortcut icon" type="image/x-icon">
-    
+    <!--    This section is for an image that digg will fetch -->
     
     <link href="http://www.sothebys.com/etc/designs/redesigns/sothebys/img/logo-for-digg.png" rel="image_src"/>
+    <!--    This section is for an image that digg will fetch -->
+
+    <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js'></script>
     
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    
 
 
 
@@ -69,8 +70,9 @@
 
 
 
-
-<script type="text/javascript">var Preferred=Preferred||{};Preferred.i18n={"pref.auction.add.to.favorites":"Add to Favourites","pref.auction.estimate":"Estimate","pref.auction.lot":"Lot","pref.auction.view.lot":"View Lot Detail","pref.button.activate.card":"Activate Card","pref.button.add.a.note":"Add Note","pref.button.add.note":"Add Note","pref.button.add.to.calendar":"Add to Calendar","pref.button.buy.now":"Buy Now","pref.button.cancel":"Cancel","pref.button.close":"Close","pref.button.confirm":"Confirm","pref.button.contact.us":"Contact Us","pref.button.create.new":"Create New","pref.button.create.wishlist":"Create a Wishlist","pref.button.delete":"Delete","pref.button.details":"Details","pref.button.directions":"Directions","pref.button.edit":"Edit","pref.button.edit.wishlists":"Edit Wishlists","pref.button.explore":"Explore","pref.button.find.out.more":"Find Out More","pref.button.inquire":"Enquire","pref.button.map":"Map","pref.button.register.interest":"Register Your interest","pref.button.request.card":"Request a new card here.","pref.button.request.invitation":"Request Invitation","pref.button.request.ticket":"Request Ticket","pref.button.request.tour":"Request a Tour","pref.button.reset.password":"Reset Password","pref.button.save":"Save","pref.button.send":"Send","pref.button.show.less":"Show Less","pref.button.show.more":"Show More","pref.button.submit":"Submit","pref.button.view.all":"View All","pref.button.view.exhibition":"View Exhibition Details","pref.button.view.favs":"View Favourites","pref.button.view.invitation":"View Invitation","pref.button.view.recs":"View Recommendations","pref.button.view.wishlists":"View Wishlists","pref.button.viewall":"View All","pref.header.about":"About","pref.header.preferred":"Preferred","pref.invitation.back":"Back","pref.invitation.download":"Download","pref.invitation.front":"Front","pref.invitation.print":"Print","pref.label.all":"All","pref.label.author":"pref.label.author","pref.label.card.enter":"Enter Your Card Number","pref.label.card.error":"Please Enter Your Card Number","pref.label.card.find":"Find Your Card Number Here","pref.label.collecting.cat":"Collecting Category","pref.label.contact.phone":"Contact by Phone","pref.label.contact.preference":"Contact Preference","pref.label.email":"E-mail","pref.label.email.add.message":"Add Message Here","pref.label.email.message":"Message","pref.label.email.reply.to":"Reply To","pref.label.email.subject":"Subject","pref.label.email.to":"To","pref.label.forgot.password":"Forgot Password?","pref.label.include.note":"Include a Note","pref.label.location":"Location","pref.label.message":"Message","pref.label.note.added":"Note Added","pref.label.password":"Password","pref.label.remember.me":"Remember Me","pref.label.results":"Results","pref.label.sort":"Sort","pref.label.type":"Type","pref.message.added.to.favorites":"Added to Favourites","pref.message.benefit.information":"For more information or to use this benefit click the enquire button below.","pref.message.card.activated":"Thank you for activating your PREFERRED card","pref.message.card.lost":"Is your card lost or stolen?","pref.message.card.requested":"New Preferred Card Requested.","pref.message.dedicated.contact":"Your dedicated Prefered Contact","pref.message.dedicated.contact.call":"Call Us","pref.message.dedicated.contact.email":"Email","pref.message.dedicated.contact.title":"Preferred Contact","pref.message.email.enter":"Enter the email address associated with your account.","pref.message.email.invalid":"The email address entered was not valid.","pref.message.favorite.failure":"Error, could not add to favourites. Please try again later.","pref.message.login.error":"The email address or password enterered does not match an account on record. Please try again.","pref.message.login.password.prompt":"Upon login you will be prompted for a new password.","pref.message.no.fav":"You currently have no favourites","pref.message.no.my.art.fairs":"You have not requesed any Art Fairs Passes.","pref.message.no.my.art.world":"You have not requested any Special Museum Access.","pref.message.no.my.benefits":"You have not requested any Partner Benefits.","pref.message.no.my.events":"You have not requested any Events.","pref.message.no.my.limited.offers":"You have not requested any Offers.","pref.message.no.my.museums":"You have not requested any Museum Tours.","pref.message.no.recs":"You currently have no recommendations","pref.message.no.results":"No Results","pref.message.no.wishlists":"You currently have no wishlists","pref.message.password.error":"There was a problem requesting your password, please verify the address was entered correctly and try again.","pref.message.request.submitted":"Request Submitted","pref.message.request.thank.you":"Thank you for your interest. A representative from Sotheby's will contact you shortly.","pref.message.temporary.password":"A temporary password has been sent to ","pref.message.text.limit":"500 words max","pref.option.atoz":"A-Z","pref.option.date":"Date","pref.option.ending.soonest":"Ending Soonest","pref.option.most.recent":"Most Recent","pref.option.start.date":"Start Date","pref.option.ztoa":"Z-A","pref.title.account.activity":"Account Activitiy","pref.title.add.note":"Add a Note","pref.title.art.fair.access":"Art Fair Access","pref.title.art.fairs":"Art Fairs","pref.title.art.world.access":"Art World Access","pref.title.contact.us":"Contact Us","pref.title.destination.guides":"Destination Guides","pref.title.early.access":"Early Access","pref.title.early.admission":"VIP Day","pref.title.events":"Invitations","pref.title.exhibition.open.dates":"Exhibition Dates","pref.title.favorites":"Favourites","pref.title.feature":"Feature","pref.title.featured":"Featured","pref.title.featured.exhibition":"Featured Exhibition","pref.title.general.admission":"General Admission","pref.title.interviews.profiles":"Videos","pref.title.limited.offers":"Limited Offers","pref.title.masterclass":"Masterclass","pref.title.messages":"Messages","pref.title.museum.access":"Museum Programme","pref.title.my.art.fairs":"My Art Fairs","pref.title.my.art.world.access":"My Art World Access","pref.title.my.calendar":"My Calendar","pref.title.my.events":"My Events","pref.title.my.limited.offers":"My Limited Offers","pref.title.my.museums":"My Museums","pref.title.my.partner.benefits":"My Partner Benefits","pref.title.other.services":"Other Services At Sotheby's","pref.title.our.programme":"Our Programme","pref.title.partner.benefits":"Partner Benefits","pref.title.preferences":"Preferences","pref.title.preferred.feature":"Preferred Feature","pref.title.preview":"Preview","pref.title.profile":"Profile","pref.title.recommendations":"Recommendations","pref.title.recommended":"Recommended","pref.title.subscriptions":"Subscriptions","pref.title.summary":"Summary","pref.title.wish.and.rec":"Wishlist & Recommended","pref.title.wishlist":"Wishlists","pref.title.wishlists":"Wishlists"};</script>
+<script type="text/javascript">var Preferred = Preferred || {};
+Preferred.i18n = {"pref.auction.add.to.favorites":"Add to Favourites","pref.auction.estimate":"Estimate","pref.auction.lot":"Lot","pref.auction.view.lot":"View Lot Detail","pref.button.activate.card":"Activate Card","pref.button.add.a.note":"Add Note","pref.button.add.note":"Add Note","pref.button.add.to.calendar":"Add to Calendar","pref.button.buy.now":"Buy Now","pref.button.cancel":"Cancel","pref.button.close":"Close","pref.button.confirm":"Confirm","pref.button.contact.us":"Contact Us","pref.button.create.new":"Create New","pref.button.create.wishlist":"Create a Wishlist","pref.button.delete":"Delete","pref.button.details":"Details","pref.button.directions":"Directions","pref.button.edit":"Edit","pref.button.edit.wishlists":"Edit Wishlists","pref.button.explore":"Explore","pref.button.find.out.more":"Find Out More","pref.button.inquire":"Enquire","pref.button.map":"Map","pref.button.register.interest":"Register Your interest","pref.button.request.card":"Request a new card here.","pref.button.request.invitation":"Request Invitation","pref.button.request.ticket":"Request Ticket","pref.button.request.tour":"Request a Tour","pref.button.reset.password":"Reset Password","pref.button.save":"Save","pref.button.send":"Send","pref.button.show.less":"Show Less","pref.button.show.more":"Show More","pref.button.submit":"Submit","pref.button.view.all":"View All","pref.button.view.exhibition":"View Exhibition Details","pref.button.view.favs":"View Favourites","pref.button.view.invitation":"View Invitation","pref.button.view.recs":"View Recommendations","pref.button.view.wishlists":"View Wishlists","pref.button.viewall":"View All","pref.header.about":"About","pref.header.preferred":"Preferred","pref.invitation.back":"Back","pref.invitation.download":"Download","pref.invitation.front":"Front","pref.invitation.print":"Print","pref.label.all":"All","pref.label.author":"pref.label.author","pref.label.card.enter":"Enter Your Card Number","pref.label.card.error":"Please Enter Your Card Number","pref.label.card.find":"Find Your Card Number Here","pref.label.collecting.cat":"Collecting Category","pref.label.contact.phone":"Contact by Phone","pref.label.contact.preference":"Contact Preference","pref.label.email":"E-mail","pref.label.email.add.message":"Add Message Here","pref.label.email.message":"Message","pref.label.email.reply.to":"Reply To","pref.label.email.subject":"Subject","pref.label.email.to":"To","pref.label.forgot.password":"Forgot Password?","pref.label.include.note":"Include a Note","pref.label.location":"Location","pref.label.message":"Message","pref.label.note.added":"Note Added","pref.label.password":"Password","pref.label.remember.me":"Remember Me","pref.label.results":"Results","pref.label.sort":"Sort","pref.label.type":"Type","pref.message.added.to.favorites":"Added to Favourites","pref.message.benefit.information":"For more information or to use this benefit click the enquire button below.","pref.message.card.activated":"Thank you for activating your PREFERRED card","pref.message.card.lost":"Is your card lost or stolen?","pref.message.card.requested":"New Preferred Card Requested.","pref.message.dedicated.contact":"Your dedicated Prefered Contact","pref.message.dedicated.contact.call":"Call Us","pref.message.dedicated.contact.email":"Email","pref.message.dedicated.contact.title":"Preferred Contact","pref.message.email.enter":"Enter the email address associated with your account.","pref.message.email.invalid":"The email address entered was not valid.","pref.message.favorite.failure":"Error, could not add to favourites. Please try again later.","pref.message.login.error":"The email address or password enterered does not match an account on record. Please try again.","pref.message.login.password.prompt":"Upon login you will be prompted for a new password.","pref.message.no.fav":"You currently have no favourites","pref.message.no.my.art.fairs":"You have not requesed any Art Fairs Passes.","pref.message.no.my.art.world":"You have not requested any Special Museum Access.","pref.message.no.my.benefits":"You have not requested any Partner Benefits.","pref.message.no.my.events":"You have not requested any Events.","pref.message.no.my.limited.offers":"You have not requested any Offers.","pref.message.no.my.museums":"You have not requested any Museum Tours.","pref.message.no.recs":"You currently have no recommendations","pref.message.no.results":"No Results","pref.message.no.wishlists":"You currently have no wishlists","pref.message.password.error":"There was a problem requesting your password, please verify the address was entered correctly and try again.","pref.message.request.submitted":"Request Submitted","pref.message.request.thank.you":"Thank you for your interest. A representative from Sotheby's will contact you shortly.","pref.message.temporary.password":"A temporary password has been sent to ","pref.message.text.limit":"500 words max","pref.option.atoz":"A-Z","pref.option.date":"Date","pref.option.ending.soonest":"Ending Soonest","pref.option.most.recent":"Most Recent","pref.option.start.date":"Start Date","pref.option.ztoa":"Z-A","pref.title.account.activity":"Account Activitiy","pref.title.add.note":"Add a Note","pref.title.art.fair.access":"Art Fair Access","pref.title.art.fairs":"Art Fairs","pref.title.art.world.access":"Art World Access","pref.title.contact.us":"Contact Us","pref.title.destination.guides":"Destination Guides","pref.title.early.access":"Early Access","pref.title.early.admission":"VIP Day","pref.title.events":"Invitations","pref.title.exhibition.open.dates":"Exhibition Dates","pref.title.favorites":"Favourites","pref.title.feature":"Feature","pref.title.featured":"Featured","pref.title.featured.exhibition":"Featured Exhibition","pref.title.general.admission":"General Admission","pref.title.interviews.profiles":"Videos","pref.title.limited.offers":"Limited Offers","pref.title.masterclass":"Masterclass","pref.title.messages":"Messages","pref.title.museum.access":"Museum Programme","pref.title.my.art.fairs":"My Art Fairs","pref.title.my.art.world.access":"My Art World Access","pref.title.my.calendar":"My Calendar","pref.title.my.events":"My Events","pref.title.my.limited.offers":"My Limited Offers","pref.title.my.museums":"My Museums","pref.title.my.partner.benefits":"My Partner Benefits","pref.title.other.services":"Other Services At Sotheby's","pref.title.our.programme":"Our Programme","pref.title.partner.benefits":"Partner Benefits","pref.title.preferences":"Preferences","pref.title.preferred.feature":"Preferred Feature","pref.title.preview":"Preview","pref.title.profile":"Profile","pref.title.recommendations":"Recommendations","pref.title.recommended":"Recommended","pref.title.subscriptions":"Subscriptions","pref.title.summary":"Summary","pref.title.wish.and.rec":"Wishlist & Recommended","pref.title.wishlist":"Wishlists","pref.title.wishlists":"Wishlists"};
+</script>
 
     
     <script>(function(d, s, id) {
@@ -87,8 +89,11 @@
         <title>Upcoming Art Auctions | Sotheby's</title>
     
     <script type="text/javascript" src="/etc/dynamic/sothebys/localization/messages.en.js"></script>
-     
-    <script type="text/javascript">var switchTo5x=false;var auctionDetailUrl='';</script>
+     <!-- Required for ShareThis -->
+    <script type="text/javascript">
+         var switchTo5x=false;
+         var auctionDetailUrl = '';     
+    </script>
     
 
 
@@ -99,23 +104,30 @@
 
 
 
-    <script type="text/javascript">$(document).ready(function(){var uri=encodeURIComponent(document.location);$.cookie('parent_resource',uri,{path:'/'})
-});</script>
+    <script type="text/javascript">
+        //applyRewriteRules();
+        //stLight.options({publisher:"ba1b4d79-da73-40ac-aba8-f1f84f61b1b2",onhover: false, embeds: true });
+        $(document).ready(function(){
+            var uri = encodeURIComponent( document.location );
+            $.cookie('parent_resource',uri, {path: '/'})
+        });
+    </script>
 
     <script type="text/javascript" src="/etc/designs/redesigns/sothebys/redesignlibs/source/js/vendor/modernizr-2.6.2.min.js"></script>
 </head>
+
 <body class="lang-en page-auctions">
 <nav class="mobile-nav">
   <ul>
     <li class="login-nav-items">
-      <a class="preferred logged-out" href="/en/registration/preferred-login-to-sothebys.html">Preferred Access</a>
+      <a class='preferred logged-out' href='/en/registration/preferred-login-to-sothebys.html'>Preferred Access</a>
       <a class="logged-in" href="/en/registration/register-new-account.preferred.html">My Account</a>
-      <a class="login logged-out" href="/en/registration/login-to-sothebys.html">Log in</a>
-      <a class="login logged-in" href="/en.html" onclick="Sothebys.auction.logout();">Log Out</a>
+      <a class="login logged-out" href='/en/registration/login-to-sothebys.html'>Log in</a>
+      <a class="login logged-in" href='/en.html' onclick='Sothebys.auction.logout();'>Log Out</a>
       <hr>
     </li>
     <li class="pref-show">
-      <a class="preferred" href="/en/registration/preferred-login-to-sothebys.html">Preferred</a>
+      <a class='preferred' href='/en/registration/preferred-login-to-sothebys.html'>Preferred</a>
       <span class="invalid-link" onclick="return false"><a href="/en/preferred-access/our-programme.html">About</a></span>
     </li>
     <li class="mobile-subnav-trigger pref-show">
@@ -160,21 +172,76 @@
   </ul>
 </nav>
 <div id="bodyWrap">
-<script type="text/javascript">var AuctionSettings={homeURL:"/en",pageName:"auctions",cardURL:"/en/cards.card.html"};</script>
+<script type="text/javascript"> var AuctionSettings = { homeURL : "/en", pageName : "auctions", cardURL : "/en/cards.card.html" };</script>
 
-
-
+<!-- before stats.jsp -->
+<!-- Load FB Async -->
 <div id="fb-root"></div>
 
 
 
+<!-- SiteCatalyst code version: H.22.
+Copyright 1996-2010 Adobe, Inc. All Rights Reserved
+More info available at http://www.omniture.com -->
 
-
-<script type="text/javascript">var s_account='sothebysprod';var omniture_regexp='/[a-z]{2,2}/auctions.html.*';var omniture_siteSection='Sales';var omniture_contentType='No Department';var omniture_page='Auctions List Page';var omniture_hasEvent=false;var omniture_hasLot=false;var omniture_bwPageName='';</script>
+<script type="text/javascript">
+    var s_account = 'sothebysprod';
+    //console.log("acct: " + s_account);
+    
+    var omniture_regexp = '/[a-z]{2,2}/auctions.html.*';
+    //console.log("analytics.omniture::omni regexp: " + omniture_regexp);
+    var omniture_siteSection = 'Sales';
+    var omniture_contentType = 'No Department';
+    var omniture_page = 'Auctions List Page';
+    var omniture_hasEvent = false;
+    var omniture_hasLot = false;
+    var omniture_bwPageName = '';
+    
+</script>
 <script type="text/javascript" src="/etc/designs/redesigns/sothebys/js/elements/s_code.js"></script>
 <script type="text/javascript" src="/etc/designs/redesigns/sothebys/js/elements/set_omniture_data.js"></script>
 <script type="text/javascript" src="/etc/designs/redesigns/sothebys/js/elements/mbox.js"></script>
-<script type="text/javascript">var pageName="Upcoming Art Auctions";var pathPage="/content/sothebys/en/auctions";var prop1="Upcoming Art Auctions";var prop2="Upcoming Art Auctions";function setUserSpecOmnitureProps(s){var clientLevel=0;if(omnitureGetCookie('rep:userId')){s.prop28=omnitureGetCookie('rep:userId');}if(omnitureGetCookie('pty_id')){s.prop29=omnitureGetCookie('pty_id');s.prop14=s.prop29;}if(omnitureGetCookie('welcome')){s.prop30=omnitureGetCookie('welcome').replace(/"/g,'').replace('+',' ');}if(omnitureGetCookie('client_level')){s.prop12=omnitureGetCookie('client_level');if(s.prop12==2){s.prop13='Preferred';}}};</script>
+<script type="text/javascript">
+/*
+ s.prop12 client level
+ s.prop13 type (depend on client level (preferred, non-preferred))
+ s.prop14 number (=s.prop28)
+ s.prop28 user ID
+ s.prop29 Party ID
+ s.prop30 label
+ */
+var pageName = "Upcoming Art Auctions";
+var pathPage = "/content/sothebys/en/auctions";
+var prop1 = "Upcoming Art Auctions";
+var prop2 = "Upcoming Art Auctions";
+
+ function setUserSpecOmnitureProps(s){
+    var clientLevel = 0;
+    //console.log("inside setUserSpecOmnitureProps");
+    if(omnitureGetCookie('rep:userId')){
+        s.prop28 = omnitureGetCookie('rep:userId');
+    }
+    if(omnitureGetCookie('pty_id')){
+        s.prop29 = omnitureGetCookie('pty_id');
+        s.prop14 = s.prop29;
+    }
+    if(omnitureGetCookie('welcome')){
+        s.prop30 = omnitureGetCookie('welcome').replace(/"/g,'').replace('+',' ');
+    }
+    if(omnitureGetCookie('client_level')){
+        s.prop12 = omnitureGetCookie('client_level');
+        if (s.prop12 == 2) {
+            s.prop13 = 'Preferred';
+        }
+    }
+    
+};
+//setOmnitureProperties(s);
+/*var urlVars = getUrlVars();
+if( urlVars && urlVars["keywords"]){
+ s.prop6 = urlVars["keywords"];
+}*/
+</script>
 
 
 <script>
@@ -185,12 +252,15 @@
 var siteCatPageTitle = "Upcoming Art Auctions";
 </script>
 
-
-<script language="JavaScript" type="text/javascript">if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+'-')
-</script><noscript><img src="http://sothebys.122.2o7.net/b/ss/sothebysprod/1/H.22.1|11.2.16--NS/0" height="1" width="1" border="0" alt=""/></noscript>
-
-<script type="text/javascript">function trackMVTImpression(){}</script> 
-
+<!-- cq:include script="track.omniture.jsp"/-->
+<script language="JavaScript" type="text/javascript"><!--
+if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+'-')
+//--></script><noscript><img src="http://sothebys.122.2o7.net/b/ss/sothebysprod/1/H.22.1|11.2.16--NS/0" height="1" width="1" border="0" alt=""/></noscript><!--/DO NOT REMOVE/-->
+<!-- End SiteCatalyst code version: H.22.1|11.2.16 -->
+<script type="text/javascript">function trackMVTImpression() {
+    
+    }</script> 
+<!-- after stats.jsp -->
     
 
 
@@ -205,9 +275,17 @@ var siteCatPageTitle = "Upcoming Art Auctions";
 
 
 
-<script type="text/javascript">var preferredPagePath='/en/preferred.html';</script>
-    
-    
+<script type="text/javascript">
+var preferredPagePath = '/en/preferred.html';
+
+
+
+
+</script>
+    <!--[if lt IE 7]>
+      <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+    <![endif]-->
+    <!-- Add your site or application content here -->
     <nav class="topmenu hidden-phone">
       <div class="topmenu-inner-wrap">
         <a class="logo" href="/en.html">
@@ -217,16 +295,16 @@ var siteCatPageTitle = "Upcoming Art Auctions";
         <hr/>
         <ul class="topmenu-utility">
           <li>
-            <a class="preferred logged-out" href="/en/registration/preferred-login-to-sothebys.html">Preferred Access</a>
+            <a class='preferred logged-out' href='/en/registration/preferred-login-to-sothebys.html'>Preferred Access</a>
             <a class="logged-in" href="/en/registration/register-new-account.preferred.html">My Account</a>
           </li>
           
           <li>
-            <a href="/en/auctions/watch-live.html">BIDnow</a>
+            <a href='/en/auctions/watch-live.html'>BIDnow</a>
           </li>
           <li>
-            <a class="logged-out" href="/en/registration/login-to-sothebys.html">Log in</a>
-            <a class="logged-in" href="/en.html" onclick="Sothebys.auction.logout();">Log Out</a>
+            <a class="logged-out" href='/en/registration/login-to-sothebys.html'>Log in</a>
+            <a class="logged-in" href='/en.html' onclick='Sothebys.auction.logout();'>Log Out</a>
           </li>
           <li>
             <a class="action" data-toggle="modal" href="#languageModal">Languages</a>
@@ -236,11 +314,11 @@ var siteCatPageTitle = "Upcoming Art Auctions";
             <a href="/zh/auctions.html">&#32321;&#39636;&#20013;&#25991;</a>
           </li>
           
-          <li class="search">
-            <form class="search-input header-search-form" action="/en/search.html">
-              <input placeholder="" type="text" class="header-search-input" name="keywords">
-              <button type="submit">
-                  <i class="glyph-search"></i>
+          <li class='search'>
+            <form class='search-input header-search-form' action="/en/search.html">
+              <input placeholder='' type='text' class='header-search-input' name='keywords'>
+              <button type='submit'>
+                  <i class='glyph-search'></i>
               </button>
             </form>
           </li>
@@ -298,7 +376,7 @@ var siteCatPageTitle = "Upcoming Art Auctions";
 
 
 
-<a href="/en/auctions.html" data-submenu="auction" class="auction active">Auction</a>
+<a href='/en/auctions.html' data-submenu="auction" class="auction active">Auction</a>
 
 
 <nav class="megamenu megamenu-auction">
@@ -307,7 +385,8 @@ var siteCatPageTitle = "Upcoming Art Auctions";
     
     <h4><a href="/en/auctions.html">Upcoming</a></h4>
     
-    <div class="vevent"><time class="dtstart" datetime="22 Oct 2014">22 Oct 2014</time> <span class="summary"></span> <span class="location"> London  </span>
+    <div class="vevent"><time class="dtstart" datetime="22 Oct 2014">22 Oct 2014</time> <span
+        class="summary"></span> <span class="location"> London  </span>
     <div class="description">
      <a href="/en/auctions/2014/finest-rarest-wines-l14710.html" onclick="omniSiteCat.trackMegaSubUpcomingLink();return;">Finest and Rarest Wines & Vintage Port</a>
     
@@ -315,7 +394,8 @@ var siteCatPageTitle = "Upcoming Art Auctions";
     </div>
 
     
-    <div class="vevent"><time class="dtstart" datetime="22 Oct 2014">22 Oct 2014</time> <span class="summary"></span> <span class="location"> New York  </span>
+    <div class="vevent"><time class="dtstart" datetime="22 Oct 2014">22 Oct 2014</time> <span
+        class="summary"></span> <span class="location"> New York  </span>
     <div class="description">
      <a href="/en/auctions/2014/important-european-decorative-arts-n09207.html" onclick="omniSiteCat.trackMegaSubUpcomingLink();return;">Important English and European Decorative Arts</a>
     
@@ -323,7 +403,8 @@ var siteCatPageTitle = "Upcoming Art Auctions";
     </div>
 
     
-    <div class="vevent"><time class="dtstart" datetime="23 Oct 2014">23 Oct 2014</time> <span class="summary"></span> <span class="location"> Paris  </span>
+    <div class="vevent"><time class="dtstart" datetime="23 Oct 2014">23 Oct 2014</time> <span
+        class="summary"></span> <span class="location"> Paris  </span>
     <div class="description">
      <a href="/en/auctions/2014/art-orientaliste-islam-pf1419.html" onclick="omniSiteCat.trackMegaSubUpcomingLink();return;">Regards sur l’Orient - Tableaux et Sculptures Orientalistes et Art Islamique</a>
     
@@ -338,8 +419,6 @@ var siteCatPageTitle = "Upcoming Art Auctions";
 <h4></h4>
 <h4><a href="/en/auctions/results.html" adhocenable="false"></a></h4>
 <h4><a href="/en/auctions/results.html" adhocenable="false">Auction Results</a></h4>
-<h4>&nbsp;</h4>
-<h4><a href="/en/auctions/lots-archive.html" adhocenable="false"></a></h4>
 <h4><a href="/en/auctions/lots-archive.html" adhocenable="false">Sold&nbsp;Lot Archive</a></h4>
 <h4></h4>
 <h5><span class="megamenu-full"></span></h5>
@@ -363,15 +442,15 @@ var siteCatPageTitle = "Upcoming Art Auctions";
         <p>WATCH: Mary Soames and the Legacy of Churchill </p>
         </a>
     
-        <a class="feature" href="/en/news-video/videos/2014/09/female-artists-beyond-limits.html"> 
+        <a class="feature" href="/en/news-video/videos/2014/10/van-gogh-enduring-fascination.html"> 
         
             
-                <span class="video-preview"><img src="/content/dam/sothebys-pages/video-pages/2014/09/femaleartists_still.jpg"/>
+                <span class="video-preview"><img src="/content/dam/sothebys-pages/video-pages/2014/10/van-gogh-640.jpg"/>
                 <span class="glyph-wrap"><i class="glyph-play"></i></span></span>
             
             
         
-        <p>SEE: Form and Femininity at Beyond Limits</p>
+        <p>WATCH: Vincent Van Gogh&#039;s Enduring Fascination</p>
         </a>
     
         <a class="feature" href="/en/on-view.html"> 
@@ -411,29 +490,29 @@ var siteCatPageTitle = "Upcoming Art Auctions";
 
 
 
-<a href="/en/gallery/exhibitions.html" data-submenu="gallery" class="gallery">Gallery</a>
+<a href='/en/gallery/exhibitions.html' data-submenu="gallery" class="gallery">Gallery</a>
 
 
 <nav class="megamenu megamenu-gallery">
-<div class="span6"> <h4><a adhocenable="false" href="/en/gallery/exhibitions.html">Gallery</a></h4>
+<div class="span6"> <h4><a href="/en/gallery/exhibitions.html" adhocenable="false">Gallery</a></h4>
 <p><br>
 <br>
-<a adhocenable="false" href="/en/gallery/s2.html">S|2</a><br>
+<a href="/en/gallery/s2.html" adhocenable="false">S|2</a><br>
 <br>
 </p>
-<p><a adhocenable="false" href="/en/gallery/exhibitions.html">Current Exhibitions</a><br>
+<p><a href="/en/gallery/exhibitions.html" adhocenable="false">Current Exhibitions</a><br>
 <br>
 </p>
-<p><a adhocenable="false" href="/en/gallery/exhibitions.html#upcoming">Upcoming Exhibitions</a>&nbsp;<br>
+<p><a href="/en/gallery/exhibitions.html#upcoming" adhocenable="false">Upcoming Exhibitions</a>&nbsp;<br>
 <br>
-<a adhocenable="false" href="/en/gallery/past-exhibitions.html"></a></p>
-<p><a adhocenable="false" href="/en/gallery/past-exhibitions.html">Past Exhibitions</a><br>
+<a href="/en/gallery/past-exhibitions.html" adhocenable="false"></a></p>
+<p><a href="/en/gallery/past-exhibitions.html" adhocenable="false">Past Exhibitions</a><br>
 <br>
 </p>
-<p><a href="/en/on-view.html" adhocenable="false"></a></p>
+<p><a adhocenable="false" href="/en/on-view.html"></a></p>
 <p></p>
 <p></p>
-<p><span class="megamenu-full"><a href="/en/on-view.html" adhocenable="false">On View</a><br>
+<p><span class="megamenu-full"><a adhocenable="false" href="/en/on-view.html">On View</a><br>
 </span></p>
 <p></p>
 <p></p>
@@ -444,8 +523,18 @@ var siteCatPageTitle = "Upcoming Art Auctions";
     <div class="span5">
         <strong>Featured</strong>
         
-        <a class="feature" href="/en/news-video/blogs/all-blogs/sothebys-at-auction/2014/08/earth-stone-water-xu-bing-chatsworth.html"> 
+        <a class="feature" href="/en/news-video/blogs/all-blogs/sothebys-at-auction/2014/10/serious-fun-adam-lindemann-curates-maurizio-cattelan.html"> 
         
+        
+            
+            
+                <img src="/content/dam/sothebys-pages/blogs/recirc/sothebysatauction/2014/10/maurizio-cattelan-circ.jpg"/>
+            
+        
+        <p>DISCOVER: Curating Maurizio Cattelan</p>
+        </a>
+    
+        <a class="feature" href="/en/news-video/blogs/all-blogs/sothebys-at-auction/2014/08/earth-stone-water-xu-bing-chatsworth.html"> 
         
             
             
@@ -453,16 +542,6 @@ var siteCatPageTitle = "Upcoming Art Auctions";
             
         
         <p>ENCOUNTER: Xu Bing&#039;s Monumental Sculpture at Chatsworth</p>
-        </a>
-    
-        <a class="feature" href="/en/auctions/2014/duane-hanson-reality-check-ls1405.html"> 
-        
-            
-            
-                <img src="/content/dam/sothebys-pages/auction-sales-recirc/2014/10/LS1405_auctionlist2.jpg"/>
-            
-        
-        <p>DISCOVER: Duane Hanson – Reality Check</p>
         </a>
     
         <a class="feature" href="/en/auctions/2014/beyond-limits-chatsworth-l14010/interactive-map.html"> 
@@ -502,7 +581,7 @@ var siteCatPageTitle = "Upcoming Art Auctions";
 
 
 
-<a href="/en/departments/alphabeticallist.html" data-submenu="departments" class="departments">Departments</a>
+<a href='/en/departments/alphabeticallist.html' data-submenu="departments" class="departments">Departments</a>
 
 
 <nav class="megamenu megamenu-departments">
@@ -513,8 +592,7 @@ var siteCatPageTitle = "Upcoming Art Auctions";
 <div></div>
 <h4></h4>
 <p><a adhocenable="false" href="/en/departments/american-paintings-drawings-sculptures.html"></a></p>
-<p><br>
-</p>
+<p>&nbsp;</p>
 <p><span class="megamenu-full"></span></p>
 <p><span class="megamenu-full"><a href="http://www.sothebys.com/en/departments/contemporary-art.html" adhocenable="false">Contemporary Art</a><br>
  <br>
@@ -533,8 +611,7 @@ var siteCatPageTitle = "Upcoming Art Auctions";
  <br>
 </span></p>
 <p><span class="megamenu-full"><a href="http://www.sothebys.com/en/departments/wine.html" adhocenable="false">Wine</a></span></p>
-<p><br>
-</p>
+<p>&nbsp;</p>
 <p style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12px;"><a href="/en/departments/alphabeticallist.html" style="font-size: 11.818181991577148px;"><span style="display: inline !important;" class="megamenu-view-all"></span></a></p>
 <p style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12px;"><a href="/en/departments/alphabeticallist.html" style="font-size: 11.818181991577148px;"><span class="megamenu-view-all">View All Departments</span></a></p>
 </div>
@@ -554,24 +631,25 @@ var siteCatPageTitle = "Upcoming Art Auctions";
         <p>DISCOVER: Libraries Worth Studying</p>
         </a>
     
-        <a class="feature" href="/en/news-video/blogs/all-blogs/on-india/2014/10/magnificent-necklaces-imperial-india.html"> 
+        <a class="feature" href="/en/news-video/videos/2014/10/bekkerman-collection-russian-masterpieces.html"> 
         
             
+                <span class="video-preview"><img src="/content/dam/sothebys-pages/video-pages/2014/10/bekkerman-640.jpg"/>
+                <span class="glyph-wrap"><i class="glyph-play"></i></span></span>
             
-                <img src="/content/dam/sothebys-pages/blogs/recirc/On India/2014/10/necklaces-circ.jpg"/>
             
         
-        <p>ENCOUNTER: Magnificent Necklaces of Imperial India</p>
+        <p>WATCH: The Bekkerman Collection – Masterpieces of Russian Art</p>
         </a>
     
-        <a class="feature" href="/en/departments/watches.html"> 
+        <a class="feature" href="/en/catalogues/buybrowse.html"> 
         
             
             
-                <img src="/content/dam/sothebys-pages/auction-sales-recirc/20131/12/megamenu-watches3.jpg"/>
+                <img src="/content/dam/sothebys-pages/banners/mega-menu-promos/2013/2014/Catalogue-Redesign-Image.jpg"/>
             
         
-        <p>CONSIGN: An Exceptional Time for Watches</p>
+        <p>BROWSE: Enrich Your Art Library with Sotheby&#039;s Catalogues</p>
         </a>
     </div>
 
@@ -601,7 +679,7 @@ var siteCatPageTitle = "Upcoming Art Auctions";
 
 
 
-<a href="/en/news-video.html" data-submenu="newsvideo" class="newsvideo">News &amp; Video</a>
+<a href='/en/news-video.html' data-submenu="newsvideo" class="newsvideo">News &amp; Video</a>
 
 
 <nav class="megamenu megamenu-newsvideo">
@@ -611,7 +689,7 @@ var siteCatPageTitle = "Upcoming Art Auctions";
 <h4><a href="/en/news-video/videos.html">Videos</a></h4>
 <ul style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12px;">
 <li style="font-size: 12px;"><a adhocenable="false" href="/en/news-video/videos.html?topic=/data/topics/auction-previews">Auction Previews</a></li>
-<li style="font-size: 12px;">&nbsp;</li>
+<li style="font-size: 12px;"></li>
 <li style="font-size: 12px;"><a adhocenable="false" href="/en/news-video/videos.html?topic=/data/topics/auction-results">Auction Results</a></li>
 <li style="font-size: 12px;">&nbsp;</li>
 <li style="font-size: 12px;"><a adhocenable="false" href="/en/news-video/videos.html?topic=/data/topics/sothebys-at-large">Sotheby's at Large</a></li>
@@ -669,14 +747,14 @@ var siteCatPageTitle = "Upcoming Art Auctions";
         <p>ENCOUNTER: The Schlumberger Collection</p>
         </a>
     
-        <a class="feature" href="/en/buysell/overview.html"> 
+        <a class="feature" href="/en/mega-menu-promos/sothebys-zervos-2.html"> 
         
             
             
-                <img src="/content/dam/sothebys-pages/banners/small/2013/07/Mega-Menu-BuySell.jpg"/>
+                <img src="/content/dam/sothebys-pages/banners/small/2013/07/megamenu-Zervos.jpg"/>
             
         
-        <p>LEARN: The Basics of Buying and Selling at Sotheby&#039;s</p>
+        <p>ORDER: The Legendary Zervos Picasso Catalogue Reissued at Last</p>
         </a>
     </div>
 
@@ -706,7 +784,7 @@ var siteCatPageTitle = "Upcoming Art Auctions";
 
 
 
-<a href="/en/inside/overview.html" data-submenu="about" class="about">About</a>
+<a href='/en/inside/overview.html' data-submenu="about" class="about">About</a>
 
 
 <nav class="megamenu megamenu-about">
@@ -729,11 +807,11 @@ var siteCatPageTitle = "Upcoming Art Auctions";
 <h4><span class="megamenu-full"><a adhocenable="false" href="/en/inside/services.html">Services</a></span></h4>
 <ul>
 <li><a adhocenable="false" href="/en/inside/services/corporate-collections-service/overview.html">Corporate Art Services</a></li>
-<li>&nbsp;</li>
+<li></li>
 <li><a adhocenable="false" href="/en/inside/services/tax-heritage-service/overview.html">Tax &amp; Heritage</a></li>
-<li>&nbsp;</li>
+<li></li>
 <li><a adhocenable="false" href="/en/inside/services/museum-service/overview.html">Museum Services</a></li>
-<li>&nbsp;</li>
+<li></li>
 <li><a adhocenable="false" href="/en/inside/services/trust-estates-service/overview.html"></a><a href="/en/inside/services/financial-services/overview.html">Financial Service</a></li>
 <li>&nbsp;</li>
 <li><a adhocenable="false" href="/en/inside/services/trust-estates-service/overview.html">Trusts &amp; Estates</a></li>
@@ -741,10 +819,10 @@ var siteCatPageTitle = "Upcoming Art Auctions";
 <li><a adhocenable="false" href="/en/inside/services/financial-services/overview.html"></a><a href="/en/inside/services/valuations-service.html">Valuations</a></li>
 <li><span class="summaryviewall"><a adhocenable="false" href="/en/inside/services.html"><span class="megamenu-view-all">View All Services</span></a></span></li>
 </ul>
-<h4><span class="megamenu-full"><a adhocenable="false" href="/en/inside/our-team.html">Team Contacts</a><br>
- <a adhocenable="false" href="/en/inside/board-of-directors.html">Board of Directors</a><br>
- <a adhocenable="false" target="_blank" href="http://investor.shareholder.com/bid/index.cfm">Investor Relations</a><br>
- <a adhocenable="false" href="/en/buysell/overview.html">How to Buy and Sell</a></span></h4>
+<h4><span class="megamenu-full"><a adhocenable="false" href="/en/inside/our-team.html">Team Contacts</a></span></h4>
+<h4><span class="megamenu-full"><a adhocenable="false" href="/en/inside/board-of-directors.html">Board of Directors</a></span></h4>
+<h4><span class="megamenu-full"><a adhocenable="false" target="_blank" href="http://investor.shareholder.com/bid/index.cfm">Investor Relations</a></span></h4>
+<h4><span class="megamenu-full"><a adhocenable="false" href="/en/buysell/overview.html">How to Buy and Sell</a></span></h4>
 <p></p>
 </div>
 
@@ -775,14 +853,14 @@ var siteCatPageTitle = "Upcoming Art Auctions";
         <p>LEARN: How to Buy at Auction</p>
         </a>
     
-        <a class="feature" href="/en/ipad-promo.html"> 
+        <a class="feature" href="/en/mega-menu-promos/sothebys-internationa-realty.html"> 
         
             
             
-                <img src="/content/dam/sothebys-pages/auction-sales-recirc/20131/05/ipad_promo_image_0613_1.jpg"/>
+                <img src="/content/dam/sothebys-pages/auction-sales-recirc/2014/01/megamenu-SIR5.jpg"/>
             
         
-        <p>DOWNLOAD: Feast on Masterpieces -- Any Time, Any Place -- with the iPad</p>
+        <p>TOUR: Find the Perfect Home with Sotheby&#039;s International Realty</p>
         </a>
     </div>
 
@@ -798,8 +876,8 @@ var siteCatPageTitle = "Upcoming Art Auctions";
     </nav>
     <form class="mobile-search" action="/en/search-results.html">
       <input type="text" name="keyword">
-      <button type="submit">
-        <i class="glyph-search"></i>
+      <button type='submit'>
+        <i class='glyph-search'></i>
       </button> 
     </form>
     <header class="mobile-header">
@@ -823,33 +901,33 @@ var siteCatPageTitle = "Upcoming Art Auctions";
 
 
 
-
+<script>var listTotalLabel = "Auctions";</script>
       
 
       <div class="auctions-container auctions-list-page">
 
       <h3 class="alt">
         
-          
-          
+          <!-- TO DO: Add upcomingauctions to i18n -->
+          <!-- upcomingauctions -->
           auctions
         
       </h3>
 
-      
+      <!-- cq:include script="auctionsListSlider.jsp"/ -->
        
 
 
 
 
 
-<div class="row">
-  
+<div class='row'>
+  <!-- <div class="span16"> -->
     
-    <div class="span16">
+    <div class='span16'>
     
-    <div class="small" data-slideshow-captions="false" data-slideshow-nav="true" data-slideshow-pager="true" id="slideWidget">
-      <div class="slides">
+    <div class="small" data-slideshow-captions='false' data-slideshow-nav='true' data-slideshow-pager='true' id='slideWidget'>
+      <div class='slides'>
 	      
               
               
@@ -859,13 +937,13 @@ var siteCatPageTitle = "Upcoming Art Auctions";
           
 
 
-<div class="slide">
+<div class='slide'>
 
-    <a href="http://www.sothebys.com/en/auctions/2014/collections-l14305.html"><img src="/content/dam/sothebys-pages/auction-list-slides/withrecirc/2014/10/JC_1417721_ London Collections_AuctionList_Banner_940x350_LARGER.jpg"></a>
+    <a href='http://www.sothebys.com/en/auctions/2014/collections-l14305.html'><img src='/content/dam/sothebys-pages/auction-list-slides/withrecirc/2014/10/JC_1417721_ London Collections_AuctionList_Banner_940x350_LARGER.jpg'></a>
 
 </div>
     
-       
+    <!-- SLIDE END -->   
            
           
           
@@ -879,13 +957,13 @@ var siteCatPageTitle = "Upcoming Art Auctions";
           
 
 
-<div class="slide">
+<div class='slide'>
 
-    <a href="http://www.sothebys.com/en/auctions/2014/duane-hanson-reality-check-ls1405.html"><img src="/content/dam/sothebys-pages/auction-list-slides/withrecirc/2014/10/JC_1418001_S2 Daune Hanson_AuctionList_Banner_940x350_LARGER.jpg"></a>
+    <a href='http://www.sothebys.com/en/auctions/2014/impressionist-modern-art-evening-sale-n09219.html'><img src='/content/dam/sothebys-pages/auction-list-slides/withrecirc/2014/10/CM_1418280_Auction Banner_Imps Evening_940x350.jpg'></a>
 
 </div>
     
-       
+    <!-- SLIDE END -->   
            
           
           
@@ -899,13 +977,13 @@ var siteCatPageTitle = "Upcoming Art Auctions";
           
 
 
-<div class="slide">
+<div class='slide'>
 
-    <a href="http://www.sothebys.com/en/auctions/2014/beyond-limits-chatsworth-l14010.html"><img src="/content/dam/sothebys-pages/auction-list-slides/withrecirc/2014/10/JC_1416868_AuctionList_Banner_940x350_LARGER.jpg"></a>
+    <a href='http://www.sothebys.com/en/auctions/2014/duane-hanson-reality-check-ls1405.html'><img src='/content/dam/sothebys-pages/auction-list-slides/withrecirc/2014/10/JC_1418001_S2 Daune Hanson_AuctionList_Banner_940x350_LARGER.jpg'></a>
 
 </div>
     
-       
+    <!-- SLIDE END -->   
            
           
           
@@ -919,13 +997,13 @@ var siteCatPageTitle = "Upcoming Art Auctions";
           
 
 
-<div class="slide">
+<div class='slide'>
 
-    <a href="http://www.sothebys.com/en/auctions/2014/fine-chinese-ceramics-works-art-l14211.html"><img src="/content/dam/sothebys-pages/auction-list-slides/withrecirc/2014/10/JC_1417722_Fine Chinese Ceramics London_AuctionList_Banner_940x350.jpg"></a>
+    <a href='http://www.sothebys.com/en/auctions/2014/beyond-limits-chatsworth-l14010.html'><img src='/content/dam/sothebys-pages/auction-list-slides/withrecirc/2014/10/JC_1416868_AuctionList_Banner_940x350_LARGER.jpg'></a>
 
 </div>
     
-       
+    <!-- SLIDE END -->   
            
           
           
@@ -939,20 +1017,40 @@ var siteCatPageTitle = "Upcoming Art Auctions";
           
 
 
-<div class="slide">
+<div class='slide'>
 
-    <a href="http://www.sothebys.com/en/auctions/2014/arts-of-europe-l14302.html"><img src="/content/dam/sothebys-pages/auction-list-slides/withrecirc/2014/10/JC_1417723_Arts of Europe London_AuctionList_Banner_940x350_V2.jpg"></a>
+    <a href='http://www.sothebys.com/en/auctions/2014/fine-chinese-ceramics-works-art-l14211.html'><img src='/content/dam/sothebys-pages/auction-list-slides/withrecirc/2014/10/JC_1417722_Fine Chinese Ceramics London_AuctionList_Banner_940x350.jpg'></a>
 
 </div>
     
-       
+    <!-- SLIDE END -->   
+           
+          
+          
+          
+	      
+              
+              
+          
+          
+          
+          
+
+
+<div class='slide'>
+
+    <a href='http://www.sothebys.com/en/auctions/2014/arts-of-europe-l14302.html'><img src='/content/dam/sothebys-pages/auction-list-slides/withrecirc/2014/10/JC_1417723_Arts of Europe London_AuctionList_Banner_940x350_V2.jpg'></a>
+
+</div>
+    
+    <!-- SLIDE END -->   
            
           
           
           
 	      
       </div>
-      <div class="clearfix"></div>
+      <div class='clearfix'></div>
     </div>
   </div>
 
@@ -973,7 +1071,15 @@ var siteCatPageTitle = "Upcoming Art Auctions";
 
 
 
-<script type="text/javascript">var AuctionSettings={pageName:"auctions"};var allSelected="ALL SELECTED OF {0} AVAILABLE";var numberSelected="{0} SELECTED OF {1} AVAILABLE";</script>
+<script type="text/javascript">
+var AuctionSettings = {
+    pageName: "auctions"
+};
+
+var allSelected = "ALL SELECTED OF {0} AVAILABLE";
+var numberSelected = "{0} SELECTED OF {1} AVAILABLE";
+
+</script>
 <section class="filter">
   <form class="filter form-inline visible-desktop">
     <div class="row">
@@ -1573,11 +1679,11 @@ var siteCatPageTitle = "Upcoming Art Auctions";
       <div class="advanced-options-container">
         <label><strong>Start Date</strong> <span class="hint">(DD/MM/YY)</span>
           <div class="calendar-container">
-            <input class="calendar date-from input-large" type="text" value="20/10/2014" data-datepicker-format="dd/mm/yyyy" data-datepicker-nodefault="false"/><i class="glyph-calendar"></i>
+            <input class="calendar date-from input-large" type="text" value="22/10/2014" data-datepicker-format="dd/mm/yyyy" data-datepicker-nodefault="false" /><i class="glyph-calendar"></i>
           </div>
         </label><label><strong>End Date</strong> <span class="hint">(DD/MM/YY)</span>
           <div class="calendar-container">
-            <input class="calendar date-to input-large" type="text" value="20/10/2015" data-datepicker-format="dd/mm/yyyy" data-datepicker-nodefault="false"/><i class="glyph-calendar"></i>
+            <input class="calendar date-to input-large" type="text" value="22/10/2015" data-datepicker-format="dd/mm/yyyy" data-datepicker-nodefault="false" /><i class="glyph-calendar"></i>
           </div>
         </label>
         <label>
@@ -1589,7 +1695,7 @@ var siteCatPageTitle = "Upcoming Art Auctions";
         <label style="margin-left: 15px;">
           <strong></strong> 
           <div class="apply-container">
-            <input id="apply-btn" class="btn button-action primary inactive" type="submit" value="Apply"/>
+            <input id="apply-btn" class="btn button-action primary inactive" type="submit" value="Apply" />
           </div>
         </label>
         <div id="filter-date-error" class="inline control-group error">
@@ -1659,13 +1765,17 @@ var siteCatPageTitle = "Upcoming Art Auctions";
     </a>
   </span>
 </div>
-
+<!--
+<section class="pagination visible-phone clearfix">
+  <a href="#" disabled="disabled" class="button-action prev">Previous 5</a><a href="#" class="button-action next">Next 5</a>
+</section>
+-->
 
   
 </section>
       <section class="auctions" id="auctions-results">
-            
-            
+            <!-- Call AJAX to populate the list -->
+            <!-- cq:include script="list/eventsList.POST.jsp"/ -->
       </section>
 
       <section class="filter clearfix">
@@ -1727,7 +1837,11 @@ var siteCatPageTitle = "Upcoming Art Auctions";
     </a>
   </span>
 </div>
-
+<!--
+<section class="pagination visible-phone clearfix">
+  <a href="#" disabled="disabled" class="button-action prev">Previous 5</a><a href="#" class="button-action next">Next 5</a>
+</section>
+-->
       </section>
 
       <div class="separated-block">
@@ -1760,8 +1874,8 @@ var siteCatPageTitle = "Upcoming Art Auctions";
 
 
     
-          <a class="feature span5_across" href="/en/news-video/blogs/all-blogs/sothebys-at-auction/2014/10/paintings-modern-dynasty-sao-schlumberger.html">
-            <img src="/content/dam/sothebys-pages/blogs/recirc/Contemporary Currents/2014/10/andy-warhol-schlumberger-circ.jpg">
+          <a class='feature span5_across' href='/en/news-video/blogs/all-blogs/sothebys-at-auction/2014/10/paintings-modern-dynasty-sao-schlumberger.html'>
+            <img src='/content/dam/sothebys-pages/blogs/recirc/Contemporary Currents/2014/10/andy-warhol-schlumberger-circ.jpg'>
             <p class="ellipsis">
               ENCOUNTER: The Schlumberger Collection
             </p>
@@ -1782,10 +1896,10 @@ var siteCatPageTitle = "Upcoming Art Auctions";
 
 
     
-          <a class="feature span5_across" href="/en/news-video/blogs/all-blogs/contemporary/2014/10/contemporary-germany-kippenberger-polke.html">
-            <img src="/content/dam/sothebys-pages/blogs/recirc/Contemporary Currents/2014/10/Comped_KippenAdjCrop_circ.jpg">
+          <a class='feature span5_across' href='/en/news-video/blogs/all-blogs/sothebys-at-auction/2014/10/serious-fun-adam-lindemann-curates-maurizio-cattelan.html'>
+            <img src='/content/dam/sothebys-pages/blogs/recirc/sothebysatauction/2014/10/maurizio-cattelan-circ.jpg'>
             <p class="ellipsis">
-              DISCOVER: Kippenberger, Polke and Beyond
+              DISCOVER: Curating Maurizio Cattelan
             </p>
           </a>
     
@@ -1804,9 +1918,9 @@ var siteCatPageTitle = "Upcoming Art Auctions";
 
 
     
-          <a class="feature span5_across" href="/en/news-video/videos/2014/10/how-to-sell-at-auction.html">
+          <a class="feature span5_across" href='/en/news-video/videos/2014/10/how-to-sell-at-auction.html'>
             <span class="video-preview">
-                <img src="/content/dam/sothebys-pages/video-pages/2014/10/how-to-sell-640.jpg">
+                <img src='/content/dam/sothebys-pages/video-pages/2014/10/how-to-sell-640.jpg'>
                 <span class="glyph-wrap"><i class="glyph-play"></i></span>
             </span>
             <p class="ellipsis">EXPLORE: How to Sell at Auction</p>
@@ -1828,12 +1942,14 @@ var siteCatPageTitle = "Upcoming Art Auctions";
 
 
     
-          <a class="feature span5_across" href="/en/news-video/blogs/all-blogs/eye-on-asia/2014/10/making-history-in-hong-kong.html">
-            <img src="/content/dam/sothebys-pages/blogs/recirc/eyeonasia/2014/10/hk-post-sale-circ.jpg">
-            <p class="ellipsis">
-              SEE: History-making Sale in Hong Kong
-            </p>
+          <a class="feature span5_across" href='/en/news-video/videos/2014/10/van-gogh-enduring-fascination.html'>
+            <span class="video-preview">
+                <img src='/content/dam/sothebys-pages/video-pages/2014/10/van-gogh-640.jpg'>
+                <span class="glyph-wrap"><i class="glyph-play"></i></span>
+            </span>
+            <p class="ellipsis">WATCH: Vincent Van Gogh's Enduring Fascination</p>
           </a>
+    
     
     
 
@@ -1850,8 +1966,8 @@ var siteCatPageTitle = "Upcoming Art Auctions";
 
 
     
-          <a class="feature span5_across" href="/en/news-video/blogs/all-blogs/sotheby-s-at-large/2014/09/property-collection-mrs-paul-mellon.html">
-            <img src="/content/dam/sothebys-pages/blogs/sothebys-at-large/9/mellon-circ.jpg">
+          <a class='feature span5_across' href='/en/news-video/blogs/all-blogs/sotheby-s-at-large/2014/09/property-collection-mrs-paul-mellon.html'>
+            <img src='/content/dam/sothebys-pages/blogs/sothebys-at-large/9/mellon-circ.jpg'>
             <p class="ellipsis">
               FIRST LOOK: Property from the Collection of Mrs. Paul Mellon
             </p>
@@ -1930,30 +2046,50 @@ var siteCatPageTitle = "Upcoming Art Auctions";
             </ul> 
         </div>
         <div class="footer-beyond-wrap">
-            <ul class="beyond-auctions"> 
+            <ul class='beyond-auctions'> 
                 
-                    <li><a class="external" href="http://www.sothebysrealty.com/eng" target="_blank">Sotheby's International Realty</a></li>
+                    <li><a class='external' href="http://www.sothebysrealty.com/eng" target="_blank">Sotheby's International Realty</a></li>
                 
-                    <li><a class="external" href="http://www.sothebysdiamonds.com" target="_blank">Sotheby's Diamonds</a></li>
+                    <li><a class='external' href="http://www.sothebysdiamonds.com" target="_blank">Sotheby's Diamonds</a></li>
                 
-                    <li><a class="external" href="http://www.sothebyswine.com" target="_blank">Sotheby's Wine</a></li>
+                    <li><a class='external' href="http://www.sothebyswine.com" target="_blank">Sotheby's Wine</a></li>
                 
-                    <li><a class="external" href="http://www.sothebysinstitute.com" target="_blank">Sotheby's Institute of Art</a></li>
+                    <li><a class='external' href="http://www.sothebysinstitute.com" target="_blank">Sotheby's Institute of Art</a></li>
                 
-                    <li><a class="external" href="http://www.sothebysimprint.com/" target="_blank">Sotheby's Imprint</a></li>
+                    <li><a class='external' href="http://www.sothebysimprint.com/" target="_blank">Sotheby's Imprint</a></li>
                 
-                    <li><a class="external" href="/en/inside/services/sothebys-fine-art-storage-facility/overview.html" target="_blank">Sotheby's Art Storage Facility</a></li>
+                    <li><a class='external' href="/en/inside/services/sothebys-fine-art-storage-facility/overview.html" target="_blank">Sotheby's Art Storage Facility</a></li>
                 
             </ul>   
             <p><span class="footer-copyright">&copy; 2014 Sotheby&rsquo;s</span><span class="icp">京 ICP 备 12050586 号</span></p> 
         </div>
     </div>
 </footer>
-<script type="text/javascript">CQURLInfo={"contextPath":null,"requestPath":'\/content\/sothebys\/en\/auctions',"selectorString":null,"selectors":[],"extension":'html',"suffix":null,"systemId":'723d72dd-5ed9-44a2-9bf8-62eb7432dcfd',"runModes":'prd,publish,main'};</script>
+<script type="text/javascript">
+CQURLInfo = {
+    "contextPath": null,
+    "requestPath": '\/content\/sothebys\/en\/auctions',
+    "selectorString": null,
+    "selectors": [],
+    "extension": 'html',
+    "suffix": null,
+    "systemId": 'a75a31ba-76f4-45d1-8061-cb5cb24f0f26',
+    "runModes": 'prd,publish'
+};</script>
 <script type="text/javascript" src="/etc/designs/redesigns/sothebys/redesignlibs.js"></script>
 
 
-    <script type="text/javascript">CQURLInfo={"contextPath":null,"requestPath":'\/content\/sothebys\/en\/auctions',"selectorString":null,"selectors":[],"extension":'html',"suffix":null,"systemId":'723d72dd-5ed9-44a2-9bf8-62eb7432dcfd',"runModes":'prd,publish,main'};</script>
+    <script type="text/javascript">
+CQURLInfo = {
+    "contextPath": null,
+    "requestPath": '\/content\/sothebys\/en\/auctions',
+    "selectorString": null,
+    "selectors": [],
+    "extension": 'html',
+    "suffix": null,
+    "systemId": 'a75a31ba-76f4-45d1-8061-cb5cb24f0f26',
+    "runModes": 'prd,publish'
+};</script>
 <script type="text/javascript" src="/etc/designs/redesigns/sothebys/redesignlibs/sharelibs.js"></script>
 
 
@@ -2055,12 +2191,12 @@ var siteCatPageTitle = "Upcoming Art Auctions";
     
     <div class="controls">
       <h5 class="alt2">What would you like to print?</h5>
-      <input type="radio" name="whatPrint" id="printOnly" value="setME"/> <label for="printOnly">Only my Selections</label>
-      <input type="radio" name="whatPrint" id="printEntire" value="setMe"/> <label for="printOnly">Entire Catalogue</label>
+      <input type="radio" name="whatPrint" id="printOnly" value="setME" /> <label for="printOnly">Only my Selections</label>
+      <input type="radio" name="whatPrint" id="printEntire" value="setMe" /> <label for="printOnly">Entire Catalogue</label>
 
       <h5 class="alt2">How would you like to print?</h5>
-      <input type="radio" name="howPrint" id="printOnly" value="setME"/> <label for="printOnly">Only my Selections</label>
-      <input type="radio" name="howPrint" id="printEntire" value="setMe"/> <label for="printOnly">Entire Catalogue</label>
+      <input type="radio" name="howPrint" id="printOnly" value="setME" /> <label for="printOnly">Only my Selections</label>
+      <input type="radio" name="howPrint" id="printEntire" value="setMe" /> <label for="printOnly">Entire Catalogue</label>
      
       <h6>WHAT WOULD YOU LIKE TO PRINT?</h6>
       <div>
@@ -2088,16 +2224,16 @@ var siteCatPageTitle = "Upcoming Art Auctions";
           Printable Catalogue
       </a>
 
-    </div>
+    </div><!-- /controls-->
     <div class="content auctions single-auction">
       
     </div>
-  </div> 
-</div>
+  </div> <!-- /modal-body -->
+</div><!-- /modal -->
 
 
 
-
+<!-- No google tracking for this page -->
 </div>
 </body>
 
