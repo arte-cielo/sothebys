@@ -17,6 +17,7 @@ CREATE TABLE opere (
   id_asta INTEGER(11) AUTO_INCREMENT,
   title TEXT,
   description TEXT,
+  estimate VARCHAR(20),
   image_urls VARCHAR(100),
   image_path VARCHAR(100),
   image VARCHAR(100)

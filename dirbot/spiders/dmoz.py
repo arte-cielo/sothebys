@@ -90,21 +90,16 @@ class DmozSpider(BaseSpider):
 
         One time firlds are recovery, they are updated in the table t.aste
         """
-	open('lotsi_ales_data.html', 'wb').write(response.body)
+	open('lots_ales_data.html', 'wb').write(response.body)
 
         items = []
 	sel = Selector(response)
 	
-	#link_next = sel.xpath("//div[@class='lot-navigation lotdetail-navigation']/a[@class='arrow-right']/@href").extract()[0]
-    	#link_next = sel.xpath("//div[@class='lot-navigation']/a[@class='arrow-right']/@href").extract()
-	#next_page = [('http://www.sothebys.com' + str(link_next))]
-    	#if not not next_page:
-	#	items.append(Request(next_page[0], self.parse))
-	#sites = sel.xpath("//div[@class='text-group span8']/h1[@class='number']/text()").extract()
-        #for site in sites:
         item = AsteWebsite()
 	image_relative_urls = sel.xpath('//div[@class="zoom-hover-trigger"]//img/@src').extract()
-
+	
+	##[name] - Questo campo e' molto importante, infatti viene utilizzato per creare una chiave assoluta e 
+	# univoca da inserire in t.aste.guid job da eseguire in pipeline.py
 	item['name'] = sel.xpath("//div[@class='eventdetail-headerleft']/h1/text()").extract()[1].strip()
 
 	##[maxlot] - Riflette il numero complessivo dei lotti che compongono l'asta.
@@ -112,6 +107,7 @@ class DmozSpider(BaseSpider):
         item['maxlot'] = sel.xpath("//div[@class='eventdetail-saleinfo']/span/text()").extract()[1].split()[2]
 	    
 	##[time] - Riporta l'ora dell'evento asta.
+        #[TO DO] - Non ancora incorporato nella tabella aste
         ##questo dato va aggiornato nella tabella t.aste.time
         ##item['time'] = sel.xpath("//div[@class='eventdetail-eventtime']/time/text()").extract()[1].strip()
 
@@ -120,24 +116,19 @@ class DmozSpider(BaseSpider):
         item['sales_number'] = sel.xpath("//div[@class='eventdetail-saleinfo']/span/text()").extract()[0].split()[2]
 
 	link = sel.xpath('//div[@class="zoom-hover-trigger"]//img/@src').extract()
-	##import urlparse 
-	#item['image_urls'] = [urlparse.urljoin(response.url, str(link))] 
-	#link = sel.xpath('//div[@class="zomm-hover-trigger"]//img/@src').extract()
-    	##item['image_urls'] = [('http://www.sothebys.com' + str(link))]
 
         items.append(item)
 
         return items
 
-    def parse_astetolot(self, response):
+    def parse_opere(self, response):
         """
-        The lines below is a spider contract. For more info see:
-        http://doc.scrapy.org/en/latest/topics/contracts.html
+        This fuction adds records on the t.opere:
+        It bring the t.aste.linkurl and scan the full three page. At the end
+	if lot number is equala at t.aste.maxlot sent a mail at info at artecielo dot com
 
-        @url http://www.dmoz.org/Computers/Programming/Languages/Python/Resources/
-        @scrapes name
         """
-	open('test.html', 'wb').write(response.body)
+	open('opere.html', 'wb').write(response.body)
 
         items = []
 	sel = Selector(response)
@@ -149,14 +140,14 @@ class DmozSpider(BaseSpider):
 	sites = sel.xpath("//div[@class='text-group span8']/h1[@class='number']/text()").extract()
 
         for site in sites:
-            item = Website()
+            item = OpereWebsite()
 	    image_relative_urls = sel.xpath('//div[@class="zoom-hover-trigger"]//img/@src').extract()
 
 	    item['linkurl'] = link_next
 
 	    ##[maxlot] - Riflette il numero complessivo dei lotti che compongono asta.
             ##item['maxlot'] = sel.xpath("//div[@class='text-group']/h1[@class='number']/text()").extract()
-            item['maxlot'] = link_next #sites
+            ##item['maxlot'] = link_next #sites
 	    
 	    ##[name] - Recupera il nome asta:ad ex. The Italian Sale
             item['name'] = sel.xpath("//span[@class='active']/text()").extract()

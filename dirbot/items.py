@@ -34,6 +34,7 @@ class OpereWebsite(Item):
     asta = Field()          # asta foreign. This is the foreign key for guid Aste(2)
     title = Field()         # this is the Opera title. ad ex. Chateau Lafite 1986
     description = Field()   # this is the description area. Chateau Lafite 1986 Pauillac, 1er Cru Classe
+    estimate = Field()      # report the value of lot
     image_urls = Field()    # where to bring the image. 
     image_path = Field()    # the path where exist the image
     image = Field()         # this is the single image name ad ex. granoturco.jpg
