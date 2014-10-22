@@ -27,6 +27,7 @@ class AsteWebsite(Item):
     location = Field()      # rapresent the location of event. ad ex. London . Milan
     maxlot = Field()        # rapresent the number of lots of catalogues.
     sales_number = Field()  # is the sales number of teh room that sell lot.
+    sale_total = Field()    # sum total of teh asta
     linkurl = Field()       # is a field that help to loop unique(hashkey)
 
 
@@ -35,6 +36,8 @@ class OpereWebsite(Item):
     title = Field()         # this is the Opera title. ad ex. Chateau Lafite 1986
     description = Field()   # this is the description area. Chateau Lafite 1986 Pauillac, 1er Cru Classe
     estimate = Field()      # report the value of lot
+    lot_sold = Field()      # Sell lot
+    valuta = Field()        # Valuta lot sell
     image_urls = Field()    # where to bring the image. 
     image_path = Field()    # the path where exist the image
     image = Field()         # this is the single image name ad ex. granoturco.jpg

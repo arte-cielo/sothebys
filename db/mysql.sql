@@ -8,6 +8,7 @@ CREATE TABLE aste (
   location TEXT
   maxlot INTEGER(11),
   sales_number INTEGER(11),
+  sale_total VARCHAR(30),
   update_date DATETIME
 ) DEFAULT CHARSET=utf8;
 
@@ -18,6 +19,8 @@ CREATE TABLE opere (
   title TEXT,
   description TEXT,
   estimate VARCHAR(20),
+  lot_sold VARCHAR(15),
+  valuta VARCHAR(5),
   image_urls VARCHAR(100),
   image_path VARCHAR(100),
   image VARCHAR(100)
