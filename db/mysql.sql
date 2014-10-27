@@ -2,11 +2,13 @@ DROP TABLE IF EXISTS asta;
 CREATE TABLE aste (
   guid CHAR(32) PRIMARY KEY,
   name VARCHAR(200),
-  asta INTEGER(11),
+  asta VARCHAR(25),
   dates VARCHAR(20),
   time TEXT
   location TEXT
   maxlot INTEGER(11),
+  sales_number INTEGER(11),
+  sale_total VARCHAR(30),
   update_date DATETIME
 ) DEFAULT CHARSET=utf8;
 
@@ -16,6 +18,9 @@ CREATE TABLE opere (
   id_asta INTEGER(11) AUTO_INCREMENT,
   title TEXT,
   description TEXT,
+  estimate VARCHAR(20),
+  lot_sold VARCHAR(15),
+  valuta VARCHAR(5),
   image_urls VARCHAR(100),
   image_path VARCHAR(100),
   image VARCHAR(100)
