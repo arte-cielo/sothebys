@@ -27,9 +27,10 @@ class AsteWebsite(Item):
     location = Field()      # rapresent the location of event. ad ex. London . Milan
     maxlot = Field()        # rapresent the number of lots of catalogues.
     sales_number = Field()  # is the sales number of teh room that sell lot.
+    status = Field()        # is the sales number of teh room that sell lot.
     sale_total = Field()    # sum total of teh asta
     linkurl = Field()       # is a field that help to loop unique(hashkey)
-
+    downloadhref = Field()   # keep a href url to download teh page 
 
 class OpereWebsite(Item):
     #asta = Field()          # asta foreign. This is the foreign key for guid Aste(2)

@@ -64,11 +64,14 @@ class DmozSpider(BaseSpider):
             ## here for documentation : http://doc.scrapy.org/en/latest/topics/selectors.html 
             item['location'] = sel.xpath("//span[@class='location']/text()").extract()[p].encode('utf-8').strip()
             item['linkurl'] = sel.xpath("//div[@class='description']/a/@href").extract()[p]
+	    ## this field keep an url page of asta; it server on pagelot download function
+	    item['downloadhref'] = sel.xpath("//*[@id='eventdetail-carousel']/ul/li[2]/a/@href").extract()
             item['date'] = sel.xpath("//div[@class='vevent']/time/text()").extract()[p]
             item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
 	    item['asta'] = self.name
 	    item['maxlot'] = 0
 	    item['sales_number'] = 0
+	    item['status'] = "I"
             lotpage = item['linkurl'] = sel.xpath("//div[@class='description']/a/@href").extract()[p]
 	    
 	    open('aste.html', 'wb').write(response.body)
@@ -93,6 +96,7 @@ class DmozSpider(BaseSpider):
 	.. - maxlot
 	.. - sales number
 	.. - date event
+	.. - status
 
         One time firlds are recovery, they are updated in the table t.aste
         """
@@ -120,6 +124,13 @@ class DmozSpider(BaseSpider):
 	##[sales_number] - Riporta il numero di sala dell asta.
         ##questo dato va aggiornato nella tabella t.aste.sales_number
         item['sales_number'] = sel.xpath("//div[@class='eventdetail-saleinfo']/span/text()").extract()[0].split()[2]
+
+        ##[status] update the status asta [C] = Calendar [A] = Analize [R] = Result [P] = Publication
+	item['status'] = "C"
+
+	##[downloadhref] This is the official href link to initial download lot for asta name. Here is 
+	## i update
+	item['downloadhref'] = sel.xpath("//*[@id='eventdetail-carousel']/ul/li[2]/a/@href").extract()[0]
 
 	link = sel.xpath('//div[@class="zoom-hover-trigger"]//img/@src').extract()
 	#next_page = [('http://www.sothebys.com' + str(lotpage))]

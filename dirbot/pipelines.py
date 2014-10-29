@@ -98,38 +98,44 @@ class MySQLStorePipeline(object):
         opere = 11
 
 	print "ITEMNAME: %s" % item['name']
+	print "ITEMSTATUS: %s" % item['status']
+	print "GUID: %s" % guid 
+	print "MAXLOT: %s" % item['maxlot'] 
+	print "SALES: %s" % item['sales_number']
+	print "STATUS: %s" % item['status']
+	print "DOWNLODHREF: %s" % item['downloadhref']
 	
-	if opere:
-	    try:
-            	conn.execute("""
-                    UPDATE opere
-                    SET name=%s, description=%s
-                    WHERE guid=%s
-            	""", (item['name'], item['descriptionr'], guid))
-            	spider.log("ITEM ASTE UPDATE in db: %s %s %s" % (guid, item['name'], item['description']))
-		
-	    	print "UPDATE guid: %s" % (guid)
-	    	print "UPDATE maxlot: %s" % (item['maxlot'])
-	    	print "UPDATE sales_number: %s" % (item['sales_number'])
-	    except :
-		print 'UPDATE ASTE2 ERROR'
-			
-        else:
-            conn.execute("""
-                INSERT INTO opere ( guid, name, title, description, estimate, lot_sold, valuta, image_urls, image_path, images, url, update_date)
-                VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-            """, ( guid, item['name'], '', '', '', '', '', '', '', '', '', now))
-            spider.log("ITEM STORED in db: %s %r" % (guid, item))
+	##if opere:
+	##    try:
+        ##    	conn.execute("""
+        ##            UPDATE opere
+        ##            SET name=%s, description=%s
+        ##            WHERE guid=%s
+        ##    	""", (item['name'], item['descriptionr'], guid))
+        ##    	spider.log("ITEM ASTE UPDATE in db: %s %s %s" % (guid, item['name'], item['description']))
+	##	
+	##    	print "UPDATE guid: %s" % (guid)
+	##    	print "UPDATE maxlot: %s" % (item['maxlot'])
+	##    	print "UPDATE sales_number: %s" % (item['sales_number'])
+	##    except :
+	##	print 'UPDATE OPERE ERROR'
+	##		
+        ##else:
+        ##    conn.execute("""
+        ##        INSERT INTO opere ( guid, name, title, description, estimate, lot_sold, valuta, image_urls, image_path, images, url, update_date)
+        ##        VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        ##    """, ( guid, item['name'], '', '', '', '', '', '', '', '', '', now))
+        ##    spider.log("ITEM STORED in db: %s %r" % (guid, item))
 			
 	
 	if aste2:
 	    try:
             	conn.execute("""
                     UPDATE aste2
-                    SET maxlot=%s, sales_number=%s
+                    SET maxlot=%s, sales_number=%s, status=%s, downloadhref=%s
                     WHERE guid=%s
-            	""", (item['maxlot'], item['sales_number'], guid))
-            	spider.log("ITEM ASTE UPDATE in db: %s %s %s" % (guid, item['maxlot'], item['sales_number']))
+            	""", (item['maxlot'], item['sales_number'], item['status'], item['downloadhref'], guid))
+            	spider.log("ITEM ASTE UPDATE in db: %s %s %s %s" % (guid, item['maxlot'], item['sales_number'], item['status']))
 		
 	    	#print "UPDATE guid: %s" % (guid)
 	    	#print "UPDATE maxlot: %s" % (item['maxlot'])
@@ -139,10 +145,10 @@ class MySQLStorePipeline(object):
 			
         else:
             conn.execute("""
-                INSERT INTO aste2 ( guid, name, asta, date, linkurl, location, maxlot, update_date)
-                VALUES ( %s, %s, %s, %s, %s, %s, %s, %s)
-            """, ( guid, item['name'], item['asta'], item['date'], item['linkurl'], item['location'], '', now))
-            spider.log("ITEM STORED in db: %s %s %s %s %s %s %s %s" % (guid, item['name'], item['asta'], item['date'], item['linkurl'], item['location'], '', now))
+                INSERT INTO aste2 ( guid, name, asta, date, linkurl, downloadhref, location, maxlot, status, update_date)
+                VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, ( guid, item['name'], item['asta'], item['date'], item['linkurl'], item['downloadhref'], item['location'], '', item['status'], now))
+            spider.log("ITEM STORED in db: %s %s %s %s %s %s %s %s" % (guid, item['name'], item['asta'], item['date'], item['linkurl'], item['downlothref'], item['location'], '', now))
             
     def _handle_error(self, failure, item, spider):
         """Handle occurred on db interaction."""
