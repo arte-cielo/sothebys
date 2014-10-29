@@ -1,7 +1,7 @@
 from scrapy.spider import Spider, BaseSpider
 from scrapy.selector import Selector
 
-from dirbot.items import Website, AsteWebsite
+from dirbot.items import Website, AsteWebsite, OpereWebsite
 
 from scrapy.http.request import Request
 from scrapy.contrib.spiders import CrawlSpider, Rule
@@ -13,7 +13,8 @@ class DmozSpider(BaseSpider):
     name = "sothebys"
     allowed_domains = ["sothebys.com"]
     start_urls = [
-	"http://www.sothebys.com/en/auctions.html#_charset_=utf-8&tzOffset=14400000&startDate=&endDate=&invertLocations=&eventTypes={e}AUC&showPast=false&resultSections=departments%3Blocations%3Btopics&filterExtended=true&search=&keywords=&lots=&ascing=asc&orderBy=date&lowPriceEstimateUSD=&highPriceEstimateUSD=&artists=&genres=&types=&mediums=&locations=&departments=&topics=&currency=USD&part=true&from=0&to=12&isAuthenticated=false",
+	#"http://www.sothebys.com/en/auctions.html#_charset_=utf-8&tzOffset=14400000&startDate=&endDate=&invertLocations=&eventTypes={e}AUC&showPast=false&resultSections=departments%3Blocations%3Btopics&filterExtended=true&search=&keywords=&lots=&ascing=asc&orderBy=date&lowPriceEstimateUSD=&highPriceEstimateUSD=&artists=&genres=&types=&mediums=&locations=&departments=&topics=&currency=USD&part=true&from=0&to=12&isAuthenticated=false",
+        "http://www.sothebys.com/en/auctions.html",
 	#"http://www.sothebys.com/en/auctions/2014/old-master-british-drawings-l14040.html",
 	#"http://www.sothebys.com/en/auctions/ecatalogue/2014/old-master-british-drawings-l14040/lot.1.html",
         ##"http://www.sothebys.com/en/auctions/ecatalogue/2014/20th-century-italian-art-l14624/lot.12.html",
@@ -29,13 +30,13 @@ class DmozSpider(BaseSpider):
         This parse recover only data to populate the aste information
 
         """
-	open('aste.html', 'wb').write(response.body)
+	#open('aste.html', 'wb').write(response.body)
     	
     	items = []
     	sel = Selector(response)
 	## search after a method for this
     	link_next = sel.xpath("//div[@class='topmenu-inner-wrap']/a[@class='preferred logged-out']/@href").extract()
-	print "LINK_NEXT: %s" % (link_next)
+	#print "LINK_NEXT: %s" % (link_next)
 	
 	current_page = sel.xpath("//span[@class='page-info']/text()").extract()[0].split()[0]
 	element_onpage = sel.xpath("//span[@class='page-info']/text()").extract()[0].split()[2]
@@ -46,6 +47,9 @@ class DmozSpider(BaseSpider):
 	print self.name
     	
 	pp = len(sel.xpath("//span[@class='location']/text()").extract())
+	print pp
+	for i in enumerate(sel.xpath("//span[@class='location']/text()").extract()):
+	    print i
         #--
 	#lotpage = item['linkurl'] = sel.xpath("//div[@class='description']/a/@href").extract()[p]
 	#next_page = [('http://www.sothebys.com' + str(lotpage))]
@@ -66,8 +70,10 @@ class DmozSpider(BaseSpider):
 	    item['maxlot'] = 0
 	    item['sales_number'] = 0
             lotpage = item['linkurl'] = sel.xpath("//div[@class='description']/a/@href").extract()[p]
-	    print 'LOTPAGE: %s' % (lotpage)
-	    print "Date : %s" % (item['date'])
+	    
+	    open('aste.html', 'wb').write(response.body)
+	    #print 'LOTPAGE: %s' % (lotpage)
+	    #print "Date : %s" % (item['date'])
             #item['image'] = sel.xpath("//div[@class='image']//img/@serc").extract()
 
 	    items.append(item)
@@ -116,9 +122,12 @@ class DmozSpider(BaseSpider):
         item['sales_number'] = sel.xpath("//div[@class='eventdetail-saleinfo']/span/text()").extract()[0].split()[2]
 
 	link = sel.xpath('//div[@class="zoom-hover-trigger"]//img/@src').extract()
+	#next_page = [('http://www.sothebys.com' + str(lotpage))]
+    	#if not not next_page:
+	#items.append(Request("http://www.sothebys.com/en/auctions/ecatalogue/2014/collections-l14305/lot.1.html", callback=self.parse_opere))
 
         items.append(item)
-
+	
         return items
 
     def parse_opere(self, response):
@@ -132,60 +141,59 @@ class DmozSpider(BaseSpider):
 
         items = []
 	sel = Selector(response)
+
+	#this is the nex link of asta
 	link_next = sel.xpath("//div[@class='lot-navigation lotdetail-navigation']/a[@class='arrow-right']/@href").extract()[0]
-    	#link_next = sel.xpath("//div[@class='lot-navigation']/a[@class='arrow-right']/@href").extract()
 	next_page = [('http://www.sothebys.com' + str(link_next))]
+	print "NEXTOPERA; %s" % next_page
     	if not not next_page:
 		items.append(Request(next_page[0], self.parse))
 	sites = sel.xpath("//div[@class='text-group span8']/h1[@class='number']/text()").extract()
 
         for site in sites:
+	    print "ENTROOOOOOOOO"
             item = OpereWebsite()
 	    image_relative_urls = sel.xpath('//div[@class="zoom-hover-trigger"]//img/@src').extract()
 
-	    item['linkurl'] = link_next
+	    #item['linkurl'] = link_next
 
 	    ##[maxlot] - Riflette il numero complessivo dei lotti che compongono asta.
             ##item['maxlot'] = sel.xpath("//div[@class='text-group']/h1[@class='number']/text()").extract()
             ##item['maxlot'] = link_next #sites
 	    
 	    ##[name] - Recupera il nome asta:ad ex. The Italian Sale
-            item['name'] = sel.xpath("//span[@class='active']/text()").extract()
+            item['name'] = sel.xpath("//span[@class='active']/text()").extract()[0]
 
-	    ##[date] - Questa rules Recupera la data di nascita dell'artista. Il dato va spostato in 
-	    ##una futura tabella ARTISTI(artisti)
-            item['date'] = sel.xpath("//div[@class='lotdetail-artist-dates']/text()").extract()
+	    ##[estimate] - Recupera il valore complessivo della casa di asta
+            item['estimate'] = sel.xpath("//*[@id='bodyWrap']/div[4]/div/div[2]/section/div/div/div[2]/span[1]/text() | //*[@id='bodyWrap']/div[4]/div/div[2]/section/div/div/div[2]/span[2]/text()").extract()
 
-	    ##[time] - Riflette l'ora dell'evento dell'asta. Il dato va inserito nella tabella ASTE(aste)
-            item['time'] = sel.xpath("//div[@class='details vevent']/time/text()").extract()[0:2][1].strip()
+	    ##[valuta] - Assegna la valuta predefinita all'opera
+            item['valuta'] = sel.xpath("//*[@id='bodyWrap']/div[4]/div/div[2]/section/div/div/div[3]/div[1]/a/text()").extract()
 
-	    ##[location] - Riflette la location(luogo) dell'evento dell'asta. ad ex. Londra. Il dato va inserito
-	    ##nella tabella ASTE(aste)
-            item['location'] = sel.xpath("//span[@class='location']/text()").extract()[:1][0].strip()
+	    ##[image_urls] - Il path principale della case d'aste dove risiedono dove risiedono  le immagini
+            item['image_urls'] = sel.xpath("//*[@id='bodyWrap']/div[6]/div[2]/div[1]/div/div/img[1]/@src").extract()
+
+	    ##[image] - Il nome della singola immagine
+            item['images'] = sel.xpath("//*[@id='bodyWrap']/div[6]/div[2]/div[1]/div/div/img[1]/@src").extract()
 
             #item['notes'] = sel.xpath("//div[@class='notes']/div/h5/text()").extract()[0].strip()
             ##item['period'] = sel.xpath("//div[@class='text-group']/div/text()").extract()
             #item['title'] = sel.xpath("//div[@class='text-group']/h5[@class='div']/br/text()").extract()
 
 	    ##[title] - Riflette il tittolo dell'opera dell'artista. Da inserire nella tabella OPERE(opere)
-            item['title'] = sel.xpath("//div[@class='lotdetail-subtitle']/text()").extract()[:1][0].strip()
+            item['title'] = sel.xpath("//*[@id='bodyWrap']/div[4]/div/div[2]/div/text()").extract()
 
             ##item['author'] = sel.xpath("//div[@class='text-group']/h5/text()").extract()
 	    ##[author] - Rispecchia il nome dell'autore dell'opera. Deve essere inserito nella tabella OPERE(opere)
-            item['author'] = sel.xpath("//div[@class='lotdetail-guarantee']/text()").extract()[:1][0].strip()
+            ##item['author'] = sel.xpath("//div[@class='lotdetail-guarantee']/text()").extract()[:1][0].strip()
             #item['author'] = sel.xpath("//div[@class='lotdetail-guarantee']/text()").extract()
 
-            #item['description'] = sel.xpath("//div[@class='description']/text()").extract()[0].encode('utf-8').strip()
-            #item['description'] = u' '.join(sel.xpath("//div[@class='text-group']/div[@class='description']/text()").extract()[0]).encode('utf-8').strip()
-            #item['description'] = sel.xpath("//div[@class='text-group']/div[@class='description']/text()").extract()[0].encode('utf-8').strip()
-            ##item['description'] = str([word.strip().encode('utf-8') for word in sel.xpath("//div[@class='text-group']/div[@class='description']/text()").extract()])
-            item['description'] = str([word.strip().encode('utf-8') for word in sel.xpath("//div[@class='lotdetail-catalogue-notes-holder']/text()").extract()])
-            ##item['dimension'] = sel.xpath("//div[@class='lotdetail-description-text']/text()").extract()[0]
-	    link = sel.xpath('//div[@class="zoom-hover-trigger"]//img/@src').extract()[0]
-	    import urlparse 
+            item['description'] = sel.xpath("//*[@id='bodyWrap']/div[6]/div[6]/div/div[1]/div[1]/text()").extract()[0].strip().encode('ascii','ignore')
+	    #link = sel.xpath('//div[@class="zoom-hover-trigger"]//img/@src').extract()[0]
+	    #import urlparse 
 	    #item['image_urls'] = [urlparse.urljoin(response.url, str(link))] 
 	    #link = sel.xpath('//div[@class="zomm-hover-trigger"]//img/@src').extract()
-    	    item['image_urls'] = [('http://www.sothebys.com' + str(link))]
+    	    #item['image_urls'] = [('http://www.sothebys.com' + str(link))]
 
             items.append(item)
 

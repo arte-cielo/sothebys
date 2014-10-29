@@ -32,7 +32,8 @@ class AsteWebsite(Item):
 
 
 class OpereWebsite(Item):
-    asta = Field()          # asta foreign. This is the foreign key for guid Aste(2)
+    #asta = Field()          # asta foreign. This is the foreign key for guid Aste(2)
+    name = Field()          # actually this field make the key hash
     title = Field()         # this is the Opera title. ad ex. Chateau Lafite 1986
     description = Field()   # this is the description area. Chateau Lafite 1986 Pauillac, 1er Cru Classe
     estimate = Field()      # report the value of lot
@@ -40,6 +41,6 @@ class OpereWebsite(Item):
     valuta = Field()        # Valuta lot sell
     image_urls = Field()    # where to bring the image. 
     image_path = Field()    # the path where exist the image
-    image = Field()         # this is the single image name ad ex. granoturco.jpg
+    images = Field()        # this is the single image name ad ex. granoturco.jpg
     url = Field()           # not clear at the moment
     update_date = Field()   # operation date scrapy

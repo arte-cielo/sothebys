@@ -90,6 +90,38 @@ class MySQLStorePipeline(object):
         )""", (guid,))
         aste2 = conn.fetchone()[0]
 	
+	## check the t.aste.guid for insert or update         
+	conn.execute("""SELECT EXISTS(
+            SELECT 1 FROM opere WHERE guid = %s
+        )""", (guid,))
+        opere = conn.fetchone()[0]
+        opere = 11
+
+	print "ITEMNAME: %s" % item['name']
+	
+	if opere:
+	    try:
+            	conn.execute("""
+                    UPDATE opere
+                    SET name=%s, description=%s
+                    WHERE guid=%s
+            	""", (item['name'], item['descriptionr'], guid))
+            	spider.log("ITEM ASTE UPDATE in db: %s %s %s" % (guid, item['name'], item['description']))
+		
+	    	print "UPDATE guid: %s" % (guid)
+	    	print "UPDATE maxlot: %s" % (item['maxlot'])
+	    	print "UPDATE sales_number: %s" % (item['sales_number'])
+	    except :
+		print 'UPDATE ASTE2 ERROR'
+			
+        else:
+            conn.execute("""
+                INSERT INTO opere ( guid, name, title, description, estimate, lot_sold, valuta, image_urls, image_path, images, url, update_date)
+                VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, ( guid, item['name'], '', '', '', '', '', '', '', '', '', now))
+            spider.log("ITEM STORED in db: %s %r" % (guid, item))
+			
+	
 	if aste2:
 	    try:
             	conn.execute("""
@@ -99,11 +131,11 @@ class MySQLStorePipeline(object):
             	""", (item['maxlot'], item['sales_number'], guid))
             	spider.log("ITEM ASTE UPDATE in db: %s %s %s" % (guid, item['maxlot'], item['sales_number']))
 		
-	    	print "UPDATE guid: %s" % (guid)
-	    	print "UPDATE maxlot: %s" % (item['maxlot'])
-	    	print "UPDATE sales_number: %s" % (item['sales_number'])
+	    	#print "UPDATE guid: %s" % (guid)
+	    	#print "UPDATE maxlot: %s" % (item['maxlot'])
+	    	#print "UPDATE sales_number: %s" % (item['sales_number'])
 	    except :
-		print 'UPDATE ERROR'
+		print 'UPDATE ASTE2 ERROR'
 			
         else:
             conn.execute("""
@@ -122,6 +154,7 @@ class MySQLStorePipeline(object):
         # hash based solely in the url field
         #return md5(item['location']).hexdigest()
         #returmd5(item['location']).hexdigest()
-        epure = (item["name"]).encode('ascii','ignore')
+        epure = item["name"].encode('ascii','ignore')
+	print epure
         #return hashlib.md5(item["name"]).encode('acii','ignore').hexdigest()
         return hashlib.md5(epure).hexdigest()
