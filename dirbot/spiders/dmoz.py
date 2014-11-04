@@ -1,13 +1,18 @@
 from scrapy.spider import Spider, BaseSpider
 from scrapy.selector import Selector
 
-from dirbot.items import Website, AsteWebsite, OpereWebsite
+from dirbot.items import Website, AsteWebsite
 
 from scrapy.http.request import Request
 from scrapy.contrib.spiders import CrawlSpider, Rule
 from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.selector import HtmlXPathSelector
+
 from scrapy import *
+from scrapy.mail import MailSender
+
+mailer = MailSender()
+#mailer.send(to=["marco.giardina@gmail.com"], subject="Some subject", body="Some body", cc=["info@mammagatto.org"])
 
 class DmozSpider(BaseSpider):
     name = "sothebys"
@@ -15,14 +20,6 @@ class DmozSpider(BaseSpider):
     start_urls = [
 	#"http://www.sothebys.com/en/auctions.html#_charset_=utf-8&tzOffset=14400000&startDate=&endDate=&invertLocations=&eventTypes={e}AUC&showPast=false&resultSections=departments%3Blocations%3Btopics&filterExtended=true&search=&keywords=&lots=&ascing=asc&orderBy=date&lowPriceEstimateUSD=&highPriceEstimateUSD=&artists=&genres=&types=&mediums=&locations=&departments=&topics=&currency=USD&part=true&from=0&to=12&isAuthenticated=false",
         "http://www.sothebys.com/en/auctions.html",
-	#"http://www.sothebys.com/en/auctions/2014/old-master-british-drawings-l14040.html",
-	#"http://www.sothebys.com/en/auctions/ecatalogue/2014/old-master-british-drawings-l14040/lot.1.html",
-        ##"http://www.sothebys.com/en/auctions/ecatalogue/2014/20th-century-italian-art-l14624/lot.12.html",
-	#"http://www.sothebys.com/it/auctions/ecatalogue/2014/contemporary-art-day-auction-l14023/lot.101.html",
-	#"http://www.sothebys.com/en/auctions/ecatalogue/2014/joseph-conrad-so-l14415/lot.194.html",
-	#"http://www.sothebys.com/en/auctions/ecatalogue/2014/english-literature-history-childrens-books-illustrations-l14404/lot.401.html",
-	#"http://www.sothebys.com/en/auctions/ecatalogue/2014/fine-jewels-l14051/lot.1.html",
-        #"http://www.sothebys.com/en/auctions/ecatalogue/2014/20th-century-italian-art-l14624/lot.1.html"
     ]
 
     def parse(self, response):
@@ -41,21 +38,15 @@ class DmozSpider(BaseSpider):
 	current_page = sel.xpath("//span[@class='page-info']/text()").extract()[0].split()[0]
 	element_onpage = sel.xpath("//span[@class='page-info']/text()").extract()[0].split()[2]
 	tot_page = sel.xpath("//span[@class='page-info']/text()").extract()[0].split()[4]
+        print "************************************************:dmoz"
 	print "CURRENT_PAGE: %s" % (current_page)
 	print "ELEMENT_ONPAGE: %s" % (element_onpage)
 	print "TOT_PAGE: %s" % (tot_page)
 	print self.name
     	
 	pp = len(sel.xpath("//span[@class='location']/text()").extract())
-	print pp
-	for i in enumerate(sel.xpath("//span[@class='location']/text()").extract()):
-	    print i
         #--
-	#lotpage = item['linkurl'] = sel.xpath("//div[@class='description']/a/@href").extract()[p]
-	#next_page = [('http://www.sothebys.com' + str(lotpage))]
-    	#if not not next_page:
-	#	items2.append(Request(next_page[0], self.parse_lot_sales_data))
-
+	
 	for p in range(0,pp):
             item = AsteWebsite()
 
@@ -71,7 +62,10 @@ class DmozSpider(BaseSpider):
 	    item['asta'] = self.name
 	    item['maxlot'] = 0
 	    item['sales_number'] = 0
-	    item['status'] = "I"
+	    ## the first run is with flag 'Q'. It then is updated with value C in (parse_lot_sales_date) if all is ok
+	    ## otherwiese remain with Q = Quarantena status 
+	    item['status'] = "Q"
+	    item['sale_total'] = 0
             lotpage = item['linkurl'] = sel.xpath("//div[@class='description']/a/@href").extract()[p]
 	    
 	    open('aste.html', 'wb').write(response.body)
@@ -86,7 +80,10 @@ class DmozSpider(BaseSpider):
 	    items.append(Request(next_page[0], self.parse_lot_sales_data))
 
 	    items.append(item)
-
+	    xx = len(items)
+	    print 'XXX: %s' % xx
+	    #mailer.send(to=["info@artecielo.com"], subject="Aste Inserite", body="Di seguito le aste inserite:\n"+ str([items[1]['asta'] for dd in range(xx)], cc=["teseo@broletto.org"])
+	    #mailer.send(to=["marco.giardina@gmail.com"], subject="Aste Inserite", body="Di seguito le aste inserite:\n"+str(items[0]['asta'])+"\n"+str(items[0]['name']), cc=["teseo@broletto.org"])
         return items
 
     def parse_lot_sales_data(self, response):
@@ -101,16 +98,20 @@ class DmozSpider(BaseSpider):
         One time firlds are recovery, they are updated in the table t.aste
         """
 	open('lots_ales_data.html', 'wb').write(response.body)
-
+	print 'RESPONSE: %s' % response
         items = []
 	sel = Selector(response)
 	
         item = AsteWebsite()
 	image_relative_urls = sel.xpath('//div[@class="zoom-hover-trigger"]//img/@src').extract()
-	
+
 	##[name] - Questo campo e' molto importante, infatti viene utilizzato per creare una chiave assoluta e 
 	# univoca da inserire in t.aste.guid job da eseguire in pipeline.py
+	## TO DO  BUGS: In some cases the name is splitted on two row. While the insert rules is ok for name
+        ## here the name copy only the first parte of real name. Open a Workaround near this bugs 
 	item['name'] = sel.xpath("//div[@class='eventdetail-headerleft']/h1/text()").extract()[1].strip()
+ 
+	#item['name'] = sel.xpath("//ul[@class='breadcrumb inline']/li/a/span/text()").extract()
 
 	##[maxlot] - Riflette il numero complessivo dei lotti che compongono l'asta.
         ##questo dato va aggiornato nella tabella t.aste.maxlot
@@ -120,6 +121,7 @@ class DmozSpider(BaseSpider):
         #[TO DO] - Non ancora incorporato nella tabella aste
         ##questo dato va aggiornato nella tabella t.aste.time
         ##item['time'] = sel.xpath("//div[@class='eventdetail-eventtime']/time/text()").extract()[1].strip()
+	item['sale_total'] = sel.xpath("//div[@class='eventdetail-headerresults']/div/span/text()").extract()
 
 	##[sales_number] - Riporta il numero di sala dell asta.
         ##questo dato va aggiornato nella tabella t.aste.sales_number

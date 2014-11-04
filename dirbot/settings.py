@@ -30,6 +30,12 @@ IMAGES_THUMBS = {
 #IMAGES_MIN_HEIGHT = 40
 #IMAGES_MIN_WIDTH = 40
 
+#MAIL_FROM = 'scrapy@localhost'
+#MAIL_HOST = 'mx.artecielo.it'
+#MAIL_PORT = '25'
+#MAIL_USER = 'info'
+#MAIL_PASS = 'Blacking1'
+
 #DATABASE = {'drivername': 'mysql',
 #            'host': '192.168.76',
 #            'port': '3306',

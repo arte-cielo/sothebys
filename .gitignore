@@ -1,8 +1,4 @@
 *.pyc
 .gitignore
-lots_ales_data.html
-lotsalesdata.html
-lotsi_ales_data.html
-lots_ales_data.html
-aste.html
-test.html
+dbs/
+*.html

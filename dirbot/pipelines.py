@@ -77,33 +77,49 @@ class MySQLStorePipeline(object):
         """Perform an insert or update."""
         guid = self._get_guid(item)
         now = datetime.utcnow().replace(microsecond=0).isoformat(' ')
-	#print "INITIALguid: %s" % (guid)
-
-     ##   conn.execute("""SELECT EXISTS(
-     ##       SELECT 1 FROM aste WHERE guid = %s
-     ##   )""", (guid,))
-     ##   ret_aste = conn.fetchone()[0]
-
+	
 	## check the t.aste.guid for insert or update         
 	conn.execute("""SELECT EXISTS(
             SELECT 1 FROM aste2 WHERE guid = %s
         )""", (guid,))
         aste2 = conn.fetchone()[0]
 	
+	## check if exists a quarantena auction with 
+        ## status 'Q'
+	conn.execute("""SELECT *
+            FROM aste2 WHERE status = "Q"
+        """ )
+        qstatus = conn.fetchone()
+	#print qstatus
+	#print "BEFOREITEMNAME: %s" % item['name']
+	#print "BEFOREQSTATAUS: %s" % str(qstatus[8])
+	if qstatus:
+	    print "*********QSTATUS*********"+str(aste2)
+	    if str(qstatus[8]) == "Q":
+	        print qstatus
+		print "QSTATUSITEMNAME: %s" % item['name']
+		print "QSTATAUSTATUS: %s" % str(qstatus[8])
+		print "QSTATUSSALE_TOTAL: %s" % item['sale_total']
+		guid = str(qstatus[0])
+		item['status'] = "C"
+		if item['sale_total'] is None:
+		    item['sale_total'] = 0
+		aste2 = 1
+	
 	## check the t.aste.guid for insert or update         
-	conn.execute("""SELECT EXISTS(
-            SELECT 1 FROM opere WHERE guid = %s
-        )""", (guid,))
-        opere = conn.fetchone()[0]
-        opere = 11
-
-	print "ITEMNAME: %s" % item['name']
-	print "ITEMSTATUS: %s" % item['status']
-	print "GUID: %s" % guid 
-	print "MAXLOT: %s" % item['maxlot'] 
-	print "SALES: %s" % item['sales_number']
-	print "STATUS: %s" % item['status']
-	print "DOWNLODHREF: %s" % item['downloadhref']
+	##conn.execute("""SELECT EXISTS(
+        ##    SELECT 1 FROM opere WHERE guid = %s
+        ##)""", (guid,))
+        ##opere = conn.fetchone()[0]
+	print "****************************"+str(aste2)
+	print "AFTERITEMNAME: %s" % item['name']
+	print "AFTERITEMSTATUS: %s" % item['status']
+	print "AFTERGUID: %s" % guid 
+	print "AFTERMAXLOT: %s" % item['maxlot'] 
+	print "AFTERSALES: %s" % item['sales_number']
+	print "AFTERSTATUS: %s" % item['status']
+	print "AFTERDOWNLODHREF: %s" % item['downloadhref']
+	print "AFTERSALE_TOTAL: %s" % item['sale_total']
 	
 	##if opere:
 	##    try:
@@ -132,23 +148,29 @@ class MySQLStorePipeline(object):
 	    try:
             	conn.execute("""
                     UPDATE aste2
-                    SET maxlot=%s, sales_number=%s, status=%s, downloadhref=%s
+                    SET maxlot=%s, sales_number=%s, status=%s, downloadhref=%s, sale_total=%s, update_date=%s
                     WHERE guid=%s
-            	""", (item['maxlot'], item['sales_number'], item['status'], item['downloadhref'], guid))
-            	spider.log("ITEM ASTE UPDATE in db: %s %s %s %s" % (guid, item['maxlot'], item['sales_number'], item['status']))
+            	""", (item['maxlot'], item['sales_number'], item['status'], item['downloadhref'], item['sale_total'], now, guid))
+            	spider.log("ITEM ASTE UPDATE in db: %s %s %s %s" % (guid, item['maxlot'], item['sales_number'], item['status'], item['downloadhref']))
 		
 	    	#print "UPDATE guid: %s" % (guid)
 	    	#print "UPDATE maxlot: %s" % (item['maxlot'])
 	    	#print "UPDATE sales_number: %s" % (item['sales_number'])
 	    except :
 		print 'UPDATE ASTE2 ERROR'
+	    	print "UPDATE ERROR guid: %s" % (guid)
+	    	print "UPDATE ERROR maxlot: %s" % (item['maxlot'])
+	    	print "UPDATE ERROR sales_number: %s" % (item['sales_number'])
+	    	print "UPDATE ERROR sale_total: %s" % (item['sale_total'])
+	    	print "UPDATE ERROR status: %s" % (item['status'])
 			
         else:
+	    ##very important here: some fields are update in UPDATE ASTE (second step): they are item[downloadhref] and item[maxlot] 
             conn.execute("""
-                INSERT INTO aste2 ( guid, name, asta, date, linkurl, downloadhref, location, maxlot, status, update_date)
+                INSERT INTO aste2 ( guid, name, asta, date, linkurl, downloadhref, location, maxlot, status, sale_number, update_date)
                 VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-            """, ( guid, item['name'], item['asta'], item['date'], item['linkurl'], item['downloadhref'], item['location'], '', item['status'], now))
-            spider.log("ITEM STORED in db: %s %s %s %s %s %s %s %s" % (guid, item['name'], item['asta'], item['date'], item['linkurl'], item['downlothref'], item['location'], '', now))
+            """, ( guid, item['name'], item['asta'], item['date'], item['linkurl'], '', item['location'], '', item['status'], item['sale_number'], now))
+            spider.log("ITEM STORED in t.ASTE: %s %r" % (guid, item))
             
     def _handle_error(self, failure, item, spider):
         """Handle occurred on db interaction."""
@@ -161,6 +183,7 @@ class MySQLStorePipeline(object):
         #return md5(item['location']).hexdigest()
         #returmd5(item['location']).hexdigest()
         epure = item["name"].encode('ascii','ignore')
-	print epure
+        #epure = str(item["name"])
+	print 'EPURE: %s' % epure
         #return hashlib.md5(item["name"]).encode('acii','ignore').hexdigest()
         return hashlib.md5(epure).hexdigest()
