@@ -93,18 +93,18 @@ class MySQLStorePipeline(object):
 	#print qstatus
 	#print "BEFOREITEMNAME: %s" % item['name']
 	#print "BEFOREQSTATAUS: %s" % str(qstatus[8])
-	if qstatus:
-	    print "*********QSTATUS*********"+str(aste2)
-	    if str(qstatus[8]) == "Q":
-	        print qstatus
-		print "QSTATUSITEMNAME: %s" % item['name']
-		print "QSTATAUSTATUS: %s" % str(qstatus[8])
-		print "QSTATUSSALE_TOTAL: %s" % item['sale_total']
-		guid = str(qstatus[0])
-		item['status'] = "C"
-		if item['sale_total'] is None:
-		    item['sale_total'] = 0
-		aste2 = 1
+	##if qstatus:
+	##    print "*********QSTATUS*********"+str(aste2)
+	##    if str(qstatus[8]) == "Q":
+	##        print qstatus
+	##	print "QSTATUSITEMNAME: %s" % item['name']
+	##	print "QSTATAUSTATUS: %s" % str(qstatus[8])
+	##	print "QSTATUSSALE_TOTAL: %s" % item['sale_total']
+	##	guid = str(qstatus[0])
+	##	item['status'] = "C"
+	##	if item['sale_total'] is None:
+	##	    item['sale_total'] = 0
+	##	aste2 = 1
 	
 	## check the t.aste.guid for insert or update         
 	##conn.execute("""SELECT EXISTS(
@@ -120,38 +120,16 @@ class MySQLStorePipeline(object):
 	print "AFTERSTATUS: %s" % item['status']
 	print "AFTERDOWNLODHREF: %s" % item['downloadhref']
 	print "AFTERSALE_TOTAL: %s" % item['sale_total']
-	
-	##if opere:
-	##    try:
-        ##    	conn.execute("""
-        ##            UPDATE opere
-        ##            SET name=%s, description=%s
-        ##            WHERE guid=%s
-        ##    	""", (item['name'], item['descriptionr'], guid))
-        ##    	spider.log("ITEM ASTE UPDATE in db: %s %s %s" % (guid, item['name'], item['description']))
-	##	
-	##    	print "UPDATE guid: %s" % (guid)
-	##    	print "UPDATE maxlot: %s" % (item['maxlot'])
-	##    	print "UPDATE sales_number: %s" % (item['sales_number'])
-	##    except :
-	##	print 'UPDATE OPERE ERROR'
-	##		
-        ##else:
-        ##    conn.execute("""
-        ##        INSERT INTO opere ( guid, name, title, description, estimate, lot_sold, valuta, image_urls, image_path, images, url, update_date)
-        ##        VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-        ##    """, ( guid, item['name'], '', '', '', '', '', '', '', '', '', now))
-        ##    spider.log("ITEM STORED in db: %s %r" % (guid, item))
-			
+	#print "AFTERASTA: %s" % item['asta']
 	
 	if aste2:
 	    try:
             	conn.execute("""
                     UPDATE aste2
-                    SET maxlot=%s, sales_number=%s, status=%s, downloadhref=%s, sale_total=%s, update_date=%s
+                    SET maxlot=%s, sales_number=%s, status=%s, downloadhref=%s, sale_total=%s, update_date=%s, layout=%s
                     WHERE guid=%s
-            	""", (item['maxlot'], item['sales_number'], item['status'], item['downloadhref'], item['sale_total'], now, guid))
-            	spider.log("ITEM ASTE UPDATE in db: %s %s %s %s" % (guid, item['maxlot'], item['sales_number'], item['status'], item['downloadhref']))
+            	""", (item['maxlot'], item['sales_number'], item['status'], item['downloadhref'], item['sale_total'], now, 'layout', guid))
+            	spider.log("ITEM ASTE UPDATE in db: %s %r" % (guid, item))
 		
 	    	#print "UPDATE guid: %s" % (guid)
 	    	#print "UPDATE maxlot: %s" % (item['maxlot'])
@@ -167,9 +145,9 @@ class MySQLStorePipeline(object):
         else:
 	    ##very important here: some fields are update in UPDATE ASTE (second step): they are item[downloadhref] and item[maxlot] 
             conn.execute("""
-                INSERT INTO aste2 ( guid, name, asta, date, linkurl, downloadhref, location, maxlot, status, sale_number, update_date)
-                VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-            """, ( guid, item['name'], item['asta'], item['date'], item['linkurl'], '', item['location'], '', item['status'], item['sale_number'], now))
+                INSERT INTO aste2 ( guid, name, asta, date, linkurl, downloadhref, location, maxlot, status, sales_number, layout, update_date)
+                VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, ( guid, item['name'], item['asta'], item['date'], item['linkurl'], 'downloadhref', item['location'], 'maxlot', item['status'], 'sales_number', 'layout', now))
             spider.log("ITEM STORED in t.ASTE: %s %r" % (guid, item))
             
     def _handle_error(self, failure, item, spider):

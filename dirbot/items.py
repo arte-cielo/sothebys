@@ -30,7 +30,8 @@ class AsteWebsite(Item):
     status = Field()        # is the sales number of teh room that sell lot.
     sale_total = Field()    # sum total of teh asta
     linkurl = Field()       # is a field that help to loop unique(hashkey)
-    downloadhref = Field()   # keep a href url to download teh page 
+    downloadhref = Field()  # keep a href url to download teh page 
+    layout = Field()        # keep idifferent layout for auction
 
 
 ## ================================================

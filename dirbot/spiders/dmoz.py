@@ -18,7 +18,6 @@ class DmozSpider(BaseSpider):
     name = "sothebys"
     allowed_domains = ["sothebys.com"]
     start_urls = [
-	#"http://www.sothebys.com/en/auctions.html#_charset_=utf-8&tzOffset=14400000&startDate=&endDate=&invertLocations=&eventTypes={e}AUC&showPast=false&resultSections=departments%3Blocations%3Btopics&filterExtended=true&search=&keywords=&lots=&ascing=asc&orderBy=date&lowPriceEstimateUSD=&highPriceEstimateUSD=&artists=&genres=&types=&mediums=&locations=&departments=&topics=&currency=USD&part=true&from=0&to=12&isAuthenticated=false",
         "http://www.sothebys.com/en/auctions.html",
     ]
 
@@ -62,6 +61,7 @@ class DmozSpider(BaseSpider):
 	    item['asta'] = self.name
 	    item['maxlot'] = 0
 	    item['sales_number'] = 0
+	    item['layout'] = ""
 	    ## the first run is with flag 'Q'. It then is updated with value C in (parse_lot_sales_date) if all is ok
 	    ## otherwiese remain with Q = Quarantena status 
 	    item['status'] = "Q"
@@ -109,7 +109,7 @@ class DmozSpider(BaseSpider):
 	# univoca da inserire in t.aste.guid job da eseguire in pipeline.py
 	## TO DO  BUGS: In some cases the name is splitted on two row. While the insert rules is ok for name
         ## here the name copy only the first parte of real name. Open a Workaround near this bugs 
-	item['name'] = sel.xpath("//div[@class='eventdetail-headerleft']/h1/text()").extract()[1].strip()
+	item['name'] = sel.xpath("//div[@class='eventdetail-headerleft']/h1/text()").extract()[1].encode("ascii","ignore").strip()
  
 	#item['name'] = sel.xpath("//ul[@class='breadcrumb inline']/li/a/span/text()").extract()
 
@@ -121,7 +121,10 @@ class DmozSpider(BaseSpider):
         #[TO DO] - Non ancora incorporato nella tabella aste
         ##questo dato va aggiornato nella tabella t.aste.time
         ##item['time'] = sel.xpath("//div[@class='eventdetail-eventtime']/time/text()").extract()[1].strip()
-	item['sale_total'] = sel.xpath("//div[@class='eventdetail-headerresults']/div/span/text()").extract()
+	item['sale_total'] = [xx for xx in sel.xpath("//div[@class='eventdetail-headerresults']/div/span/text()").extract()]
+	if not item['sale_total']:
+		item['sale_total'] = 0
+	#[x+1 if x >= 45 else x+5 for x in l]
 
 	##[sales_number] - Riporta il numero di sala dell asta.
         ##questo dato va aggiornato nella tabella t.aste.sales_number
@@ -133,6 +136,8 @@ class DmozSpider(BaseSpider):
 	##[downloadhref] This is the official href link to initial download lot for asta name. Here is 
 	## i update
 	item['downloadhref'] = sel.xpath("//*[@id='eventdetail-carousel']/ul/li[2]/a/@href").extract()[0]
+	
+	item['layout'] = ""
 
 	link = sel.xpath('//div[@class="zoom-hover-trigger"]//img/@src').extract()
 	#next_page = [('http://www.sothebys.com' + str(lotpage))]
