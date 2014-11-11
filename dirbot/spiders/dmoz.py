@@ -82,8 +82,7 @@ class DmozSpider(BaseSpider):
 	    items.append(item)
 	    xx = len(items)
 	    print 'XXX: %s' % xx
-	    #mailer.send(to=["info@artecielo.com"], subject="Aste Inserite", body="Di seguito le aste inserite:\n"+ str([items[1]['asta'] for dd in range(xx)], cc=["teseo@broletto.org"])
-	    #mailer.send(to=["marco.giardina@gmail.com"], subject="Aste Inserite", body="Di seguito le aste inserite:\n"+str(items[0]['asta'])+"\n"+str(items[0]['name']), cc=["teseo@broletto.org"])
+
         return items
 
     def parse_lot_sales_data(self, response):

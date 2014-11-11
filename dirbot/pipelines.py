@@ -10,6 +10,11 @@ from datetime import datetime
 import hashlib
 from hashlib import md5
 
+from scrapy import *
+from scrapy.mail import MailSender
+
+mailer = MailSender(smtphost="mx.artecielo.com",mailfrom="scrapy@localhost",smtpuser="info@artecielo.com",smtppass="Blacking1")
+
 class FilterWordsPipeline(object):
     """A pipeline for filtering out items which contain certain words in their
     description"""
@@ -85,12 +90,16 @@ class MySQLStorePipeline(object):
         aste2 = conn.fetchone()[0]
 	
 	## check if exists a quarantena auction with 
-        ## status 'Q'
+        ## status 'Q' and report at info@ 
 	conn.execute("""SELECT *
             FROM aste2 WHERE status = "Q"
         """ )
-        qstatus = conn.fetchone()
-	#print qstatus
+        qstatus = conn.fetchall()
+
+	print qstatus	
+	#if qstatus:
+	#    mailer.send(to=["info@artecielo.com"], subject="Attenzione! Quarentena aste:"+qstatus[2], body="Hai aste in quarantena:\n Asta:"+qstatus[1]+'\n'+"Data:"+qstatus[3])
+			 
 	#print "BEFOREITEMNAME: %s" % item['name']
 	#print "BEFOREQSTATAUS: %s" % str(qstatus[8])
 	##if qstatus:
@@ -141,7 +150,10 @@ class MySQLStorePipeline(object):
 	    	print "UPDATE ERROR sales_number: %s" % (item['sales_number'])
 	    	print "UPDATE ERROR sale_total: %s" % (item['sale_total'])
 	    	print "UPDATE ERROR status: %s" % (item['status'])
-			
+
+	elif qstatus:
+		for cc in qstatus:
+	    	    mailer.send(to=["info@artecielo.com"], subject="Attenzione! Quarentena aste:"+cc[2], body="Hai aste in quarantena:\n Asta:"+cc[1]+'\n'+"Data:"+cc[3])
         else:
 	    ##very important here: some fields are update in UPDATE ASTE (second step): they are item[downloadhref] and item[maxlot] 
             conn.execute("""
@@ -149,6 +161,8 @@ class MySQLStorePipeline(object):
                 VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """, ( guid, item['name'], item['asta'], item['date'], item['linkurl'], 'downloadhref', item['location'], 'maxlot', item['status'], 'sales_number', 'layout', now))
             spider.log("ITEM STORED in t.ASTE: %s %r" % (guid, item))
+	    
+	    mailer.send(to=["info@artecielo.com"], subject="Nuova Asta inserita:"+item['asta'], body="Ho inserito alcune nuove aste:\n Asta:"+item['name']+'\n'+"Lotti:"+str(item['maxlot']))
             
     def _handle_error(self, failure, item, spider):
         """Handle occurred on db interaction."""
