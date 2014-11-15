@@ -1,4 +1,6 @@
 *.pyc
 .gitignore
 dbs/
-*.html
+image/
+lots_ales_data.html
+aste.html

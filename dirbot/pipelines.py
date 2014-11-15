@@ -139,6 +139,8 @@ class MySQLStorePipeline(object):
                     WHERE guid=%s
             	""", (item['maxlot'], item['sales_number'], item['status'], item['downloadhref'], item['sale_total'], now, 'layout', guid))
             	spider.log("ITEM ASTE UPDATE in db: %s %r" % (guid, item))
+	    
+	        mailer.send(to=["info@artecielo.com"], subject="Completo Asta inserita:"+item['sales_number'], body="Ho aggiornato i seguenti dati:\n Asta:"+item['sales_number']+'\n'+"Lotti:"+str(item['maxlot']+"\n""Status:"+item['status']+"\n"+"DownloadHref: http://www.sothebys.com"+item['downloadhref']))
 		
 	    	#print "UPDATE guid: %s" % (guid)
 	    	#print "UPDATE maxlot: %s" % (item['maxlot'])
@@ -151,9 +153,9 @@ class MySQLStorePipeline(object):
 	    	print "UPDATE ERROR sale_total: %s" % (item['sale_total'])
 	    	print "UPDATE ERROR status: %s" % (item['status'])
 
-	elif qstatus:
-		for cc in qstatus:
-	    	    mailer.send(to=["info@artecielo.com"], subject="Attenzione! Quarentena aste:"+cc[2], body="Hai aste in quarantena:\n Asta:"+cc[1]+'\n'+"Data:"+cc[3])
+	#elif qstatus:
+	#	for cc in qstatus:
+	#    	    mailer.send(to=["info@artecielo.com"], subject="Attenzione! Quarentena aste:"+cc[2], body="Hai aste in quarantena:\n Asta:"+cc[1]+'\n'+"Data:"+cc[3])
         else:
 	    ##very important here: some fields are update in UPDATE ASTE (second step): they are item[downloadhref] and item[maxlot] 
             conn.execute("""
@@ -161,7 +163,6 @@ class MySQLStorePipeline(object):
                 VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """, ( guid, item['name'], item['asta'], item['date'], item['linkurl'], 'downloadhref', item['location'], 'maxlot', item['status'], 'sales_number', 'layout', now))
             spider.log("ITEM STORED in t.ASTE: %s %r" % (guid, item))
-	    
 	    mailer.send(to=["info@artecielo.com"], subject="Nuova Asta inserita:"+item['asta'], body="Ho inserito alcune nuove aste:\n Asta:"+item['name']+'\n'+"Lotti:"+str(item['maxlot']))
             
     def _handle_error(self, failure, item, spider):
