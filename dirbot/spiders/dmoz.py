@@ -68,7 +68,7 @@ class DmozSpider(BaseSpider):
 	    item['sale_total'] = 0
             lotpage = item['linkurl'] = sel.xpath("//div[@class='description']/a/@href").extract()[p]
 	    
-	    open('aste.html', 'wb').write(response.body)
+	    #open('aste.html', 'wb').write(response.body)
 	    #print 'LOTPAGE: %s' % (lotpage)
 	    #print "Date : %s" % (item['date'])
             #item['image'] = sel.xpath("//div[@class='image']//img/@serc").extract()
@@ -96,7 +96,7 @@ class DmozSpider(BaseSpider):
 
         One time firlds are recovery, they are updated in the table t.aste
         """
-	open('lots_ales_data.html', 'wb').write(response.body)
+	#open('lots_ales_data.html', 'wb').write(response.body)
 	print 'RESPONSE: %s' % response
         items = []
 	sel = Selector(response)
@@ -154,7 +154,7 @@ class DmozSpider(BaseSpider):
 	if lot number is equala at t.aste.maxlot sent a mail at info at artecielo dot com
 
         """
-	open('opere.html', 'wb').write(response.body)
+	#open('opere.html', 'wb').write(response.body)
 
         items = []
 	sel = Selector(response)
@@ -224,7 +224,7 @@ class DmozSpider(BaseSpider):
         @url http://www.dmoz.org/Computers/Programming/Languages/Python/Resources/
         @scrapes name
         """
-	open('test.html', 'wb').write(response.body)
+	#open('test.html', 'wb').write(response.body)
 
         items = []
 	sel = Selector(response)
