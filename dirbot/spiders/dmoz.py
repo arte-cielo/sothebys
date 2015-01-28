@@ -16,6 +16,11 @@ mailer = MailSender()
 
 class DmozSpider(BaseSpider):
     name = "sothebys"
+    
+    def __init__(self, category=None, *args, **kwargs):
+        super(DmozSpider, self).__init__(*args, **kwargs)
+        #self.start_urls = ['http://www.example.com/categories/%s' % category]
+
     allowed_domains = ["sothebys.com"]
     start_urls = [
         "http://www.sothebys.com/en/auctions.html",
@@ -61,7 +66,10 @@ class DmozSpider(BaseSpider):
 	    item['asta'] = self.name
 	    item['maxlot'] = 0
 	    item['sales_number'] = 0
-	    item['layout'] = ""
+            try:
+	        item['layout'] = category
+	    except:
+	        item['layout'] = ''
 	    ## the first run is with flag 'Q'. It then is updated with value C in (parse_lot_sales_date) if all is ok
 	    ## otherwiese remain with Q = Quarantena status 
 	    item['status'] = "Q"
@@ -77,6 +85,7 @@ class DmozSpider(BaseSpider):
 	    
 	    next_page = [('http://www.sothebys.com' + str(lotpage))]
     	    #if not not next_page:
+    	    print 'NEXTPAGEE: %s' % next_page
 	    items.append(Request(next_page[0], self.parse_lot_sales_data))
 
 	    items.append(item)
