@@ -137,6 +137,7 @@ class MySQLStorePipeline(object):
                     UPDATE aste2
                     SET maxlot=%s, sales_number=%s, status=%s, downloadhref=%s, sale_total=%s, update_date=%s, layout=%s
                     WHERE guid=%s
+		    AND status <> "CD"
             	""", (item['maxlot'], item['sales_number'], item['status'], item['downloadhref'], item['sale_total'], now, 'layout', guid))
             	spider.log("ITEM ASTE UPDATE in db: %s %r" % (guid, item))
 	    
