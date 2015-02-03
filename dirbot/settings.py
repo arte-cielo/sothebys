@@ -19,7 +19,8 @@ ITEM_PIPELINES = {'dirbot.pipelines.MyImagesPipeline': 1}
 ITEM_PIPELINES = {'dirbot.pipelines.MySQLStorePipeline'}
 #ITEM_PIPELINES = {'scrapy.contrib.pipeline.images.ImagesPipeline': 1}
 
-IMAGES_STORE = '/home/sothebys/image'
+#IMAGES_STORE = '/home/sothebys/image'
+IMAGES_STORE = '/home/grdnmrc/SOTHEBY/sothebys'
 IMAGES_EXPIRES = 90
 
 IMAGES_THUMBS = {
@@ -30,12 +31,6 @@ IMAGES_THUMBS = {
 #IMAGES_MIN_HEIGHT = 40
 #IMAGES_MIN_WIDTH = 40
 
-#DATABASE = {'drivername': 'mysql',
-#            'host': '192.168.76',
-#            'port': '3306',
-#            'username': 'root',
-#            'password': 'blacking',
-#            'database': 'artecielo'}
 
 DOWNLOADER_MIDDLEWARES = {
     'scrapy.contrib.downloadermiddleware.httpproxy.HttpProxyMiddleware': 110,
