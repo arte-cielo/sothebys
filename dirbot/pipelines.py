@@ -162,7 +162,7 @@ class MySQLStorePipeline(object):
             conn.execute("""
                 INSERT INTO aste2 ( guid, name, asta, date, linkurl, downloadhref, location, maxlot, status, sales_number, layout, update_date, calendario_id, caseasta_id)
                 VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-            """, ( guid, item['name'], item['asta'], item['date'], item['linkurl'], 'downloadhref', item['location'], 'maxlot', item['status'], 'sales_number', 'layout', now, 1, 1))
+            """, ( guid, item['name'], item['asta'], item['date'], item['linkurl'], 'downloadhref', item['location'], 'maxlot', item['status'], 'sales_number', 'layout', now, 999, 1))
             spider.log("ITEM STORED in t.ASTE: %s %r" % (guid, item))
 	    mailer.send(to=["info@artecielo.com"], subject="Nuova Asta inserita:"+item['asta'], body="Ho inserito alcune nuove aste:\n Asta:"+item['name']+'\n'+"Lotti:"+str(item['maxlot']))
             
