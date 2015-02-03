@@ -17,13 +17,23 @@ mailer = MailSender()
 class DmozSpider(BaseSpider):
     name = "sothebys"
     
-    def __init__(self, category=None, *args, **kwargs):
+    def __init__(self, facility=None, *args, **kwargs):
         super(DmozSpider, self).__init__(*args, **kwargs)
         #self.start_urls = ['http://www.example.com/categories/%s' % category]
 
+        ## introduce facility costructor
+        #@ facility is:
+        #@ - more start_urls = 1 
+        #@ - custom category = 2
+
+        #@ for example:
+        #@ scrapy crawl sothebys -a facility=1 [ -a domain=system]
+  
     allowed_domains = ["sothebys.com"]
     start_urls = [
-        "http://www.sothebys.com/en/auctions.html",
+        #"http://www.sothebys.com/en/auctions/2015/important-jewels-n09310.html",
+        #"http://www.sothebys.com/en/auctions/2015/contemporary-art-evening-auction-l15020.html",
+	"http://www.sothebys.com/en/auctions/2015/contemporary-art-day-auction-l15021.html",
     ]
 
     def parse(self, response):
@@ -35,7 +45,6 @@ class DmozSpider(BaseSpider):
     	
     	items = []
     	sel = Selector(response)
-	## search after a method for this
     	link_next = sel.xpath("//div[@class='topmenu-inner-wrap']/a[@class='preferred logged-out']/@href").extract()
 	#print "LINK_NEXT: %s" % (link_next)
 	
@@ -46,44 +55,56 @@ class DmozSpider(BaseSpider):
 	print "CURRENT_PAGE: %s" % (current_page)
 	print "ELEMENT_ONPAGE: %s" % (element_onpage)
 	print "TOT_PAGE: %s" % (tot_page)
-	print self.name
+	print self.start_urls
     	
-	pp = len(sel.xpath("//span[@class='location']/text()").extract())
+	#pp = len(sel.xpath("//span[@class='location']/text()").extract())
+	pp = len(self.start_urls)
         #--
-	
-	for p in range(0,pp):
+
+	for p in range(0,1):
             item = AsteWebsite()
 
 	    item['linkurl'] = link_next
 	    ## i need to scan multiple article class
             ## here for documentation : http://doc.scrapy.org/en/latest/topics/selectors.html 
-            item['location'] = sel.xpath("//span[@class='location']/text()").extract()[p].encode('utf-8').strip()
-            item['linkurl'] = sel.xpath("//div[@class='description']/a/@href").extract()[p]
+            #item['location'] = sel.xpath("//span[@class='location']/text()").extract()[p].encode('utf-8').strip()
+            item['location'] = sel.xpath("//*[@id='bodyWrap']/div[2]/div[3]/div[2]/div[1]/div[2]/ul/li/div/h3/text()").extract()[p].encode('ascii','ignore').strip()
+            #item['linkurl'] = sel.xpath("//div[@class='description']/a/@href").extract()[p]
+            item['linkurl'] = self.start_urls[p]
 	    ## this field keep an url page of asta; it server on pagelot download function
-	    item['downloadhref'] = sel.xpath("//*[@id='eventdetail-carousel']/ul/li[2]/a/@href").extract()
-            item['date'] = sel.xpath("//div[@class='vevent']/time/text()").extract()[p]
-            item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
+	    #item['downloadhref'] = sel.xpath("//*[@id='eventdetail-carousel']/ul/li[2]/a/@href").extract()
+	    item['downloadhref'] = self.start_urls[p]
+            #item['date'] = sel.xpath("//div[@class='vevent']/time/text()").extract()[p]
+            item['date'] = sel.xpath("//*[@id='x-event-date']/text()").extract()[0].strip()[p]
+            #item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
+	    item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
+	   
 	    item['asta'] = self.name
-	    item['maxlot'] = 0
-	    item['sales_number'] = 0
+            item['maxlot'] = sel.xpath("//div[@class='eventdetail-saleinfo']/span/text()").extract()[1].split()[2]
+	    #item['maxlot'] = 0
+            item['sales_number'] = sel.xpath("//div[@class='eventdetail-saleinfo']/span/text()").extract()[0].split()[2]
+	    #item['sales_number'] = 0
             try:
-	        item['layout'] = category
+	        item['layout'] = facility
 	    except:
 	        item['layout'] = ''
 	    ## the first run is with flag 'Q'. It then is updated with value C in (parse_lot_sales_date) if all is ok
 	    ## otherwiese remain with Q = Quarantena status 
 	    item['status'] = "Q"
 	    item['sale_total'] = 0
-            lotpage = item['linkurl'] = sel.xpath("//div[@class='description']/a/@href").extract()[p]
+            #lotpage = item['linkurl'] = sel.xpath("//div[@class='description']/a/@href").extract()[p]
+            lotpage = item['linkurl'] = self.start_urls[p]
 	    
 	    #open('aste.html', 'wb').write(response.body)
-	    #print 'LOTPAGE: %s' % (lotpage)
+	    print 'LOTPAGE: %s' % (lotpage)
+	    print 'ASTA: %s' % self.name
 	    #print "Date : %s" % (item['date'])
             #item['image'] = sel.xpath("//div[@class='image']//img/@serc").extract()
 
 	    items.append(item)
 	    
-	    next_page = [('http://www.sothebys.com' + str(lotpage))]
+	    ##next_page = [('http://www.sothebys.com' + str(lotpage))]
+	    next_page = [(lotpage)]
     	    #if not not next_page:
     	    print 'NEXTPAGEE: %s' % next_page
 	    items.append(Request(next_page[0], self.parse_lot_sales_data))
@@ -143,7 +164,8 @@ class DmozSpider(BaseSpider):
 
 	##[downloadhref] This is the official href link to initial download lot for asta name. Here is 
 	## i update
-	item['downloadhref'] = sel.xpath("//*[@id='eventdetail-carousel']/ul/li[2]/a/@href").extract()[0]
+	#item['downloadhref'] = sel.xpath("//*[@id='eventdetail-carousel']/ul/li[2]/a/@href").extract()[0]
+	item['downloadhref'] = self.start_urls
 	
 	item['layout'] = ""
 

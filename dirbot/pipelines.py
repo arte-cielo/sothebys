@@ -13,6 +13,10 @@ from hashlib import md5
 from scrapy import *
 from scrapy.mail import MailSender
 
+import string
+import random
+
+
 mailer = MailSender(smtphost="mx.artecielo.com",mailfrom="scrapy@localhost",smtpuser="info@artecielo.com",smtppass="Blacking1")
 
 class FilterWordsPipeline(object):
@@ -137,7 +141,7 @@ class MySQLStorePipeline(object):
                     UPDATE aste2
                     SET maxlot=%s, sales_number=%s, status=%s, downloadhref=%s, sale_total=%s, update_date=%s, layout=%s
                     WHERE guid=%s
-		    AND status <> "CD"
+		    AND status <> "CD" AND sale_total = 0
             	""", (item['maxlot'], item['sales_number'], item['status'], item['downloadhref'], item['sale_total'], now, 'layout', guid))
             	spider.log("ITEM ASTE UPDATE in db: %s %r" % (guid, item))
 	    
@@ -176,7 +180,7 @@ class MySQLStorePipeline(object):
         # hash based solely in the url field
         #return md5(item['location']).hexdigest()
         #returmd5(item['location']).hexdigest()
-        epure = item["name"].encode('ascii','ignore')
+        epure = item["name"].encode('ascii','ignore')+(''.join(random.choice(string.ascii_uppercase) for i in range(12)))
         #epure = str(item["name"])
 	print 'EPURE: %s' % epure
         #return hashlib.md5(item["name"]).encode('acii','ignore').hexdigest()
