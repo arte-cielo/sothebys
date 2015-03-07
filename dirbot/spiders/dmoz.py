@@ -33,7 +33,14 @@ class DmozSpider(BaseSpider):
     start_urls = [
         #"http://www.sothebys.com/en/auctions/2015/important-jewels-n09310.html",
         #"http://www.sothebys.com/en/auctions/2015/contemporary-art-evening-auction-l15020.html",
-	"http://www.sothebys.com/en/auctions/2015/contemporary-art-day-auction-l15021.html",
+	#"http://www.sothebys.com/en/auctions/2015/contemporary-art-day-auction-l15021.html",
+	#http://www.sothebys.com/en/auctions/2015/collections-ducs-rochechouart-mortemart-pf1529.html",
+	#"http://www.sothebys.com/en/auctions/2015/one-in-eleven-l15018.html",
+	#"http://www.sothebys.com/en/auctions/2015/of-royal-and-noble-descent-l15306.html",
+	"http://www.sothebys.com/en/auctions/2015/important-20th-c-design-n09315.html",
+	#"http://www.sothebys.com/en/auctions/2015/contemporary-curated-n09316.html",
+	#"http://www.sothebys.com/en/auctions/2015/bande-dessinee-pf1555.html",
+	#"http://www.sothebys.com/en/auctions/2015/so-peter-lewis-n09324.html",
     ]
 
     def parse(self, response):
@@ -48,13 +55,13 @@ class DmozSpider(BaseSpider):
     	link_next = sel.xpath("//div[@class='topmenu-inner-wrap']/a[@class='preferred logged-out']/@href").extract()
 	#print "LINK_NEXT: %s" % (link_next)
 	
-	current_page = sel.xpath("//span[@class='page-info']/text()").extract()[0].split()[0]
-	element_onpage = sel.xpath("//span[@class='page-info']/text()").extract()[0].split()[2]
-	tot_page = sel.xpath("//span[@class='page-info']/text()").extract()[0].split()[4]
+	#current_page = sel.xpath("//span[@class='page-info']/text()").extract()[0].split()[0]
+	#element_onpage = sel.xpath("//span[@class='page-info']/text()").extract()[0].split()[2]
+	#tot_page = sel.xpath("//span[@class='page-info']/text()").extract()[0].split()[4]
         print "************************************************:dmoz"
-	print "CURRENT_PAGE: %s" % (current_page)
-	print "ELEMENT_ONPAGE: %s" % (element_onpage)
-	print "TOT_PAGE: %s" % (tot_page)
+	#print "CURRENT_PAGE: %s" % (current_page)
+	#print "ELEMENT_ONPAGE: %s" % (element_onpage)
+	#print "TOT_PAGE: %s" % (tot_page)
 	print self.start_urls
     	
 	#pp = len(sel.xpath("//span[@class='location']/text()").extract())
@@ -68,20 +75,29 @@ class DmozSpider(BaseSpider):
 	    ## i need to scan multiple article class
             ## here for documentation : http://doc.scrapy.org/en/latest/topics/selectors.html 
             #item['location'] = sel.xpath("//span[@class='location']/text()").extract()[p].encode('utf-8').strip()
-            item['location'] = sel.xpath("//*[@id='bodyWrap']/div[2]/div[3]/div[2]/div[1]/div[2]/ul/li/div/h3/text()").extract()[p].encode('ascii','ignore').strip()
+            #item['location'] = sel.xpath("//*[@id='bodyWrap']/div[2]/div[3]/div[2]/div[1]/div[2]/ul/li/div/h3/text()").extract()[p].encode('ascii','ignore').strip()
+	    try:
+                item['location'] = sel.xpath("//*[@id='bodyWrap']/div[2]/div[3]/div[2]/div[1]/div[1]/ul/li/div/h3/text()").extract()[p].encode('ascii','ignore').strip()
+	    except:
+		#item['location'] = sel.xpath("//*[@id='bodyWrap']/div[2]/div[3]/div[2]/div[1]/div[2]/ul/li/div/h3/text()").extract()[0]
+		item['location'] = sel.xpath("//*[@id='bodyWrap']/div[2]/div[3]/div[2]/div[1]/div[2]/ul/li/div/h3/text()").extract()
+
             #item['linkurl'] = sel.xpath("//div[@class='description']/a/@href").extract()[p]
-            item['linkurl'] = self.start_urls[p]
+            item['linkurl'] = self.start_urls[p].replace("http://www.sothebys.com","")
 	    ## this field keep an url page of asta; it server on pagelot download function
 	    #item['downloadhref'] = sel.xpath("//*[@id='eventdetail-carousel']/ul/li[2]/a/@href").extract()
-	    item['downloadhref'] = self.start_urls[p]
+	    item['downloadhref'] = self.start_urls[p].replace("http://www.sothebys.com","").replace("/en/auctions/","/en/auctions/ecatalogue/").replace(".html","")+"/lot.1.html"
             #item['date'] = sel.xpath("//div[@class='vevent']/time/text()").extract()[p]
             item['date'] = sel.xpath("//*[@id='x-event-date']/text()").extract()[0].strip()[p]
             #item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
-	    item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
+	    #item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
+	    item['name'] = sel.xpath("/html/head/title/text()").extract()[0].encode('ascii','ignore').replace("|","").replace("Sotheby's","").strip()
 	   
 	    item['asta'] = self.name
-            item['maxlot'] = sel.xpath("//div[@class='eventdetail-saleinfo']/span/text()").extract()[1].split()[2]
-	    #item['maxlot'] = 0
+	    try:
+                item['maxlot'] = sel.xpath("//div[@class='eventdetail-saleinfo']/span/text()").extract()[1].split()[2]
+	    except:
+	        item['maxlot'] = 0
             item['sales_number'] = sel.xpath("//div[@class='eventdetail-saleinfo']/span/text()").extract()[0].split()[2]
 	    #item['sales_number'] = 0
             try:
@@ -90,10 +106,11 @@ class DmozSpider(BaseSpider):
 	        item['layout'] = ''
 	    ## the first run is with flag 'Q'. It then is updated with value C in (parse_lot_sales_date) if all is ok
 	    ## otherwiese remain with Q = Quarantena status 
-	    item['status'] = "Q"
+	    item['status'] = "C"
 	    item['sale_total'] = 0
             #lotpage = item['linkurl'] = sel.xpath("//div[@class='description']/a/@href").extract()[p]
-            lotpage = item['linkurl'] = self.start_urls[p]
+            #lotpage = item['linkurl'] = self.start_urls[p]
+            lotpage = self.start_urls[p]
 	    
 	    #open('aste.html', 'wb').write(response.body)
 	    print 'LOTPAGE: %s' % (lotpage)
@@ -144,7 +161,10 @@ class DmozSpider(BaseSpider):
 
 	##[maxlot] - Riflette il numero complessivo dei lotti che compongono l'asta.
         ##questo dato va aggiornato nella tabella t.aste.maxlot
-        item['maxlot'] = sel.xpath("//div[@class='eventdetail-saleinfo']/span/text()").extract()[1].split()[2]
+	try:
+            item['maxlot'] = sel.xpath("//div[@class='eventdetail-saleinfo']/span/text()").extract()[1].split()[2]
+	except:
+	    item['maxlot']=0
 	    
 	##[time] - Riporta l'ora dell'evento asta.
         #[TO DO] - Non ancora incorporato nella tabella aste
@@ -165,7 +185,9 @@ class DmozSpider(BaseSpider):
 	##[downloadhref] This is the official href link to initial download lot for asta name. Here is 
 	## i update
 	#item['downloadhref'] = sel.xpath("//*[@id='eventdetail-carousel']/ul/li[2]/a/@href").extract()[0]
-	item['downloadhref'] = self.start_urls
+	#item['downloadhref'] = self.start_urls
+	item['downloadhref'] = self.start_urls[p].replace("http://www.sothebys.com","").replace("/en/auctions/","/en/auctions/ecatalogue/").replace(".html","")+"/lot.1.html"
+	#item['downloadhref'] = self.start_urls[p].replace("http://www.sothebys.com","").replace("/en/auctions/","/en/auctions/ecatalogue/")+"/lot.1.html"
 	
 	item['layout'] = ""
 
@@ -287,7 +309,8 @@ class DmozSpider(BaseSpider):
 
 	    ##[date] - Questa rules Recupera la data di nascita dell'artista. Il dato va spostato in 
 	    ##una futura tabella ARTISTI(artisti)
-            item['date'] = sel.xpath("//div[@class='lotdetail-artist-dates']/text()").extract()
+            #item['date'] = sel.xpath("//div[@class='lotdetail-artist-dates']/text()").extract()
+            item['date'] = sel.xpath("//*[@id='x-event-date']/text()").extract()[0].strip()
 
 	    ##[time] - Riflette l'ora dell'evento dell'asta. Il dato va inserito nella tabella ASTE(aste)
             item['time'] = sel.xpath("//div[@class='details vevent']/time/text()").extract()[0:2][1].strip()

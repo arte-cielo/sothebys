@@ -139,10 +139,10 @@ class MySQLStorePipeline(object):
 	    try:
             	conn.execute("""
                     UPDATE aste2
-                    SET maxlot=%s, sales_number=%s, status=%s, downloadhref=%s, sale_total=%s, update_date=%s, layout=%s
+                    SET maxlot=%s, sales_number=%s, status=%s, downloadhref=%s, sale_total=%s, update_date=%s, maxlot=%s, layout=%s
                     WHERE guid=%s
 		    AND status <> "CD" AND sale_total = 0
-            	""", (item['maxlot'], item['sales_number'], item['status'], item['downloadhref'], item['sale_total'], now, 'layout', guid))
+            	""", (item['maxlot'], item['sales_number'], item['status'], item['downloadhref'], item['sale_total'], now, item['maxlot'], 'layout', guid))
             	spider.log("ITEM ASTE UPDATE in db: %s %r" % (guid, item))
 	    
 	        mailer.send(to=["info@artecielo.com"], subject="Completo Asta inserita:"+item['sales_number'], body="Ho aggiornato i seguenti dati:\n Asta:"+item['sales_number']+'\n'+"Lotti:"+str(item['maxlot']+"\n""Status:"+item['status']+"\n"+"DownloadHref: http://www.sothebys.com"+item['downloadhref']))
@@ -166,7 +166,7 @@ class MySQLStorePipeline(object):
             conn.execute("""
                 INSERT INTO aste2 ( guid, name, asta, date, linkurl, downloadhref, location, maxlot, status, sales_number, layout, update_date, calendario_id, caseasta_id)
                 VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-            """, ( guid, item['name'], item['asta'], item['date'], item['linkurl'], 'downloadhref', item['location'], 'maxlot', item['status'], 'sales_number', 'layout', now, 999, 1))
+            """, ( guid, item['name'], item['asta'], item['date'], item['linkurl'], item['downloadhref'], item['location'], item['maxlot'], item['status'], item['sales_number'], 'layout', now, 999, 1))
             spider.log("ITEM STORED in t.ASTE: %s %r" % (guid, item))
 	    mailer.send(to=["info@artecielo.com"], subject="Nuova Asta inserita:"+item['asta'], body="Ho inserito alcune nuove aste:\n Asta:"+item['name']+'\n'+"Lotti:"+str(item['maxlot']))
             
@@ -180,8 +180,9 @@ class MySQLStorePipeline(object):
         # hash based solely in the url field
         #return md5(item['location']).hexdigest()
         #returmd5(item['location']).hexdigest()
-        epure = item["name"].encode('ascii','ignore')+(''.join(random.choice(string.ascii_uppercase) for i in range(12)))
-        #epure = str(item["name"])
+        #epure = item["name"].encode('ascii','ignore')+(''.join(random.choice(string.ascii_uppercase) for i in range(12)))
+        #epure = item["linkurl"]
+        epure = str(item["name"])
 	print 'EPURE: %s' % epure
         #return hashlib.md5(item["name"]).encode('acii','ignore').hexdigest()
         return hashlib.md5(epure).hexdigest()
