@@ -134,15 +134,18 @@ class MySQLStorePipeline(object):
 	print "AFTERDOWNLODHREF: %s" % item['downloadhref']
 	print "AFTERSALE_TOTAL: %s" % item['sale_total']
 	#print "AFTERASTA: %s" % item['asta']
+	print "LINKURL: %s" % item['linkurl']
+	print "LOCATION: %s" % item['location']
+	print "DATE: %s" % item['date']
 	
 	if aste2:
 	    try:
             	conn.execute("""
                     UPDATE aste2
-                    SET maxlot=%s, sales_number=%s, status=%s, downloadhref=%s, sale_total=%s, update_date=%s, maxlot=%s, layout=%s
+                    SET maxlot=%s, sales_number=%s, status=%s, date=%s downloadhref=%s, sale_total=%s, update_date=%s, maxlot=%s, layout=%s
                     WHERE guid=%s
 		    AND status <> "CD" AND sale_total = 0
-            	""", (item['maxlot'], item['sales_number'], item['status'], item['downloadhref'], item['sale_total'], now, item['maxlot'], 'layout', guid))
+            	""", (item['maxlot'], item['sales_number'], item['status'], item['date'], item['downloadhref'], item['sale_total'], now, item['maxlot'], 'layout', guid))
             	spider.log("ITEM ASTE UPDATE in db: %s %r" % (guid, item))
 	    
 	        mailer.send(to=["info@artecielo.com"], subject="Completo Asta inserita:"+item['sales_number'], body="Ho aggiornato i seguenti dati:\n Asta:"+item['sales_number']+'\n'+"Lotti:"+str(item['maxlot']+"\n""Status:"+item['status']+"\n"+"DownloadHref: http://www.sothebys.com"+item['downloadhref']))
@@ -181,8 +184,8 @@ class MySQLStorePipeline(object):
         #return md5(item['location']).hexdigest()
         #returmd5(item['location']).hexdigest()
         #epure = item["name"].encode('ascii','ignore')+(''.join(random.choice(string.ascii_uppercase) for i in range(12)))
-        #epure = item["linkurl"]
-        epure = str(item["name"])
+        epure = item["linkurl"]
+        #epure = str(item["name"])
 	print 'EPURE: %s' % epure
         #return hashlib.md5(item["name"]).encode('acii','ignore').hexdigest()
         return hashlib.md5(epure).hexdigest()

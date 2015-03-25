@@ -25,19 +25,21 @@ class DmozSpider(BaseSpider):
         #@ facility is:
         #@ - more start_urls = 1 
         #@ - custom category = 2
+        #@ - single asta = 3
 
         #@ for example:
         #@ scrapy crawl sothebys -a facility=1 [ -a domain=system]
   
     allowed_domains = ["sothebys.com"]
     start_urls = [
+	"http://www.sothebys.com/en/auctions/2014/fine-jewels-l14050.html"
         #"http://www.sothebys.com/en/auctions/2015/important-jewels-n09310.html",
         #"http://www.sothebys.com/en/auctions/2015/contemporary-art-evening-auction-l15020.html",
 	#"http://www.sothebys.com/en/auctions/2015/contemporary-art-day-auction-l15021.html",
 	#http://www.sothebys.com/en/auctions/2015/collections-ducs-rochechouart-mortemart-pf1529.html",
 	#"http://www.sothebys.com/en/auctions/2015/one-in-eleven-l15018.html",
 	#"http://www.sothebys.com/en/auctions/2015/of-royal-and-noble-descent-l15306.html",
-	"http://www.sothebys.com/en/auctions/2015/important-20th-c-design-n09315.html",
+	#"http://www.sothebys.com/en/auctions/2015/important-20th-c-design-n09315.html",
 	#"http://www.sothebys.com/en/auctions/2015/contemporary-curated-n09316.html",
 	#"http://www.sothebys.com/en/auctions/2015/bande-dessinee-pf1555.html",
 	#"http://www.sothebys.com/en/auctions/2015/so-peter-lewis-n09324.html",
@@ -66,6 +68,7 @@ class DmozSpider(BaseSpider):
     	
 	#pp = len(sel.xpath("//span[@class='location']/text()").extract())
 	pp = len(self.start_urls)
+	print 'PPPPP: %s' % pp
         #--
 
 	for p in range(0,1):
@@ -80,7 +83,8 @@ class DmozSpider(BaseSpider):
                 item['location'] = sel.xpath("//*[@id='bodyWrap']/div[2]/div[3]/div[2]/div[1]/div[1]/ul/li/div/h3/text()").extract()[p].encode('ascii','ignore').strip()
 	    except:
 		#item['location'] = sel.xpath("//*[@id='bodyWrap']/div[2]/div[3]/div[2]/div[1]/div[2]/ul/li/div/h3/text()").extract()[0]
-		item['location'] = sel.xpath("//*[@id='bodyWrap']/div[2]/div[3]/div[2]/div[1]/div[2]/ul/li/div/h3/text()").extract()
+		#item['location'] = sel.xpath("//*[@id='bodyWrap']/div[2]/div[3]/div[2]/div[1]/div[2]/ul/li/div/h3/text()").extract()
+		item['location'] = sel.xpath("//span[@class='location']/text()").extract()[:1][0].strip()
 
             #item['linkurl'] = sel.xpath("//div[@class='description']/a/@href").extract()[p]
             item['linkurl'] = self.start_urls[p].replace("http://www.sothebys.com","")
@@ -88,7 +92,7 @@ class DmozSpider(BaseSpider):
 	    #item['downloadhref'] = sel.xpath("//*[@id='eventdetail-carousel']/ul/li[2]/a/@href").extract()
 	    item['downloadhref'] = self.start_urls[p].replace("http://www.sothebys.com","").replace("/en/auctions/","/en/auctions/ecatalogue/").replace(".html","")+"/lot.1.html"
             #item['date'] = sel.xpath("//div[@class='vevent']/time/text()").extract()[p]
-            item['date'] = sel.xpath("//*[@id='x-event-date']/text()").extract()[0].strip()[p]
+            item['date'] = sel.xpath("//*[@id='x-event-date']/text()").extract()[0].strip()
             #item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
 	    #item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
 	    item['name'] = sel.xpath("/html/head/title/text()").extract()[0].encode('ascii','ignore').replace("|","").replace("Sotheby's","").strip()
@@ -185,11 +189,12 @@ class DmozSpider(BaseSpider):
 	##[downloadhref] This is the official href link to initial download lot for asta name. Here is 
 	## i update
 	#item['downloadhref'] = sel.xpath("//*[@id='eventdetail-carousel']/ul/li[2]/a/@href").extract()[0]
-	#item['downloadhref'] = self.start_urls
-	item['downloadhref'] = self.start_urls[p].replace("http://www.sothebys.com","").replace("/en/auctions/","/en/auctions/ecatalogue/").replace(".html","")+"/lot.1.html"
+	item['downloadhref'] = self.start_urls
+	#item['downloadhref'] = self.start_urls.replace("http://www.sothebys.com","").replace("/en/auctions/","/en/auctions/ecatalogue/").replace(".html","")+"/lot.1.html"
 	#item['downloadhref'] = self.start_urls[p].replace("http://www.sothebys.com","").replace("/en/auctions/","/en/auctions/ecatalogue/")+"/lot.1.html"
-	
 	item['layout'] = ""
+	
+	item['linkurl'] = self.start_urls
 
 	link = sel.xpath('//div[@class="zoom-hover-trigger"]//img/@src').extract()
 	#next_page = [('http://www.sothebys.com' + str(lotpage))]
