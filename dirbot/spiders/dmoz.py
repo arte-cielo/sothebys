@@ -32,7 +32,18 @@ class DmozSpider(BaseSpider):
   
     allowed_domains = ["sothebys.com"]
     start_urls = [
-	"http://www.sothebys.com/en/auctions/2014/fine-jewels-l14050.html"
+	"http://www.sothebys.com/en/auctions/2014/indiana-historical-society-audubon-n09133.html",
+	#"http://www.sothebys.com/en/auctions/2014/waldorf-collection-n09131.html" --,
+	#"http://www.sothebys.com/en/auctions/2014/made-in-britain-l14144.html",
+	#"http://www.sothebys.com/en/auctions/2014/exploration-discovery-library-franklin-brooke-hitching-l14411.html" --,
+	#"http://www.sothebys.com/en/auctions/2014/chinese-paintings-hk0516.html",
+	#"http://www.sothebys.com/en/auctions/2014/american-paintings-drawings-sculpture-n09125.html"
+	#"http://www.sothebys.com/en/auctions/2014/the-new-york-sale-n09215.html",
+	#"http://www.sothebys.com/en/auctions/2015/private-collection-of-important-wines-hk0621.html",
+	#"http://www.sothebys.com/en/auctions/2014/20th-century-chinese-art-hk0498.html",
+	#"http://www.sothebys.com/en/auctions/2014/modern-contemporary-southeast-asian-paintings-hk0529.html"
+	#"http://www.sothebys.com/en/auctions/2014/contemporary-asian-art-hk0497.html",
+	#"http://www.sothebys.com/en/auctions/2014/fine-jewels-l14050.html"
         #"http://www.sothebys.com/en/auctions/2015/important-jewels-n09310.html",
         #"http://www.sothebys.com/en/auctions/2015/contemporary-art-evening-auction-l15020.html",
 	#"http://www.sothebys.com/en/auctions/2015/contemporary-art-day-auction-l15021.html",

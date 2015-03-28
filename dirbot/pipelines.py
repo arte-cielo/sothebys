@@ -135,8 +135,8 @@ class MySQLStorePipeline(object):
 	print "AFTERSALE_TOTAL: %s" % item['sale_total']
 	#print "AFTERASTA: %s" % item['asta']
 	print "LINKURL: %s" % item['linkurl']
-	print "LOCATION: %s" % item['location']
-	print "DATE: %s" % item['date']
+	#print "LOCATION: %s" % item['location']
+	#print "DATE: %s" % item['date']
 	
 	if aste2:
 	    try:
@@ -184,7 +184,7 @@ class MySQLStorePipeline(object):
         #return md5(item['location']).hexdigest()
         #returmd5(item['location']).hexdigest()
         #epure = item["name"].encode('ascii','ignore')+(''.join(random.choice(string.ascii_uppercase) for i in range(12)))
-        epure = item["linkurl"]
+        epure = str(item["linkurl"])
         #epure = str(item["name"])
 	print 'EPURE: %s' % epure
         #return hashlib.md5(item["name"]).encode('acii','ignore').hexdigest()
