@@ -32,7 +32,18 @@ class DmozSpider(BaseSpider):
   
     allowed_domains = ["sothebys.com"]
     start_urls = [
-	"http://www.sothebys.com/en/auctions/2014/indiana-historical-society-audubon-n09133.html",
+	"http://www.sothebys.com/en/auctions/2014/american-art-n09148.html",
+	#"http://www.sothebys.com/en/auctions/2014/19th-century-european-art-n09143.html",
+	#"http://www.sothebys.com/en/auctions/2014/chinese-lacquer-from-baoyizhai-collection-part-i-hk0544.html",
+	#"http://www.sothebys.com/en/auctions/2014/fine-chinese-ceramics-works-of-art-hk0517.html",
+	#"http://www.sothebys.com/en/auctions/2014/contemporary-art-day-sale-n09142.html",
+	#"http://www.sothebys.com/en/auctions/2014/impressionist-modern-art-evening-sale-n09139.html",
+	#"http://www.sothebys.com/en/auctions/2014/art-impressionniste-et-moderne-pf1406.html",
+	#"http://www.sothebys.com/en/auctions/2014/bibliotheque-r-bl-pf1453.html" --,
+	#"http://www.sothebys.com/en/auctions/2014/impressionist-modern-art-day-sale-n09140.html",
+	#"http://www.sothebys.com/en/auctions/2014/impressionist-modern-art-day-sale-n09220.html",
+	#"http://www.sothebys.com/en/auctions/2014/old-master-british-paintings-day-l14037.html",
+	#"http://www.sothebys.com/en/auctions/2014/indiana-historical-society-audubon-n09133.html",
 	#"http://www.sothebys.com/en/auctions/2014/waldorf-collection-n09131.html" --,
 	#"http://www.sothebys.com/en/auctions/2014/made-in-britain-l14144.html",
 	#"http://www.sothebys.com/en/auctions/2014/exploration-discovery-library-franklin-brooke-hitching-l14411.html" --,
@@ -47,7 +58,7 @@ class DmozSpider(BaseSpider):
         #"http://www.sothebys.com/en/auctions/2015/important-jewels-n09310.html",
         #"http://www.sothebys.com/en/auctions/2015/contemporary-art-evening-auction-l15020.html",
 	#"http://www.sothebys.com/en/auctions/2015/contemporary-art-day-auction-l15021.html",
-	#http://www.sothebys.com/en/auctions/2015/collections-ducs-rochechouart-mortemart-pf1529.html",
+	#"http://www.sothebys.com/en/auctions/2015/collections-ducs-rochechouart-mortemart-pf1529.html",
 	#"http://www.sothebys.com/en/auctions/2015/one-in-eleven-l15018.html",
 	#"http://www.sothebys.com/en/auctions/2015/of-royal-and-noble-descent-l15306.html",
 	#"http://www.sothebys.com/en/auctions/2015/important-20th-c-design-n09315.html",
@@ -101,7 +112,8 @@ class DmozSpider(BaseSpider):
             item['linkurl'] = self.start_urls[p].replace("http://www.sothebys.com","")
 	    ## this field keep an url page of asta; it server on pagelot download function
 	    #item['downloadhref'] = sel.xpath("//*[@id='eventdetail-carousel']/ul/li[2]/a/@href").extract()
-	    item['downloadhref'] = self.start_urls[p].replace("http://www.sothebys.com","").replace("/en/auctions/","/en/auctions/ecatalogue/").replace(".html","")+"/lot.1.html"
+	    #item['downloadhref'] = self.start_urls[p].replace("http://www.sothebys.com","").replace("/en/auctions/","/en/auctions/ecatalogue/").replace(".html","")+"/lot.1.html"
+	    item['downloadhref'] = self.start_urls[p].replace("http://www.sothebys.com","").replace("/en/auctions/","/en/auctions/ecatalogue/").replace(".html","/")
             #item['date'] = sel.xpath("//div[@class='vevent']/time/text()").extract()[p]
             item['date'] = sel.xpath("//*[@id='x-event-date']/text()").extract()[0].strip()
             #item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
@@ -122,7 +134,8 @@ class DmozSpider(BaseSpider):
 	    ## the first run is with flag 'Q'. It then is updated with value C in (parse_lot_sales_date) if all is ok
 	    ## otherwiese remain with Q = Quarantena status 
 	    item['status'] = "C"
-	    item['sale_total'] = 0
+	    item['sale_total'] = sel.xpath("//div[@class='eventdetail-headerresults']/div/span/text()").extract()[0]
+	    #item['sale_total'] = 0
             #lotpage = item['linkurl'] = sel.xpath("//div[@class='description']/a/@href").extract()[p]
             #lotpage = item['linkurl'] = self.start_urls[p]
             lotpage = self.start_urls[p]
@@ -185,9 +198,10 @@ class DmozSpider(BaseSpider):
         #[TO DO] - Non ancora incorporato nella tabella aste
         ##questo dato va aggiornato nella tabella t.aste.time
         ##item['time'] = sel.xpath("//div[@class='eventdetail-eventtime']/time/text()").extract()[1].strip()
-	item['sale_total'] = [xx for xx in sel.xpath("//div[@class='eventdetail-headerresults']/div/span/text()").extract()]
-	if not item['sale_total']:
-		item['sale_total'] = 0
+	item['sale_total'] = sel.xpath("//div[@class='eventdetail-headerresults']/div/span/text()").extract()[0]
+	#item['sale_total'] = [xx for xx in sel.xpath("//div[@class='eventdetail-headerresults']/div/span/text()").extract()[0]]
+	#if not item['sale_total']:
+	#	item['sale_total'] = 0
 	#[x+1 if x >= 45 else x+5 for x in l]
 
 	##[sales_number] - Riporta il numero di sala dell asta.
@@ -203,7 +217,7 @@ class DmozSpider(BaseSpider):
 	item['downloadhref'] = self.start_urls
 	#item['downloadhref'] = self.start_urls.replace("http://www.sothebys.com","").replace("/en/auctions/","/en/auctions/ecatalogue/").replace(".html","")+"/lot.1.html"
 	#item['downloadhref'] = self.start_urls[p].replace("http://www.sothebys.com","").replace("/en/auctions/","/en/auctions/ecatalogue/")+"/lot.1.html"
-	item['layout'] = ""
+	item['layout'] = facility
 	
 	item['linkurl'] = self.start_urls
 
