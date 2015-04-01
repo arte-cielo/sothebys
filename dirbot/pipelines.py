@@ -100,7 +100,7 @@ class MySQLStorePipeline(object):
         """ )
         qstatus = conn.fetchall()
 
-	print qstatus	
+	#print 'AUCTIONS Q STATUS: %s' % qstatus	
 	#if qstatus:
 	#    mailer.send(to=["info@artecielo.com"], subject="Attenzione! Quarentena aste:"+qstatus[2], body="Hai aste in quarantena:\n Asta:"+qstatus[1]+'\n'+"Data:"+qstatus[3])
 			 
@@ -134,18 +134,18 @@ class MySQLStorePipeline(object):
 	print "AFTERDOWNLODHREF: %s" % item['downloadhref']
 	print "AFTERSALE_TOTAL: %s" % item['sale_total']
 	#print "AFTERASTA: %s" % item['asta']
-	print "LINKURL: %s" % item['linkurl']
+	print "AFTERLINKURL: %s" % item['linkurl']
 	#print "LOCATION: %s" % item['location']
-	#print "DATE: %s" % item['date']
+	print "AFTERGUID: %s" % guid
 	
 	if aste2:
 	    try:
             	conn.execute("""
                     UPDATE aste2
-                    SET maxlot=%s, sales_number=%s, status=%s, date=%s downloadhref=%s, sale_total=%s, update_date=%s, maxlot=%s, layout=%s
+                    SET maxlot=%s, sales_number=%s, status=%s, date=%s downloadhref=%s, sale_total=%s, update_date=%s, layout=%s
                     WHERE guid=%s
-		    AND status <> "CD" AND sale_total = 0
-            	""", (item['maxlot'], item['sales_number'], item['status'], item['date'], item['downloadhref'], item['sale_total'], now, item['maxlot'], 'layout', guid))
+		    AND status <> "CD" AND sale_total = 0 OR sale_total IS NULL
+            	""", (item['maxlot'], item['sales_number'], item['status'], item['date'], item['downloadhref'], item['sale_total'], now, 'layout', guid))
             	spider.log("ITEM ASTE UPDATE in db: %s %r" % (guid, item))
 	    
 	        mailer.send(to=["info@artecielo.com"], subject="Completo Asta inserita:"+item['sales_number'], body="Ho aggiornato i seguenti dati:\n Asta:"+item['sales_number']+'\n'+"Lotti:"+str(item['maxlot']+"\n""Status:"+item['status']+"\n"+"DownloadHref: http://www.sothebys.com"+item['downloadhref']))
@@ -154,12 +154,12 @@ class MySQLStorePipeline(object):
 	    	#print "UPDATE maxlot: %s" % (item['maxlot'])
 	    	#print "UPDATE sales_number: %s" % (item['sales_number'])
 	    except :
-		print 'UPDATE ASTE2 ERROR'
-	    	print "UPDATE ERROR guid: %s" % (guid)
-	    	print "UPDATE ERROR maxlot: %s" % (item['maxlot'])
-	    	print "UPDATE ERROR sales_number: %s" % (item['sales_number'])
-	    	print "UPDATE ERROR sale_total: %s" % (item['sale_total'])
-	    	print "UPDATE ERROR status: %s" % (item['status'])
+		print 'ERROR: UPDATE ASTE2 '
+	    	print "ERROR: UPDATE guid: %s" % (guid)
+	    	print "ERROR: UPDATE maxlot: %s" % (item['maxlot'])
+	    	print "ERROR: UPDATE sales_number: %s" % (item['sales_number'])
+	    	print "ERROR: UPDATE sale_total: %s" % (item['sale_total'])
+	    	print "ERROR: UPDATE status: %s" % (item['status'])
 
 	#elif qstatus:
 	#	for cc in qstatus:
