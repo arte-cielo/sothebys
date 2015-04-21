@@ -32,7 +32,8 @@ class DmozSpider(BaseSpider):
   
     allowed_domains = ["sothebys.com"]
     start_urls = [
-	"http://www.sothebys.com/en/auctions/2014/american-art-n09148.html",
+	"http://www.sothebys.com/en/auctions/2015/magnificent-jewels-n09331.html",
+	#"http://www.sothebys.com/en/auctions/2014/american-art-n09148.html",
 	#"http://www.sothebys.com/en/auctions/2014/19th-century-european-art-n09143.html",
 	#"http://www.sothebys.com/en/auctions/2014/chinese-lacquer-from-baoyizhai-collection-part-i-hk0544.html",
 	#"http://www.sothebys.com/en/auctions/2014/fine-chinese-ceramics-works-of-art-hk0517.html",
@@ -134,8 +135,10 @@ class DmozSpider(BaseSpider):
 	    ## the first run is with flag 'Q'. It then is updated with value C in (parse_lot_sales_date) if all is ok
 	    ## otherwiese remain with Q = Quarantena status 
 	    item['status'] = "C"
-	    item['sale_total'] = sel.xpath("//div[@class='eventdetail-headerresults']/div/span/text()").extract()[0]
-	    #item['sale_total'] = 0
+	    try:
+	        item['sale_total'] = sel.xpath("//div[@class='eventdetail-headerresults']/div/span/text()").extract()[0]
+	    except:
+	        item['sale_total'] = 0
             #lotpage = item['linkurl'] = sel.xpath("//div[@class='description']/a/@href").extract()[p]
             #lotpage = item['linkurl'] = self.start_urls[p]
             lotpage = self.start_urls[p]
