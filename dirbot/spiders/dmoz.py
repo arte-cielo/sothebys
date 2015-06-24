@@ -34,6 +34,24 @@ class DmozSpider(BaseSpider):
   
     allowed_domains = ["sothebys.com"]
     start_urls = [
+	"http://www.sothebys.com/en/auctions/2015/contemporary-art-evening-auction-l15022.html",
+	#"http://www.sothebys.com/en/auctions/2015/now-pf1524.html",
+	#"http://www.sothebys.com/en/auctions/2015/watches-n09368.html",
+	#"http://www.sothebys.com/en/auctions/2015/finest-and-rarest-wines-n09349.html",
+	#"http://www.sothebys.com/en/auctions/2015/finest-rarest-wines-l15706.html",
+	#"http://www.sothebys.com/en/auctions/2015/tableaux-dessins-anciens-19-siecle-pf1509.html",
+	#"http://www.sothebys.com/en/auctions/2015/books-manuscripts-n09359.html",
+	#"http://www.sothebys.com/en/auctions/2015/arts-afrique-oceanie-pf1508.html",
+	#"http://www.sothebys.com/en/auctions/2015/impressionist-modern-art-evening-sale-l15006.html",
+	#"http://www.sothebys.com/en/auctions/2014/impressionist-modern-art-day-sale-l15007.html",
+	#"http://www.sothebys.com/en/auctions/2015/livres-manuscrits-pf1503.html",
+
+
+	#"http://www.sothebys.com/en/auctions/2014/impressionist-modern-art-day-sale-l15007.html",
+	#"http://www.sothebys.com/en/auctions/2015/livres-manuscrits-pf1503.html",
+	#"http://www.sothebys.com/en/auctions/2015/contemporary-curated-n09366.html",
+	#"http://www.sothebys.com/en/auctions/2015/fine-jewels-l15051.html",
+	#"http://www.sothebys.com/en/auctions/2015/boundless-contemporary-art-hk0580.html",
 	#"http://www.sothebys.com/en/auctions/2014/livres-manuscrits-pf1413.html",
         #"http://www.sothebys.com/en/auctions/2014/important-20th-c-design-n09238.html",
 	#"http://www.sothebys.com/en/auctions/2014/tiffany-n09242.html",
@@ -160,7 +178,12 @@ class DmozSpider(BaseSpider):
 	    #item['downloadhref'] = self.start_urls[p].replace("http://www.sothebys.com","").replace("/en/auctions/","/en/auctions/ecatalogue/").replace(".html","")+"/lot.1.html"
 	    item['downloadhref'] = self.start_urls[p].replace("http://www.sothebys.com","").replace("/en/auctions/","/en/auctions/ecatalogue/").replace(".html","/")
             #item['date'] = sel.xpath("//div[@class='vevent']/time/text()").extract()[p]
-            item['date'] = sel.xpath("//*[@id='x-event-date']/text()").extract()[0].strip()
+
+	    import datetime
+	    ###datetime.datetime.strptime('01 July 2015',"%d %B %Y").date()
+            cnvrtdate = sel.xpath("//*[@id='x-event-date']/text()").extract()[0].strip()
+            item['date'] = datetime.datetime.strptime(cnvrtdate,"%d %B %Y").date()
+            #item['date'] = sel.xpath("//*[@id='x-event-date']/text()").extract()[0].strip()
             #item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
 	    item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
 	    #item['name'] = sel.xpath("/html/head/title/text()").extract()[p].encode('ascii','ignore').replace("|","").replace("Sotheby's","").strip()
@@ -185,8 +208,8 @@ class DmozSpider(BaseSpider):
 	    try:
 	        item['sale_total'] = sel.xpath("//div[@class='eventdetail-headerresults']/div/span/text()").extract()[0]
 	    except:
-		pass
-	        #item['sale_total'] = 999
+		#pass
+	        item['sale_total'] = 'progress'
 
             #lotpage = item['linkurl'] = sel.xpath("//div[@class='description']/a/@href").extract()[p]
             #lotpage = item['linkurl'] = self.start_urls[p]
@@ -249,8 +272,10 @@ class DmozSpider(BaseSpider):
 	##[sales_number] - Riporta il numero di sala dell asta.
         ##questo dato va aggiornato nella tabella t.aste.sales_number
         item['sales_number'] = sel.xpath("//div[@class='eventdetail-saleinfo']/span/text()").extract()[0].split()[2]
-
-	item['sale_total'] = sel.xpath("//div[@class='eventdetail-headerresults']/div/span/text()").extract()[0]
+	try:
+	    item['sale_total'] = sel.xpath("//div[@class='eventdetail-headerresults']/div/span/text()").extract()[0]
+	except:
+	    item['sale_total'] = '0'
 	###item['asta'] = self.name
         item['date'] = sel.xpath("//*[@id='x-event-date']/text()").extract()[0].strip()
         ###item['location'] = sel.xpath("//span[@class='location']/text()").extract()[0].encode('utf-8').strip()
