@@ -34,7 +34,8 @@ class DmozSpider(BaseSpider):
   
     allowed_domains = ["sothebys.com"]
     start_urls = [
-	"http://www.sothebys.com/en/auctions/2015/contemporary-art-evening-auction-l15022.html",
+	"http://www.sothebys.com/en/auctions/2015/monochrome-n09396.html",
+	#"http://www.sothebys.com/en/auctions/2015/contemporary-art-evening-auction-l15022.html",
 	#"http://www.sothebys.com/en/auctions/2015/now-pf1524.html",
 	#"http://www.sothebys.com/en/auctions/2015/watches-n09368.html",
 	#"http://www.sothebys.com/en/auctions/2015/finest-and-rarest-wines-n09349.html",
@@ -185,13 +186,13 @@ class DmozSpider(BaseSpider):
             item['date'] = datetime.datetime.strptime(cnvrtdate,"%d %B %Y").date()
             #item['date'] = sel.xpath("//*[@id='x-event-date']/text()").extract()[0].strip()
             #item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
-	    item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
-	    #item['name'] = sel.xpath("/html/head/title/text()").extract()[p].encode('ascii','ignore').replace("|","").replace("Sotheby's","").strip()
+	    #item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
+	    item['name'] = sel.xpath("/html/head/title/text()").extract()[p].encode('ascii','ignore').replace("|","").replace("Sotheby's","").strip()
 	   
 	    item['asta'] = self.name
 	    try:
-                #item['maxlot'] = sel.xpath("//div[@class='eventdetail-saleinfo']/span/text()").extract()[p].split()[2]
-                item['maxlot'] = sel.xpath("//*[@id='bodyWrap']/div[2]/div[3]/div[1]/div/span[2]/text()").extract()[0].split()[2]
+                item['maxlot'] = sel.xpath("//div[@class='eventdetail-saleinfo']/span/text()").extract()[p].split()[2]
+                #item['maxlot'] = sel.xpath("//*[@id='bodyWrap']/div[2]/div[3]/div[1]/div/span[2]/text()").extract()[0].split()[2]
 	    except:
 		pass
 	        #item['maxlot'] = 0
