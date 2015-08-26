@@ -34,7 +34,9 @@ class DmozSpider(BaseSpider):
   
     allowed_domains = ["sothebys.com"]
     start_urls = [
-	"http://www.sothebys.com/en/auctions/2015/monochrome-n09396.html",
+	"http://www.sothebys.com/en/auctions/2015/fine-classical-chinese-paintings-calligraphy-n09394.html",
+	#"http://www.sothebys.com/en/auctions/2015/important-chinese-art-n09393.html",
+	#"http://www.sothebys.com/en/auctions/2015/monochrome-n09396.html",
 	#"http://www.sothebys.com/en/auctions/2015/contemporary-art-evening-auction-l15022.html",
 	#"http://www.sothebys.com/en/auctions/2015/now-pf1524.html",
 	#"http://www.sothebys.com/en/auctions/2015/watches-n09368.html",
@@ -183,8 +185,8 @@ class DmozSpider(BaseSpider):
 	    import datetime
 	    ###datetime.datetime.strptime('01 July 2015',"%d %B %Y").date()
             cnvrtdate = sel.xpath("//*[@id='x-event-date']/text()").extract()[0].strip()
-            item['date'] = datetime.datetime.strptime(cnvrtdate,"%d %B %Y").date()
-            #item['date'] = sel.xpath("//*[@id='x-event-date']/text()").extract()[0].strip()
+            #item['date'] = datetime.datetime.strptime(cnvrtdate,"%d %B %Y").date()
+            item['date'] = sel.xpath("//*[@id='x-event-date']/text()").extract()[0].strip()
             #item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
 	    #item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
 	    item['name'] = sel.xpath("/html/head/title/text()").extract()[p].encode('ascii','ignore').replace("|","").replace("Sotheby's","").strip()
