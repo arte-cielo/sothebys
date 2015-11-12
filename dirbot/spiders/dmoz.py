@@ -34,7 +34,40 @@ class DmozSpider(BaseSpider):
   
     allowed_domains = ["sothebys.com"]
     start_urls = [
-	"http://www.sothebys.com/en/auctions/2015/fine-classical-chinese-paintings-calligraphy-n09394.html",
+	"http://www.sothebys.com/en/auctions/2015/arte-moderna-contemporanea-mi0327.html",
+	#"http://www.sothebys.com/en/auctions/2015/latin-america-modern-art-n09428.html",
+	#"http://www.sothebys.com/en/auctions/2015/american-art-n09425.html",
+	#"http://www.sothebys.com/en/auctions/2015/modern-post-war-british-art-l15143.html",
+	#"http://www.sothebys.com/en/auctions/2015/travel-atlases-maps-natural-history-l15405.html#&page=all&sort=lotSortNum-asc&range=0|100&viewMode=list",
+	#"http://www.sothebys.com/en/auctions/2015/photographies-pf1520.html",
+	#"http://www.sothebys.com/en/auctions/2015/contemporary-art-evening-auction-n09420.html",
+	#"http://www.sothebys.com/en/auctions/2015/american-art-collection-a-alfred-taubman-n09432.html",
+	#"http://www.sothebys.com/en/auctions/2015/scottish-art-l15135.html",
+	#"http://www.sothebys.com/en/auctions/2014/impressionist-modern-art-day-sale-n09416.html",
+	#"http://www.sothebys.com/en/auctions/2015/impressionist-modern-art-evening-sale-n09415.html",
+	#"http://www.sothebys.com/en/auctions/2015/modern-contemporary-art-collection-a-alfred-taubman-n09431.html",
+	#"http://www.sothebys.com/en/auctions/2015/masterworks-collection-a-alfred-taubman-n09430.html",
+	#"http://www.sothebys.com/en/auctions/2015/19th-century-european-art-n09417.html",
+	#"http://www.sothebys.com/en/auctions/2015/collections-l15305.html",
+	#"http://www.sothebys.com/en/auctions/2015/old-master-paintings-l15035.html",
+        #"http://www.sothebys.com/en/auctions/2015/the-italian-sale-l15624.html",
+	#"http://www.sothebys.com/en/auctions/2015/irish-art-l15134.html",
+	#"http://www.sothebys.com/en/auctions/2015/vajrayana-voyage-to-the-tantra-hk0595.html",
+	#"http://www.sothebys.com/en/auctions/2015/imperial-consort-hk0596.html",
+        #"http://www.sothebys.com/en/auctions/2015/imperial-interiors-hk0594.html",
+	#"http://www.sothebys.com/en/auctions/2015/important-chinese-art-hk0591.html",
+        #"http://www.sothebys.com/en/auctions/2015/full-circle-yoshihara-jiro-collection-hk0653.html",
+        #"http://www.sothebys.com/en/auctions/2015/modern-contemporary-southeast-asian-art-hk0584.html",
+	#"http://www.sothebys.com/en/auctions/2015/classical-chinese-paintings-hk0588.html",
+        #"http://www.sothebys.com/en/auctions/2015/modern-contemporary-asian-art-evening-sale-hk0581.html",
+	#"http://www.sothebys.com/en/auctions/2015/american-paintings-drawings-sculpture-n09404.html",
+	#"http://www.sothebys.com/en/auctions/2014/prints-and-multiples-l15161.html",
+	#"http://www.sothebys.com/en/auctions/2015/images-of-enlightenment-n09395.html",
+	#"http://www.sothebys.com/en/auctions/2015/contemporary-curated-n09403.html",
+	#"http://www.sothebys.com/en/auctions/2015/collection-histoire-famille-france-pf1531.html",
+	#"http://www.sothebys.com/en/auctions/2015/watches-l15053.html",
+	#"http://www.sothebys.com/en/auctions/2015/saturday-at-sothebys-asian-art-n09437.html",
+	#"http://www.sothebys.com/en/auctions/2015/fine-classical-chinese-paintings-calligraphy-n09394.html",
 	#"http://www.sothebys.com/en/auctions/2015/important-chinese-art-n09393.html",
 	#"http://www.sothebys.com/en/auctions/2015/monochrome-n09396.html",
 	#"http://www.sothebys.com/en/auctions/2015/contemporary-art-evening-auction-l15022.html",
@@ -193,7 +226,7 @@ class DmozSpider(BaseSpider):
 	   
 	    item['asta'] = self.name
 	    try:
-                item['maxlot'] = sel.xpath("//div[@class='eventdetail-saleinfo']/span/text()").extract()[p].split()[2]
+                item['maxlot'] = sel.xpath("//div[@class='eventdetail-saleinfo']/span/text()").extract()[1].split()[2]
                 #item['maxlot'] = sel.xpath("//*[@id='bodyWrap']/div[2]/div[3]/div[1]/div/span[2]/text()").extract()[0].split()[2]
 	    except:
 		pass
@@ -293,8 +326,11 @@ class DmozSpider(BaseSpider):
 	#item['downloadhref'] = self.start_urls.replace("http://www.sothebys.com","").replace("/en/auctions/","/en/auctions/ecatalogue/").replace(".html","")+"/lot.1.html"
 	item['downloadhref'] = self.start_urls[0].replace("http://www.sothebys.com","").replace("/en/auctions/","/en/auctions/ecatalogue/")+"/lot.1.html"
 	#item['layout'] = facility
-	
-        item['linkurl'] = sel.xpath("//div[@class='description']/a/@href").extract()[0]
+
+	try:	
+            item['linkurl'] = sel.xpath("//div[@class='description']/a/@href").extract()[0]
+        except IndexError:
+	    item['linkurl'] = str(urlparse(self.start_urls[0]))
 	print 'TERZO LINKURL: %s' % item['linkurl']
 	#item['linkurl'] = self.start_urls
 
