@@ -18,20 +18,20 @@ mailer = MailSender()
 
 class DmozSpider(BaseSpider):
     name = "sothebys"
-    
+
     def __init__(self, facility=None, *args, **kwargs):
         super(DmozSpider, self).__init__(*args, **kwargs)
         #self.start_urls = ['http://www.example.com/categories/%s' % category]
 
         ## introduce facility costructor
         #@ facility is:
-        #@ - more start_urls = 1 
+        #@ - more start_urls = 1
         #@ - custom category = 2
         #@ - single asta = 3
 
         #@ for example:
         #@ scrapy crawl sothebys -a facility=1 [ -a domain=system]
-  
+
     allowed_domains = ["sothebys.com"]
     start_urls = [
 	"http://www.sothebys.com/en/auctions/2015/arte-moderna-contemporanea-mi0327.html",
@@ -165,12 +165,12 @@ class DmozSpider(BaseSpider):
 
         """
 	#open('aste.html', 'wb').write(response.body)
-    	
+
     	items = []
     	sel = Selector(response)
     	link_next = sel.xpath("//div[@class='topmenu-inner-wrap']/a[@class='preferred logged-out']/@href").extract()
 	print "LINK_NEXT: %s" % (link_next)
-	
+
 	#current_page = sel.xpath("//span[@class='page-info']/text()").extract()[0].split()[0]
 	#element_onpage = sel.xpath("//span[@class='page-info']/text()").extract()[0].split()[2]
 	#tot_page = sel.xpath("//span[@class='page-info']/text()").extract()[0].split()[4]
@@ -179,7 +179,7 @@ class DmozSpider(BaseSpider):
 	#print "ELEMENT_ONPAGE: %s" % (element_onpage)
 	#print "TOT_PAGE: %s" % (tot_page)
 	print self.start_urls
-    	
+
 	#pp = len(sel.xpath("//span[@class='location']/text()").extract())
 	pp = len(self.start_urls)
 	print 'PPPPP: %s' % pp
@@ -193,7 +193,7 @@ class DmozSpider(BaseSpider):
 	    #item['linkurl'] = link_next
 	    print 'PRIMO LINKURL: %s' % item['linkurl']
 	    ## i need to scan multiple article class
-            ## here for documentation : http://doc.scrapy.org/en/latest/topics/selectors.html 
+            ## here for documentation : http://doc.scrapy.org/en/latest/topics/selectors.html
             item['location'] = sel.xpath("//span[@class='location']/text()").extract()[p].encode('utf-8').strip()
             #item['location'] = sel.xpath("//*[@id='bodyWrap']/div[2]/div[3]/div[2]/div[1]/div[2]/ul/li/div/h3/text()").extract()[p].encode('ascii','ignore').strip()
 	    #try:
@@ -217,13 +217,16 @@ class DmozSpider(BaseSpider):
 
 	    import datetime
 	    ###datetime.datetime.strptime('01 July 2015',"%d %B %Y").date()
-            cnvrtdate = sel.xpath("//*[@id='x-event-date']/text()").extract()[0].strip()
-            #item['date'] = datetime.datetime.strptime(cnvrtdate,"%d %B %Y").date()
-            item['date'] = sel.xpath("//*[@id='x-event-date']/text()").extract()[0].strip()
+        cnvrtdate = sel.xpath("//*[@id='x-event-date']/text()").extract()[0].strip()
+        #item['date'] = datetime.datetime.strptime(cnvrtdate,"%d %B %Y").date()
+        item['date'] = sel.xpath("//*[@id='x-event-date']/text()").extract()[0].strip()
+        item['datafine'] = ''
             #item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
 	    #item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
 	    item['name'] = sel.xpath("/html/head/title/text()").extract()[p].encode('ascii','ignore').replace("|","").replace("Sotheby's","").strip()
-	   
+        item['category'] = ''
+        item['overview'] = sel.xpath("//*[@id='bodyWrap']/div[2]/div[1]/div[3]/div[3]/div[1]/div[1]/div[2]/p[*]/text()").extract()
+
 	    item['asta'] = self.name
 	    try:
                 item['maxlot'] = sel.xpath("//div[@class='eventdetail-saleinfo']/span/text()").extract()[1].split()[2]
@@ -239,7 +242,7 @@ class DmozSpider(BaseSpider):
 	    except:
 	        item['layout'] = ''
 	    ## the first run is with flag 'Q'. It then is updated with value C in (parse_lot_sales_date) if all is ok
-	    ## otherwiese remain with Q = Quarantena status 
+	    ## otherwiese remain with Q = Quarantena status
 	    item['status'] = "C"
 	    try:
 	        item['sale_total'] = sel.xpath("//div[@class='eventdetail-headerresults']/div/span/text()").extract()[0]
@@ -250,7 +253,7 @@ class DmozSpider(BaseSpider):
             #lotpage = item['linkurl'] = sel.xpath("//div[@class='description']/a/@href").extract()[p]
             #lotpage = item['linkurl'] = self.start_urls[p]
             lotpage = self.start_urls[p]
-	    
+
 	    #open('aste.html', 'wb').write(response.body)
 	    print 'LOTPAGE: %s' % (lotpage)
 	    #print 'ASTA: %s' % self.name
@@ -258,7 +261,7 @@ class DmozSpider(BaseSpider):
             #item['image'] = sel.xpath("//div[@class='image']//img/@serc").extract()
 
 	    #items.append(item)
-	    
+
 	    ##next_page = [('http://www.sothebys.com' + str(lotpage))]
 	    next_page = [(lotpage)]
     	    #if not not next_page:
@@ -286,16 +289,16 @@ class DmozSpider(BaseSpider):
 	print 'RESPONSE: %s' % response
         items = []
 	sel = Selector(response)
-	
+
         item = AsteWebsite()
 	image_relative_urls = sel.xpath('//div[@class="zoom-hover-trigger"]//img/@src').extract()
 
-	##[name] - Questo campo e' molto importante, infatti viene utilizzato per creare una chiave assoluta e 
+	##[name] - Questo campo e' molto importante, infatti viene utilizzato per creare una chiave assoluta e
 	# univoca da inserire in t.aste.guid job da eseguire in pipeline.py
 	## TO DO  BUGS: In some cases the name is splitted on two row. While the insert rules is ok for name
-        ## here the name copy only the first parte of real name. Open a Workaround near this bugs 
+        ## here the name copy only the first parte of real name. Open a Workaround near this bugs
 	#item['name'] = sel.xpath("//div[@class='eventdetail-headerleft']/h1/text()").extract()[0].encode("ascii","ignore").strip()
- 
+
 	#item['name'] = sel.xpath("//ul[@class='breadcrumb inline']/li/a/span/text()").extract()
 
 	##[maxlot] - Riflette il numero complessivo dei lotti che compongono l'asta.
@@ -304,7 +307,7 @@ class DmozSpider(BaseSpider):
             item['maxlot'] = sel.xpath("//div[@class='eventdetail-saleinfo']/span/text()").extract()[1].split()[2]
 	except:
 	    pass
-	    
+
 	##[sales_number] - Riporta il numero di sala dell asta.
         ##questo dato va aggiornato nella tabella t.aste.sales_number
         item['sales_number'] = sel.xpath("//div[@class='eventdetail-saleinfo']/span/text()").extract()[0].split()[2]
@@ -319,7 +322,7 @@ class DmozSpider(BaseSpider):
         ##[status] update the status asta [C] = Calendar [A] = Analize [R] = Result [P] = Publication
 	item['status'] = "C"
 
-	##[downloadhref] This is the official href link to initial download lot for asta name. Here is 
+	##[downloadhref] This is the official href link to initial download lot for asta name. Here is
 	## i update
 	###item['downloadhref'] = sel.xpath("//*[@id='eventdetail-carousel']/ul/li[2]/a/@href").extract()[0]
 	#item['downloadhref'] = self.start_urls
@@ -327,7 +330,7 @@ class DmozSpider(BaseSpider):
 	item['downloadhref'] = self.start_urls[0].replace("http://www.sothebys.com","").replace("/en/auctions/","/en/auctions/ecatalogue/")+"/lot.1.html"
 	#item['layout'] = facility
 
-	try:	
+	try:
             item['linkurl'] = sel.xpath("//div[@class='description']/a/@href").extract()[0]
         except IndexError:
 	    item['linkurl'] = str(urlparse(self.start_urls[0]))
@@ -340,6 +343,5 @@ class DmozSpider(BaseSpider):
 	#items.append(Request("http://www.sothebys.com/en/auctions/ecatalogue/2014/collections-l14305/lot.1.html", callback=self.parse_opere))
 
         items.append(item)
-	
-        return items
 
+        return items
