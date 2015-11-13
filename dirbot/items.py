@@ -22,6 +22,9 @@ class Website(Item):
 class AsteWebsite(Item):
     name = Field()          # name asta. ad ex. The Italian Sale
     date = Field()          # date asta. ad ex. 17 Oct 2014
+    datafine = Field()      # data fine asta 12-12-2015
+    category = Field()      # identifica la tipologia dell'asta 12-12-15
+    overview = Field()      # breve descrizione asta
     asta = Field()          # name auction house. ad ex. Sothebys
     time = Field()          # this is teh time location. ad ex. 6.00 PB BEST
     location = Field()      # rapresent the location of event. ad ex. London . Milan
@@ -30,7 +33,7 @@ class AsteWebsite(Item):
     status = Field()        # is the sales number of teh room that sell lot.
     sale_total = Field()    # sum total of teh asta
     linkurl = Field()       # is a field that help to loop unique(hashkey)
-    downloadhref = Field()  # keep a href url to download teh page 
+    downloadhref = Field()  # keep a href url to download teh page
     layout = Field()        # keep idifferent layout for auction
 
 
@@ -45,7 +48,7 @@ class AsteWebsite(Item):
 ##    estimate = Field()      # report the value of lot
 ##    lot_sold = Field()      # Sell lot
 ##    valuta = Field()        # Valuta lot sell
-##    image_urls = Field()    # where to bring the image. 
+##    image_urls = Field()    # where to bring the image.
 ##    image_path = Field()    # the path where exist the image
 ##    images = Field()        # this is the single image name ad ex. granoturco.jpg
 ##    url = Field()           # not clear at the moment

@@ -36,7 +36,7 @@ class FilterWordsPipeline(object):
 
 
 class MyImagesPipeline(ImagesPipeline):
-    
+
     def get_media_requests(self, item, info):
     	for image_url in item['image_urls']:
         	yield scrapy.http.Request(image_url)
@@ -86,29 +86,29 @@ class MySQLStorePipeline(object):
         """Perform an insert or update."""
         guid = self._get_guid(item)
         now = datetime.utcnow().replace(microsecond=0).isoformat(' ')
-	
-	## check the t.aste.guid for insert or update         
+
+	## check the t.aste.guid for insert or update
 	conn.execute("""SELECT EXISTS(
             SELECT 1 FROM aste2 WHERE guid = %s
         )""", (guid,))
         aste2 = conn.fetchone()[0]
-	
-	## check if exists a quarantena auction with 
-        ## status 'Q' and report at info@ 
+
+	## check if exists a quarantena auction with
+        ## status 'Q' and report at info@
 	conn.execute("""SELECT *
             FROM aste2 WHERE status = "Q"
         """ )
         qstatus = conn.fetchall()
 
-	#print 'AUCTIONS Q STATUS: %s' % qstatus	
+	#print 'AUCTIONS Q STATUS: %s' % qstatus
 	#if qstatus:
 	#    mailer.send(to=["info@artecielo.com"], subject="Attenzione! Quarentena aste:"+qstatus[2], body="Hai aste in quarantena:\n Asta:"+qstatus[1]+'\n'+"Data:"+qstatus[3])
-			 
+
         ##opere = conn.fetchone()[0]
 	print "AFTERITEMNAME: %s" % item['name']
 	print "AFTERITEMSTATUS: %s" % item['status']
-	print "AFTERGUID: %s" % guid 
-	print "AFTERMAXLOT: %s" % item['maxlot'] 
+	print "AFTERGUID: %s" % guid
+	print "AFTERMAXLOT: %s" % item['maxlot']
 	print "AFTERSALES: %s" % item['sales_number']
 	print "AFTERSTATUS: %s" % item['status']
 	print "AFTERDOWNLODHREF: %s" % item['downloadhref']
@@ -117,20 +117,20 @@ class MySQLStorePipeline(object):
 	print "AFTERLINKURL: %s" % item['linkurl']
 	#print "LOCATION: %s" % item['location']
 	print "AFTERGUID: %s" % guid
-	
+
 	#AND status <> "CD" AND sale_total = 0 OR sale_total IS NULL
 	if aste2:
 	    try:
-            	conn.execute("""
-                    UPDATE aste2
-                    SET maxlot=%s, name=%s, linkurl=%s, sales_number=%s, status=%s, date=%s, downloadhref=%s, sale_total=%s, update_date=%s, layout=%s
-                    WHERE guid=%s
-		    AND status <> "CD"
-            	""", (item['maxlot'], item['name'], item['linkurl'], item['sales_number'], item['status'], item['date'], item['downloadhref'], item['sale_total'], now, 'layout', guid))
+            conn.execute("""
+                UPDATE aste2
+                SET maxlot=%s, name=%s, linkurl=%s, sales_number=%s, status=%s, date=%s, datafine=%s, category=%s, overview=%s, downloadhref=%s, sale_total=%s, update_date=%s, layout=%s
+                WHERE guid=%s
+		        AND status <> "CD"
+            	""", (item['maxlot'], item['name'], item['linkurl'], item['sales_number'], item['status'], item['date'], item['datafine'], item['category'], item['overview'], item['downloadhref'], item['sale_total'], now, 'layout', guid))
             	spider.log("ITEM ASTE UPDATE in db: %s %r" % (guid, item))
-	    
+
 	        mailer.send(to=["info@artecielo.com"], subject="Completo Asta inserita:"+item['sales_number'], body="Ho aggiornato i seguenti dati:\n Asta:"+item['sales_number']+'\n'+"Lotti:"+str(item['maxlot']+"\n""Status:"+item['status']+"\n"+"DownloadHref: http://www.sothebys.com"+item['downloadhref']))
-		
+
 	    except :
 		print 'ERROR: UPDATE ASTE2 '
 	    	print "ERROR: UPDATE guid: %s" % (guid)
@@ -146,14 +146,14 @@ class MySQLStorePipeline(object):
 	#	for cc in qstatus:
 	#    	    mailer.send(to=["info@artecielo.com"], subject="Attenzione! Quarentena aste:"+cc[2], body="Hai aste in quarantena:\n Asta:"+cc[1]+'\n'+"Data:"+cc[3])
         else:
-	    ##very important here: some fields are update in UPDATE ASTE (second step): they are item[downloadhref] and item[maxlot] 
+	    ##very important here: some fields are update in UPDATE ASTE (second step): they are item[downloadhref] and item[maxlot]
             conn.execute("""
-                INSERT INTO aste2 ( guid, name, asta, date, linkurl, downloadhref, location, maxlot, status, sales_number, sale_total, layout, update_date, calendario_id, caseasta_id)
+                INSERT INTO aste2 ( guid, name, asta, date, datafine, category, overview, linkurl, downloadhref, location, maxlot, status, sales_number, sale_total, layout, update_date, calendario_id, caseasta_id)
                 VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-            """, ( guid, item['name'], item['asta'], item['date'], item['downloadhref'], item['downloadhref'], item['location'], item['maxlot'], item['status'], item['sales_number'], item['sale_total'], 'layout', now, 999, 1))
+            """, ( guid, item['name'], item['asta'], item['date'], item['datafine'], item['category'], item['overview'], item['downloadhref'], item['downloadhref'], item['location'], item['maxlot'], item['status'], item['sales_number'], item['sale_total'], 'layout', now, 999, 1))
             spider.log("ITEM STORED in t.ASTE: %s %r" % (guid, item))
 	    mailer.send(to=["info@artecielo.com"], subject="Nuova Asta inserita:"+item['asta'], body="Ho inserito alcune nuove aste:\n Asta:"+item['name']+'\n'+"Lotti:"+str(item['maxlot']))
-            
+
     def _handle_error(self, failure, item, spider):
         """Handle occurred on db interaction."""
         # do nothing, just log
