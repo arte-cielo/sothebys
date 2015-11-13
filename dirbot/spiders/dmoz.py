@@ -34,7 +34,9 @@ class DmozSpider(BaseSpider):
   
     allowed_domains = ["sothebys.com"]
     start_urls = [
-	"http://www.sothebys.com/en/auctions/2015/arte-moderna-contemporanea-mi0327.html",
+	"http://www.sothebys.com/en/auctions/2015/russian-pictures-l15115.html",
+	#"http://www.sothebys.com/en/auctions/2015/fine-timepieces-hk0600.html",
+	#"http://www.sothebys.com/en/auctions/2015/arte-moderna-contemporanea-mi0327.html",
 	#"http://www.sothebys.com/en/auctions/2015/latin-america-modern-art-n09428.html",
 	#"http://www.sothebys.com/en/auctions/2015/american-art-n09425.html",
 	#"http://www.sothebys.com/en/auctions/2015/modern-post-war-british-art-l15143.html",

@@ -7,7 +7,7 @@ class ProxyMiddleware(object):
     def process_request(self, request, spider):
         # Set the location of the proxy
         #request.meta['proxy'] = "http://YOUR_PROXY_IP:PORT"
-        request.meta['proxy'] = "http://111.161.65.81:80"
+        request.meta['proxy'] = "http://123.125.104.240:80"
         #request.meta['proxy'] = "http://183.207.232.193:8080"
 
         # Use the following lines if your proxy requires authentication
