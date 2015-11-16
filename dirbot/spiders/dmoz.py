@@ -34,7 +34,11 @@ class DmozSpider(BaseSpider):
 
     allowed_domains = ["sothebys.com"]
     start_urls = [
-	"http://www.sothebys.com/en/auctions/2015/russian-pictures-l15115.html",
+	"http://www.sothebys.com/en/auctions/2015/library-english-bibliophile-part-five-l15416.html",
+	#"http://www.sothebys.com/en/auctions/2015/american-art-collection-a-alfred-taubman-n09432.html",
+	#"http://www.sothebys.com/en/auctions/2015/design-20-siecle-pf1514.html",
+	#"http://www.sothebys.com/en/auctions/2015/american-art-collection-a-alfred-taubman-n09432.html",
+	#"http://www.sothebys.com/en/auctions/2015/russian-pictures-l15115.html",
 	#"http://www.sothebys.com/en/auctions/2015/fine-timepieces-hk0600.html",
 	#"http://www.sothebys.com/en/auctions/2015/arte-moderna-contemporanea-mi0327.html",
 	#"http://www.sothebys.com/en/auctions/2015/latin-america-modern-art-n09428.html",
@@ -219,15 +223,18 @@ class DmozSpider(BaseSpider):
 
 	    import datetime
 	    ###datetime.datetime.strptime('01 July 2015',"%d %B %Y").date()
-        cnvrtdate = sel.xpath("//*[@id='x-event-date']/text()").extract()[0].strip()
-        #item['date'] = datetime.datetime.strptime(cnvrtdate,"%d %B %Y").date()
-        item['date'] = sel.xpath("//*[@id='x-event-date']/text()").extract()[0].strip()
-        item['datafine'] = ''
+            cnvrtdate = sel.xpath("//*[@id='x-event-date']/text()").extract()[0].strip()
+            #item['date'] = datetime.datetime.strptime(cnvrtdate,"%d %B %Y").date()
+            item['date'] = sel.xpath("//*[@id='x-event-date']/text()").extract()[0].strip()
+            item['datafine'] = item['date']
             #item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
 	    #item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
-	    item['name'] = sel.xpath("/html/head/title/text()").extract()[p].encode('ascii','ignore').replace("|","").replace("Sotheby's","").strip()
-        item['category'] = ''
-        item['overview'] = sel.xpath("//*[@id='bodyWrap']/div[2]/div[1]/div[3]/div[3]/div[1]/div[1]/div[2]/p[*]/text()").extract()
+	    item['name'] = sel.xpath("/html/head/title/text()").extract()[0].encode('ascii','ignore').replace("|","").replace("Sotheby's","").strip()
+            item['category'] = 'not cat'
+	    try:
+            	item['overview'] = sel.xpath("//*[@id='bodyWrap']/div[2]/div[1]/div[3]/div[3]/div[1]/div[1]/div[2]/p[*]/text()").extract()
+	    except:
+            	item['overview'] = 'no overview'
 
 	    item['asta'] = self.name
 	    try:
@@ -240,7 +247,7 @@ class DmozSpider(BaseSpider):
             item['sales_number'] = sel.xpath("//div[@class='eventdetail-saleinfo']/span/text()").extract()[0].split()[2]
 	    #item['sales_number'] = 0
             try:
-	        item['layout'] = facility
+	        item['layout'] = 'layout'
 	    except:
 	        item['layout'] = ''
 	    ## the first run is with flag 'Q'. It then is updated with value C in (parse_lot_sales_date) if all is ok
@@ -299,7 +306,7 @@ class DmozSpider(BaseSpider):
 	# univoca da inserire in t.aste.guid job da eseguire in pipeline.py
 	## TO DO  BUGS: In some cases the name is splitted on two row. While the insert rules is ok for name
         ## here the name copy only the first parte of real name. Open a Workaround near this bugs
-	#item['name'] = sel.xpath("//div[@class='eventdetail-headerleft']/h1/text()").extract()[0].encode("ascii","ignore").strip()
+	item['name'] = sel.xpath("//div[@class='eventdetail-headerleft']/h1/text()").extract()[0].encode("ascii","ignore").strip()
 
 	#item['name'] = sel.xpath("//ul[@class='breadcrumb inline']/li/a/span/text()").extract()
 
@@ -317,9 +324,15 @@ class DmozSpider(BaseSpider):
 	    item['sale_total'] = sel.xpath("//div[@class='eventdetail-headerresults']/div/span/text()").extract()[0]
 	except:
 	    item['sale_total'] = '0'
-	###item['asta'] = self.name
+	item['asta'] = self.name
         item['date'] = sel.xpath("//*[@id='x-event-date']/text()").extract()[0].strip()
-        ###item['location'] = sel.xpath("//span[@class='location']/text()").extract()[0].encode('utf-8').strip()
+        item['datafine'] = item['date']
+        item['category'] = 'not cat'
+	try:
+            item['overview'] = sel.xpath("//*[@id='bodyWrap']/div[2]/div[1]/div[3]/div[3]/div[1]/div[1]/div[2]/p[*]/text()").extract()
+	except:
+            item['overview'] = 'no overview'
+        item['location'] = sel.xpath("//span[@class='location']/text()").extract()[0].encode('utf-8').strip()
 
         ##[status] update the status asta [C] = Calendar [A] = Analize [R] = Result [P] = Publication
 	item['status'] = "C"
@@ -330,7 +343,7 @@ class DmozSpider(BaseSpider):
 	#item['downloadhref'] = self.start_urls
 	#item['downloadhref'] = self.start_urls.replace("http://www.sothebys.com","").replace("/en/auctions/","/en/auctions/ecatalogue/").replace(".html","")+"/lot.1.html"
 	item['downloadhref'] = self.start_urls[0].replace("http://www.sothebys.com","").replace("/en/auctions/","/en/auctions/ecatalogue/")+"/lot.1.html"
-	#item['layout'] = facility
+	item['layout'] = 'layout'
 
 	try:
             item['linkurl'] = sel.xpath("//div[@class='description']/a/@href").extract()[0]

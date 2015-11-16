@@ -121,12 +121,12 @@ class MySQLStorePipeline(object):
 	#AND status <> "CD" AND sale_total = 0 OR sale_total IS NULL
 	if aste2:
 	    try:
-            conn.execute("""
+                conn.execute("""
                 UPDATE aste2
-                SET maxlot=%s, name=%s, linkurl=%s, sales_number=%s, status=%s, date=%s, datafine=%s, category=%s, overview=%s, downloadhref=%s, sale_total=%s, update_date=%s, layout=%s
+                SET maxlot=%s, name=%s, linkurl=%s, sales_number=%s, status=%s, date=%s, category=%s, overview=%s, downloadhref=%s, sale_total=%s, update_date=%s, layout=%s
                 WHERE guid=%s
 		        AND status <> "CD"
-            	""", (item['maxlot'], item['name'], item['linkurl'], item['sales_number'], item['status'], item['date'], item['datafine'], item['category'], item['overview'], item['downloadhref'], item['sale_total'], now, 'layout', guid))
+            	""", (item['maxlot'], item['name'], item['linkurl'], item['sales_number'], item['status'], item['date'], item['category'], item['overview'], item['downloadhref'], item['sale_total'], now, 'layout', guid))
             	spider.log("ITEM ASTE UPDATE in db: %s %r" % (guid, item))
 
 	        mailer.send(to=["info@artecielo.com"], subject="Completo Asta inserita:"+item['sales_number'], body="Ho aggiornato i seguenti dati:\n Asta:"+item['sales_number']+'\n'+"Lotti:"+str(item['maxlot']+"\n""Status:"+item['status']+"\n"+"DownloadHref: http://www.sothebys.com"+item['downloadhref']))
@@ -149,9 +149,9 @@ class MySQLStorePipeline(object):
 	    ##very important here: some fields are update in UPDATE ASTE (second step): they are item[downloadhref] and item[maxlot]
             conn.execute("""
                 INSERT INTO aste2 ( guid, name, asta, date, datafine, category, overview, linkurl, downloadhref, location, maxlot, status, sales_number, sale_total, layout, update_date, calendario_id, caseasta_id)
-                VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-            """, ( guid, item['name'], item['asta'], item['date'], item['datafine'], item['category'], item['overview'], item['downloadhref'], item['downloadhref'], item['location'], item['maxlot'], item['status'], item['sales_number'], item['sale_total'], 'layout', now, 999, 1))
-            spider.log("ITEM STORED in t.ASTE: %s %r" % (guid, item))
+                VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )
+            """, ( guid, item['name'], item['asta'], item['date'], item['date'], item['category'], item['overview'], item['downloadhref'], item['downloadhref'], item['location'], item['maxlot'], item['status'], item['sales_number'], item['sale_total'], 'layout', now, 999, 1))
+            spider.log("ITEM STORED in t.ASTE2: %s %r" % (guid, item))
 	    mailer.send(to=["info@artecielo.com"], subject="Nuova Asta inserita:"+item['asta'], body="Ho inserito alcune nuove aste:\n Asta:"+item['name']+'\n'+"Lotti:"+str(item['maxlot']))
 
     def _handle_error(self, failure, item, spider):

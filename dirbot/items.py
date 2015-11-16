@@ -35,6 +35,7 @@ class AsteWebsite(Item):
     linkurl = Field()       # is a field that help to loop unique(hashkey)
     downloadhref = Field()  # keep a href url to download teh page
     layout = Field()        # keep idifferent layout for auction
+    update_date = Field()   # operation date scrapy
 
 
 ## ================================================
