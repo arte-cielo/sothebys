@@ -34,7 +34,9 @@ class DmozSpider(BaseSpider):
 
     allowed_domains = ["sothebys.com"]
     start_urls = [
-	"http://www.sothebys.com/en/auctions/2015/library-english-bibliophile-part-five-l15416.html",
+	"http://www.sothebys.com/en/auctions/2016/of-royal-and-noble-descent-l16306.html",
+	#"http://www.sothebys.com/en/auctions/2016/important-americana-n09456.html",
+	#"http://www.sothebys.com/en/auctions/2015/library-english-bibliophile-part-five-l15416.html",
 	#"http://www.sothebys.com/en/auctions/2015/american-art-collection-a-alfred-taubman-n09432.html",
 	#"http://www.sothebys.com/en/auctions/2015/design-20-siecle-pf1514.html",
 	#"http://www.sothebys.com/en/auctions/2015/american-art-collection-a-alfred-taubman-n09432.html",
@@ -241,8 +243,8 @@ class DmozSpider(BaseSpider):
                 item['maxlot'] = sel.xpath("//div[@class='eventdetail-saleinfo']/span/text()").extract()[1].split()[2]
                 #item['maxlot'] = sel.xpath("//*[@id='bodyWrap']/div[2]/div[3]/div[1]/div/span[2]/text()").extract()[0].split()[2]
 	    except:
-		pass
-	        #item['maxlot'] = 0
+		#pass
+	        item['maxlot'] = ""
 
             item['sales_number'] = sel.xpath("//div[@class='eventdetail-saleinfo']/span/text()").extract()[0].split()[2]
 	    #item['sales_number'] = 0
@@ -315,7 +317,8 @@ class DmozSpider(BaseSpider):
 	try:
             item['maxlot'] = sel.xpath("//div[@class='eventdetail-saleinfo']/span/text()").extract()[1].split()[2]
 	except:
-	    pass
+	    item['maxlot'] = ""
+	    #pass
 
 	##[sales_number] - Riporta il numero di sala dell asta.
         ##questo dato va aggiornato nella tabella t.aste.sales_number

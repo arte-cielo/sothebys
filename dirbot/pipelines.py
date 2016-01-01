@@ -149,8 +149,8 @@ class MySQLStorePipeline(object):
 	    ##very important here: some fields are update in UPDATE ASTE (second step): they are item[downloadhref] and item[maxlot]
             conn.execute("""
                 INSERT INTO aste2 ( guid, name, asta, date, datafine, category, overview, linkurl, downloadhref, location, maxlot, status, sales_number, sale_total, layout, update_date, calendario_id, caseasta_id)
-                VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )
-            """, ( guid, item['name'], item['asta'], item['date'], item['date'], item['category'], item['overview'], item['downloadhref'], item['downloadhref'], item['location'], item['maxlot'], item['status'], item['sales_number'], item['sale_total'], 'layout', now, 999, 1))
+                VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, ( guid, item['name'], item['asta'], item['date'], item['date'], item['overview'], item['overview'], item['downloadhref'], item['downloadhref'], item['location'], item['maxlot'], item['status'], item['sales_number'], item['sale_total'], 'layout', now, 999, 1, 0))
             spider.log("ITEM STORED in t.ASTE2: %s %r" % (guid, item))
 	    mailer.send(to=["info@artecielo.com"], subject="Nuova Asta inserita:"+item['asta'], body="Ho inserito alcune nuove aste:\n Asta:"+item['name']+'\n'+"Lotti:"+str(item['maxlot']))
 
