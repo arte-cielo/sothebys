@@ -230,11 +230,12 @@ class DmozSpider(BaseSpider):
             item['date'] = sel.xpath("//*[@id='x-event-date']/text()").extract()[0].strip()
             item['datafine'] = item['date']
             #item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
-	    #item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
+	    #item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()
 	    item['name'] = sel.xpath("/html/head/title/text()").extract()[0].encode('ascii','ignore').replace("|","").replace("Sotheby's","").strip()
             item['category'] = 'not cat'
 	    try:
-            	item['overview'] = sel.xpath("//*[@id='bodyWrap']/div[2]/div[1]/div[3]/div[3]/div[1]/div[1]/div[2]/p[*]/text()").extract()
+            	item['overview'] = sel.xpath("//*[@id='bodyWrap']/div[2]/div[1]/div[3]/div[3]/div[1]/div[1]/div[2]/p[1]/text()").extract()[0].strip() 
+				   #sel.xpath("//*[@id='bodyWrap']/div[2]/div[1]/div[3]/div[3]/div[1]/div[1]/div[2]/p[*]/text()").extract()
 	    except:
             	item['overview'] = 'no overview'
 
@@ -308,7 +309,8 @@ class DmozSpider(BaseSpider):
 	# univoca da inserire in t.aste.guid job da eseguire in pipeline.py
 	## TO DO  BUGS: In some cases the name is splitted on two row. While the insert rules is ok for name
         ## here the name copy only the first parte of real name. Open a Workaround near this bugs
-	item['name'] = sel.xpath("//div[@class='eventdetail-headerleft']/h1/text()").extract()[0].encode("ascii","ignore").strip()
+	item['name'] = sel.xpath("/html/head/title/text()").extract()[0].encode('ascii','ignore').replace("|","").replace("Sotheby's","").strip()
+	#item['name'] = sel.xpath("//div[@class='eventdetail-headerleft']/h1/text()").extract()[0].encode("ascii","ignore").strip()
 
 	#item['name'] = sel.xpath("//ul[@class='breadcrumb inline']/li/a/span/text()").extract()
 
@@ -332,7 +334,7 @@ class DmozSpider(BaseSpider):
         item['datafine'] = item['date']
         item['category'] = 'not cat'
 	try:
-            item['overview'] = sel.xpath("//*[@id='bodyWrap']/div[2]/div[1]/div[3]/div[3]/div[1]/div[1]/div[2]/p[*]/text()").extract()
+            item['overview'] = sel.xpath("//*[@id='bodyWrap']/div[2]/div[1]/div[3]/div[3]/div[1]/div[1]/div[2]/p[1]/text()").extract()[0].strip()
 	except:
             item['overview'] = 'no overview'
         item['location'] = sel.xpath("//span[@class='location']/text()").extract()[0].encode('utf-8').strip()
