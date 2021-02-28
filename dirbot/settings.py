@@ -37,7 +37,7 @@ DOWNLOADER_MIDDLEWARES = {
     'dirbot.middlewares.ProxyMiddleware': 100,
 }
 
-MYSQL_HOST = '192.168.1.101'
+MYSQL_HOST = '192.168.1.48'
 MYSQL_DBNAME = 'artecielo'
 MYSQL_USER = 'root'
 MYSQL_PASSWD = 'broletto'
