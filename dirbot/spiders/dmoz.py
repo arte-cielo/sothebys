@@ -14,7 +14,7 @@ from scrapy.mail import MailSender
 from urlparse import urlparse
 
 mailer = MailSender()
-#mailer.send(to=["marco.giardina@gmail.com"], subject="Some subject", body="Some body", cc=["info@mammagatto.org"])
+# mailer.send(to=["marco.giardina@gmail.com"], subject="Some subject", body="Some body", cc=["info@mammagatto.org"])
 
 
 class DmozSpider(BaseSpider):
@@ -22,7 +22,7 @@ class DmozSpider(BaseSpider):
 
     def __init__(self, facility=None, *args, **kwargs):
         super(DmozSpider, self).__init__(*args, **kwargs)
-        #self.start_urls = ['http://www.example.com/categories/%s' % category]
+        # self.start_urls = ['http://www.example.com/categories/%s' % category]
 
         # introduce facility costructor
         # @ facility is:
@@ -35,7 +35,9 @@ class DmozSpider(BaseSpider):
 
     allowed_domains = ["sothebys.com"]
     start_urls = [
-        "https://www.sothebys.com/en/buy/auction/2019/old-master-drawings?locale=en",
+        "https://www.sothebys.com/en/buy/auction/2021/master-paintings-sculpture-part-i?locale=en",
+        #"https://www.sothebys.com/en/buy/auction/2021/quality-in-detail-the-juli-and-andrew-wieg-collection?locale=en",
+        #"https://www.sothebys.com/en/buy/auction/2019/old-master-drawings?locale=en",
         # "http://www.sothebys.com/en/auctions/2017/victorian-pre-raphaelite-british-impressionist-art-l17132.html",
         # "http://www.sothebys.com/it/auctions/2016/boundless-contemporary-art-hk0703.html",
         # "http://www.sothebys.com/en/auctions/2016/russian-pictures-l16112.html",
@@ -121,8 +123,6 @@ class DmozSpider(BaseSpider):
         # "http://www.sothebys.com/en/auctions/2015/impressionist-modern-art-evening-sale-l15006.html",
         # "http://www.sothebys.com/en/auctions/2014/impressionist-modern-art-day-sale-l15007.html",
         # "http://www.sothebys.com/en/auctions/2015/livres-manuscrits-pf1503.html",
-
-
         # "http://www.sothebys.com/en/auctions/2014/impressionist-modern-art-day-sale-l15007.html",
         # "http://www.sothebys.com/en/auctions/2015/livres-manuscrits-pf1503.html",
         # "http://www.sothebys.com/en/auctions/2015/contemporary-curated-n09366.html",
@@ -162,7 +162,6 @@ class DmozSpider(BaseSpider):
         # "http://www.sothebys.com/en/auctions/2014/schweizer-kunst-swiss-art-zh1406.html",
         # "http://www.sothebys.com/en/auctions/2014/books-manuscripts-n09237.html",
         # "http://www.sothebys.com/en/auctions/2014/medieval-renaissance-manuscripts-l14241.html",
-
         # "http://www.sothebys.com/en/auctions/2015/magnificent-jewels-n09331.html",
         # "http://www.sothebys.com/en/auctions/2014/american-art-n09148.html",
         # "http://www.sothebys.com/en/auctions/2014/19th-century-european-art-n09143.html",
@@ -204,129 +203,97 @@ class DmozSpider(BaseSpider):
         This parse recover only data to populate the aste information
 
         """
-        #open('aste.html', 'wb').write(response.body)
+        # open('aste.html', 'wb').write(response.body)
 
         items = []
         sel = Selector(response)
-        link_next = sel.xpath(
-            "//div[@class='topmenu-inner-wrap']/a[@class='preferred logged-out']/@href").extract()
+        link_next = sel.xpath("//div[@class='topmenu-inner-wrap']/a[@class='preferred logged-out']/@href").extract()
         print "LINK_NEXT: %s" % (link_next)
 
-        #current_page = sel.xpath("//span[@class='page-info']/text()").extract()[0].split()[0]
-        #element_onpage = sel.xpath("//span[@class='page-info']/text()").extract()[0].split()[2]
-        #tot_page = sel.xpath("//span[@class='page-info']/text()").extract()[0].split()[4]
-        print "************************************************:dmoz"
-        # print "CURRENT_PAGE: %s" % (current_page)
-        # print "ELEMENT_ONPAGE: %s" % (element_onpage)
-        # print "TOT_PAGE: %s" % (tot_page)
-        print self.start_urls
-
-        #pp = len(sel.xpath("//span[@class='location']/text()").extract())
-        pp = len(self.start_urls)
-        print 'PPPPP: %s' % pp
+        # pp = len(sel.xpath("//span[@class='location']/text()").extract())
+        urls = len(self.start_urls)
+        print "Url Investigate: %s" % urls
         # --
 
-        for p in range(0, pp):
+        for p in range(0, urls):
             item = AsteWebsite()
 
             pathlink = urlparse(self.start_urls[p])
-            item['linkurl'] = pathlink.path
-            #item['linkurl'] = link_next
-            print 'PRIMO LINKURL: %s' % item['linkurl']
+            item["linkurl"] = pathlink.path
+            # item['linkurl'] = link_next
+            print "PRIMO LINKURL: %s" % item["linkurl"]
             # i need to scan multiple article class
             # here for documentation :
             # http://doc.scrapy.org/en/latest/topics/selectors.html
-            item['location'] = sel.xpath(
-                "//span[@class='location']/text()").extract()[p].encode('utf-8').strip()
-            #item['location'] = sel.xpath("//*[@id='bodyWrap']/div[2]/div[3]/div[2]/div[1]/div[2]/ul/li/div/h3/text()").extract()[p].encode('ascii','ignore').strip()
-            # try:
-            #    item['location'] = sel.xpath("//*[@id='bodyWrap']/div[2]/div[3]/div[2]/div[1]/div[1]/ul/li/div/h3/text()").extract()[p].encode('ascii','ignore').strip()
-            # except:
-            #item['location'] = sel.xpath("//*[@id='bodyWrap']/div[2]/div[3]/div[2]/div[1]/div[2]/ul/li/div/h3/text()").extract()[0]
-            #item['location'] = sel.xpath("//*[@id='bodyWrap']/div[2]/div[3]/div[2]/div[1]/div[2]/ul/li/div/h3/text()").extract()
-            #	item['location'] = sel.xpath("//span[@class='location']/text()").extract()[:1][0].strip()
+            item['location'] = response.css('p.paragraph-module_paragraph18Regular__34C1i.css-cgm4gv::text')[5].extract()[3:].strip().encode("utf-8")
 
-            #item['linkurl'] = sel.xpath("//div[@class='description']/a/@href").extract()[p]
             pathlink = urlparse(self.start_urls[p])
-            if not item['linkurl']:
-                item['linkurl'] = pathlink.path
-            print 'SECONDO LINKURL: %s' % item['linkurl']
-            #item['linkurl'] = self.start_urls[p].replace("http://www.sothebys.com","")
-            # this field keep an url page of asta; it server on pagelot download function
-            #item['downloadhref'] = sel.xpath("//*[@id='eventdetail-carousel']/ul/li[2]/a/@href").extract()
-            #item['downloadhref'] = self.start_urls[p].replace("http://www.sothebys.com","").replace("/en/auctions/","/en/auctions/ecatalogue/").replace(".html","")+"/lot.1.html"
-            item['downloadhref'] = self.start_urls[p].replace(
-                "http://www.sothebys.com",
-                "").replace(
-                "/en/auctions/",
-                "/en/auctions/ecatalogue/").replace(
-                ".html",
-                "/")
-            #item['date'] = sel.xpath("//div[@class='vevent']/time/text()").extract()[p]
+            if not item["linkurl"]:
+                item["linkurl"] = pathlink.path
+            print "SECONDO LINKURL: %s" % item["linkurl"]
+            item['downloadhref'] = response.css('div.css-17ddsqm img::attr(src)').extract()[0].strip()
+            #item["downloadhref"] = (
+            #    self.start_urls[p]
+            #    .replace("http://www.sothebys.com", "")
+            #    .replace("/en/auctions/", "/en/auctions/ecatalogue/")
+            #    .replace(".html", "/")
+            #)
 
             import datetime
             ###datetime.datetime.strptime('01 July 2015',"%d %B %Y").date()
-            cnvrtdate = sel.xpath(
-                "//*[@id='x-event-date']/text()").extract()[0].strip()
-            #item['date'] = datetime.datetime.strptime(cnvrtdate,"%d %B %Y").date()
-            item['date'] = sel.xpath(
-                "//*[@id='x-event-date']/text()").extract()[0].strip()
-            item['datafine'] = item['date']
-            #item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()[p].encode('ascii','ignore').strip()
-            #item['name'] = sel.xpath("//div[@class='description']/a/text()").extract()
-            item['name'] = sel.xpath("/html/head/title/text()").extract()[0].encode(
-                'ascii', 'ignore').replace("|", "").replace("Sotheby's", "").strip()
-            item['category'] = 'not cat'
+            cnvrtdate = sel.xpath("//*[@id='x-event-date']/text()").extract()#[0].strip()
+            item["date"] = response.css('p.paragraph-module_paragraph18Regular__34C1i.css-cgm4gv::text').extract()[3].strip().encode("utf-8")
+            item["datafine"] = item["date"]
+            item["name"] = (
+                sel.xpath("/html/head/title/text()")
+                .extract()[0]
+                .encode("ascii", "ignore")
+                .replace("|", "")
+                .replace("Sotheby's", "")
+                .strip()
+            )
+            item["category"] = "not cat"
             try:
-                item['overview'] = sel.xpath(
-                    "//*[@id='bodyWrap']/div[2]/div[1]/div[3]/div[3]/div[1]/div[1]/div[2]/p[1]/text()").extract()[0].strip()
-                # sel.xpath("//*[@id='bodyWrap']/div[2]/div[1]/div[3]/div[3]/div[1]/div[1]/div[2]/p[*]/text()").extract()
+                item["overview"] = response.css('div.css-1kakqgq>p::text')[1].extract().strip()
             except BaseException:
-                item['overview'] = 'no overview'
+                item["overview"] = "no overview"
 
-            item['asta'] = self.name
+            item["asta"] = self.name
             try:
-                item['maxlot'] = sel.xpath(
-                    "//div[@class='eventdetail-saleinfo']/span/text()").extract()[1].split()[2]
-                #item['maxlot'] = sel.xpath("//*[@id='bodyWrap']/div[2]/div[3]/div[1]/div/span[2]/text()").extract()[0].split()[2]
+                item["maxlot"] = response.css('span.css-kajn87-label-book::text')[0].extract()[:4].strip()
             except BaseException:
-                # pass
-                item['maxlot'] = ""
+                item["maxlot"] = ""
 
-            item['sales_number'] = sel.xpath(
-                "//div[@class='eventdetail-saleinfo']/span/text()").extract()[0].split()[2]
-            #item['sales_number'] = 0
+            item["sales_number"] = response.css('div.css-1kakqgq>p::text')[0].extract()[4:].strip()
             try:
-                item['layout'] = 'layout'
+                item["layout"] = "layout"
             except BaseException:
-                item['layout'] = ''
+                item["layout"] = "not layout"
             # the first run is with flag 'Q'. It then is updated with value C in (parse_lot_sales_date) if all is ok
             # otherwiese remain with Q = Quarantena status
-            item['status'] = "C"
+            item["status"] = "C"
             try:
-                item['sale_total'] = sel.xpath(
-                    "//div[@class='eventdetail-headerresults']/div/span/text()").extract()[0]
+                item["sale_total"] = sel.xpath(
+                    "//div[@class='eventdetail-headerresults']/div/span/text()"
+                ).extract()[0]
             except BaseException:
                 # pass
-                item['sale_total'] = 'progress'
+                item["sale_total"] = "0"
 
-            #lotpage = item['linkurl'] = sel.xpath("//div[@class='description']/a/@href").extract()[p]
-            #lotpage = item['linkurl'] = self.start_urls[p]
             lotpage = self.start_urls[p]
-
-            #open('aste.html', 'wb').write(response.body)
-            print 'LOTPAGE: %s' % (lotpage)
+            # open('aste.html', 'wb').write(response.body)
+            print "LOTPAGE: %s" % (lotpage)
             # print 'ASTA: %s' % self.name
             # print "Date : %s" % (item['date'])
-            #item['image'] = sel.xpath("//div[@class='image']//img/@serc").extract()
+            # item['image'] = sel.xpath("//div[@class='image']//img/@serc").extract()
 
             # items.append(item)
 
             ##next_page = [('http://www.sothebys.com' + str(lotpage))]
             next_page = [(lotpage)]
             # if not not next_page:
-            print 'NEXTPAGEE: %s' % next_page
-            items.append(Request(next_page[0], self.parse_lot_sales_data))
+            print "NEXTPAGEE: %s" % next_page
+            #items.append(Request(next_page[0], self.parse_lot_sales_data))
 
             items.append(item)
             xx = len(items)
@@ -345,85 +312,84 @@ class DmozSpider(BaseSpider):
 
         One time firlds are recovery, they are updated in the table t.aste
         """
-        #open('lots_ales_data.html', 'wb').write(response.body)
-        print 'RESPONSE: %s' % response
+        # open('lots_ales_data.html', 'wb').write(response.body)
+        print "RESPONSE: %s" % response
         items = []
         sel = Selector(response)
 
         item = AsteWebsite()
         image_relative_urls = sel.xpath(
-            '//div[@class="zoom-hover-trigger"]//img/@src').extract()
+            '//div[@class="zoom-hover-trigger"]//img/@src'
+        ).extract()
 
         # [name] - Questo campo e' molto importante, infatti viene utilizzato per creare una chiave assoluta e
         # univoca da inserire in t.aste.guid job da eseguire in pipeline.py
         # TO DO  BUGS: In some cases the name is splitted on two row. While the insert rules is ok for name
         # here the name copy only the first parte of real name. Open a
         # Workaround near this bugs
-        item['name'] = sel.xpath("/html/head/title/text()").extract()[0].encode(
-            'ascii', 'ignore').replace("|", "").replace("Sotheby's", "").strip()
-        #item['name'] = sel.xpath("//div[@class='eventdetail-headerleft']/h1/text()").extract()[0].encode("ascii","ignore").strip()
+        item["name"] = (
+            sel.xpath("/html/head/title/text()")
+            .extract()[0]
+            .encode("ascii", "ignore")
+            .replace("|", "")
+            .replace("Sotheby's", "")
+            .strip()
+        )
+        # item['name'] = sel.xpath("//div[@class='eventdetail-headerleft']/h1/text()").extract()[0].encode("ascii","ignore").strip()
 
-        #item['name'] = sel.xpath("//ul[@class='breadcrumb inline']/li/a/span/text()").extract()
+        # item['name'] = sel.xpath("//ul[@class='breadcrumb inline']/li/a/span/text()").extract()
 
         # [maxlot] - Riflette il numero complessivo dei lotti che compongono l'asta.
         # questo dato va aggiornato nella tabella t.aste.maxlot
         try:
-            item['maxlot'] = sel.xpath(
-                "//div[@class='eventdetail-saleinfo']/span/text()").extract()[1].split()[2]
+            item["maxlot"] = response.css('span.css-kajn87-label-book::text')[0].extract()[:4].strip()
         except BaseException:
-            item['maxlot'] = ""
+            item["maxlot"] = ""
             # pass
 
         # [sales_number] - Riporta il numero di sala dell asta.
         # questo dato va aggiornato nella tabella t.aste.sales_number
-        item['sales_number'] = sel.xpath(
-            "//div[@class='eventdetail-saleinfo']/span/text()").extract()[0].split()[2]
+        item["sales_number"] = response.css('div.css-1kakqgq>p::text')[0].extract()[4:].strip()
         try:
-            item['sale_total'] = sel.xpath(
-                "//div[@class='eventdetail-headerresults']/div/span/text()").extract()[0]
+            item["sale_total"] = sel.xpath(
+                "//div[@class='eventdetail-headerresults']/div/span/text()"
+            ).extract()[0]
         except BaseException:
-            item['sale_total'] = '0'
-        item['asta'] = self.name
-        item['date'] = sel.xpath(
-            "//*[@id='x-event-date']/text()").extract()[0].strip()
-        item['datafine'] = item['date']
-        item['category'] = 'not cat'
+            item["sale_total"] = "0"
+        item["asta"] = self.name
+        item["date"] = response.css('p.paragraph-module_paragraph18Regular__34C1i.css-cgm4gv::text').extract()[0].strip().encode("utf-8")
+        #item["date"] = sel.xpath("//*[@id='x-event-date']/text()").extract()#[0].strip()
+        item["datafine"] = item["date"]
+        item["category"] = "not cat"
         try:
-            item['overview'] = sel.xpath(
-                "//*[@id='bodyWrap']/div[2]/div[1]/div[3]/div[3]/div[1]/div[1]/div[2]/p[1]/text()").extract()[0].strip()
+            item["overview"] = response.css('div.css-1kakqgq>p::text')[1].extract().strip()
         except BaseException:
-            item['overview'] = 'no overview'
-        item['location'] = sel.xpath(
-            "//span[@class='location']/text()").extract()[0].encode('utf-8').strip()
+            item["overview"] = "no overview"
 
-        # [status] update the status asta [C] = Calendar [A] = Analize [R] = Result [P] = Publication
-        item['status'] = "C"
+        item['location'] = response.css('p.paragraph-module_paragraph18Regular__34C1i.css-cgm4gv::text')[5].extract()[3:].strip().encode("utf-8")
+        item["status"] = "C"
 
-        # [downloadhref] This is the official href link to initial download lot for asta name. Here is
-        # i update
-        ###item['downloadhref'] = sel.xpath("//*[@id='eventdetail-carousel']/ul/li[2]/a/@href").extract()[0]
-        #item['downloadhref'] = self.start_urls
-        #item['downloadhref'] = self.start_urls.replace("http://www.sothebys.com","").replace("/en/auctions/","/en/auctions/ecatalogue/").replace(".html","")+"/lot.1.html"
-        item['downloadhref'] = self.start_urls[0].replace(
-            "http://www.sothebys.com",
-            "").replace(
-            "/en/auctions/",
-            "/en/auctions/ecatalogue/") + "/lot.1.html"
-        item['layout'] = 'layout'
+        item["downloadhref"] = (
+            self.start_urls[0]
+            .replace("http://www.sothebys.com", "")
+            .replace("/en/auctions/", "/en/auctions/ecatalogue/")
+            + "/lot.1.html"
+        )
+        item["layout"] = "layout"
 
         try:
-            item['linkurl'] = sel.xpath(
-                "//div[@class='description']/a/@href").extract()[0]
+            item["linkurl"] = sel.xpath(
+                "//div[@class='description']/a/@href"
+            ).extract()[0]
         except IndexError:
-            item['linkurl'] = str(urlparse(self.start_urls[0]))
-        print 'TERZO LINKURL: %s' % item['linkurl']
-        #item['linkurl'] = self.start_urls
+            item["linkurl"] = str(urlparse(self.start_urls[0]))
+        print "TERZO LINKURL: %s" % item["linkurl"]
+        # item['linkurl'] = self.start_urls
 
-        link = sel.xpath(
-            '//div[@class="zoom-hover-trigger"]//img/@src').extract()
-        #next_page = [('http://www.sothebys.com' + str(lotpage))]
+        link = sel.xpath('//div[@class="zoom-hover-trigger"]//img/@src').extract()
+        # next_page = [('http://www.sothebys.com' + str(lotpage))]
         # if not not next_page:
-        #items.append(Request("http://www.sothebys.com/en/auctions/ecatalogue/2014/collections-l14305/lot.1.html", callback=self.parse_opere))
+        # items.append(Request("http://www.sothebys.com/en/auctions/ecatalogue/2014/collections-l14305/lot.1.html", callback=self.parse_opere))
 
         items.append(item)
 

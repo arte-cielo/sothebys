@@ -16,8 +16,9 @@ DEFAULT_ITEM_CLASS = 'dirbot.items.Website'
 
 ITEM_PIPELINES = {'dirbot.pipelines.FilterWordsPipeline': 1}
 ITEM_PIPELINES = {'dirbot.pipelines.MyImagesPipeline': 1}
-ITEM_PIPELINES = {'dirbot.pipelines.MySQLStorePipeline'}
-#ITEM_PIPELINES = {'scrapy.contrib.pipeline.images.ImagesPipeline': 1}
+#ITEM_PIPELINES = {'dirbot.pipelines.MySQLStorePipeline'}
+ITEM_PIPELINES = {'dirbot.pipelines.DirBotPostresPipeline': 300}
+ITEM_PIPELINES = {'scrapy.contrib.pipeline.images.ImagesPipeline': 1}
 
 #IMAGES_STORE = '/home/sothebys/image'
 IMAGES_STORE = '/home/grdnmrc/SOTHEBY/sothebys'
@@ -37,8 +38,8 @@ DOWNLOADER_MIDDLEWARES = {
     'dirbot.middlewares.ProxyMiddleware': 100,
 }
 
-MYSQL_HOST = '192.168.1.48'
+MYSQL_HOST = '192.168.1.99'
 MYSQL_DBNAME = 'artecielo'
 MYSQL_USER = 'root'
 MYSQL_PASSWD = 'broletto'
-MYSQL_PORT = '3306'
+MYSQL_PORT = ''
