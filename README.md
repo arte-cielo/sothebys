@@ -1,5 +1,5 @@
 # Scanlot sothebys to aste
-> This branch store sotheby's some information for aste2.
+> This branch store some sotheby's information for aste2.
 >
 > [![NPM Version][npm-image]][npm-url]
 > [![Build Status][travis-image]][travis-url]
