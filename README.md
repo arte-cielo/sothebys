@@ -11,21 +11,18 @@
 >
 > ## Installation
 >
-> OS X & Linux:
+> Linux:
 >
 > ```sh
-> npm install my-crazy-module --save
+> python setup.py install
 > `````
-
-Windows:
-
-```sh
-edit autoexec.bat
-`````
 
 ## Usage example
 
-A few motivating and useful examples of how your product can be used. Spice this up with code blocks and potentially more screenshots.
+You must execute the following cmd:
+> ```sh
+> scrapy crawl sothebys
+> ```
 
 _For more examples and usage, please refer to the [Wiki][wiki]._
 
